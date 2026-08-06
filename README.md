@@ -1,0 +1,30 @@
+# KPR Simulator
+
+A KPR calculator built around the question every other calculator hides: **what happens when the fixed period ends.**
+
+A commercial KPR is two loans stitched together — a known one and an unknown one. This tool models it that way: the fixed rate and fixed period are explicit inputs, and beyond the boundary it draws a *band* of outcomes rather than a single line. The headline figure is the **ambang** — the floating rate at which the payment crosses a stated share of income.
+
+Static site. No backend, no accounts, no runtime network requests. Inputs encode into the URL **hash**, so income and loan figures never reach a server log.
+
+## What this is not
+
+- **It never advises.** No recommendation, no ranking, no bank comparison, no affiliate link, no lead capture. It computes what you ask and shows the derivation.
+- **It never invents a rate.** Every rate on screen is either something you typed or a dated, labelled reference snapshot. There is no default rate and no "typical rate" pre-filled as though it were data.
+- **It states what it does not know.** The floating rate after the fixed period is bank-internal and unpublished. Bank fees vary. Approval is not modelled. Amber marks every one of those, consistently.
+
+This is a personal project and not financial advice. Confirm every figure with the bank.
+
+## Development
+
+```bash
+pnpm install
+pnpm dev
+
+pnpm test:run          # before every commit
+pnpm rules:validate    # gates the build and CI
+pnpm rules:report      # every parameter with its basis and verification date
+pnpm build             # static export to ./out
+pnpm preview           # serve ./out under the production basePath
+```
+
+See [CLAUDE.md](CLAUDE.md) for the invariants, [PRD.md](PRD.md) for scope, and [UPDATING.md](UPDATING.md) for how to refresh a rule pack when a regulation changes.

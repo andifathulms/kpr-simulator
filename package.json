@@ -1,0 +1,42 @@
+{
+  "name": "kpr-simulator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KPR Simulator — a KPR calculator built around the floating-rate period.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "pnpm rules:validate && next build && touch out/.nojekyll",
+    "preview": "node scripts/preview.mjs",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:conservation": "vitest run tests/conservation",
+    "test:irr": "vitest run tests/irr",
+    "test:threshold": "vitest run tests/threshold",
+    "test:refusal": "vitest run tests/refusal",
+    "rules:validate": "tsx scripts/rules-validate.ts",
+    "rules:report": "tsx scripts/rules-report.ts",
+    "banks:record": "tsx scripts/banks-record.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.15",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.19",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.15",
+    "postcss": "8.4.39",
+    "tailwindcss": "3.4.6",
+    "tsx": "4.16.2",
+    "typescript": "5.5.3",
+    "vitest": "2.0.5"
+  },
+  "packageManager": "pnpm@9.15.9"
+}
