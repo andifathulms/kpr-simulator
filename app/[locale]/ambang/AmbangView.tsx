@@ -13,6 +13,10 @@ import { MoneyField, NumberField, RateField } from '@/components/field/Field'
 import { ThresholdNotice, UnknownNotice } from '@/components/notice/Notice'
 import { ScheduleElevation } from '@/components/elevation/ScheduleElevation'
 import { decodeHash, encodeHash, readNumber } from '@/lib/url/hash'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { Panel } from '@/components/ui/Panel'
+import { StatCard } from '@/components/ui/StatCard'
+import { FieldGroup } from '@/components/ui/FieldGroup'
 
 /**
  * The threshold view. One figure, stated plainly, with the instalment it
@@ -140,94 +144,125 @@ export function AmbangView({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-10">
-      <header className="max-w-3xl">
-        <h1 className="sheet-label text-2xl">{t.nav.ambang}</h1>
-        <p className="mt-2 text-print/80">
-          {id
-            ? 'Pada suku bunga mengambang berapa angsuran Anda melewati porsi penghasilan yang Anda tetapkan? Satu angka, untuk dibawa dan ditanyakan langsung ke bank.'
-            : 'At what floating rate does your instalment cross the share of income you set? One figure, to carry into a bank meeting and ask about directly.'}
-        </p>
-      </header>
+      <PageHeader
+        eyebrow={t.nav.ambang}
+        title={
+          id
+            ? 'Sampai bunga berapa angsuran ini masih di bawah batas Anda?'
+            : 'How high can the rate go before the instalment passes your limit?'
+        }
+        lede={
+          id
+            ? 'Anda menetapkan berapa bagian penghasilan yang boleh dipakai untuk angsuran; aplikasi mencari suku bunga mengambang yang persis mencapainya. Satu angka, untuk dibawa dan ditanyakan langsung ke bank.'
+            : 'You set how much of your income may go to the instalment; the app solves for the floating rate that reaches exactly that. One figure, to carry into a bank meeting and ask about directly.'
+        }
+      />
 
-      <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
         <form
-          className="print-hidden space-y-4"
+          className="print-hidden space-y-8 lg:sticky lg:top-36 lg:self-start"
           onSubmit={(event) => event.preventDefault()}
         >
-          <MoneyField
-            label={t.form.plafon}
-            value={state.plafon}
-            onChange={(plafon) => setState({ ...state, plafon })}
-          />
-          <NumberField
-            label={t.form.tenorTahun}
-            value={state.tenorTahun}
-            onChange={(tenorTahun) => setState({ ...state, tenorTahun })}
-            min={2}
-            max={40}
-            suffix={id ? 'thn' : 'yr'}
-          />
-          <RateField
-            label={t.form.bungaTetap}
-            value={state.bungaTetap}
-            onChange={(bungaTetap) => setState({ ...state, bungaTetap })}
-          />
-          <NumberField
-            label={t.form.masaTetapTahun}
-            value={state.masaTetapTahun}
-            onChange={(masaTetapTahun) => setState({ ...state, masaTetapTahun })}
-            min={1}
-            max={Math.max(state.tenorTahun - 1, 1)}
-            suffix={id ? 'thn' : 'yr'}
-          />
-          <MoneyField
-            label={t.form.penghasilan}
-            value={state.penghasilan}
-            onChange={(penghasilan) => setState({ ...state, penghasilan })}
-            hint={
-              id
-                ? 'Tidak dikirim ke mana pun. Masukan tersimpan di tanda pagar alamat, bukan di kueri.'
-                : 'Sent nowhere. Inputs live in the URL fragment, never the query string.'
-            }
-          />
-          <RateField
-            label={t.form.porsiPenghasilan}
-            value={state.porsi}
-            onChange={(porsi) => setState({ ...state, porsi: Math.min(Math.max(porsi, 0.01), 1) })}
-            max={100}
+          <FieldGroup
             step={1}
-            hint={
+            title={id ? 'Pinjamannya' : 'The loan'}
+            note={
               id
-                ? 'Porsi yang Anda pilih. Aplikasi ini tidak menyatakan porsi mana yang wajar.'
-                : 'The share you choose. The app does not say which share is sensible.'
+                ? 'Yang bank kutip: jumlah yang dipinjam, lamanya, bunga tetap dan berapa lama dikunci.'
+                : 'What the bank quoted: the amount, the term, the fixed rate and how long it holds.'
             }
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <NumberField
-              label={id ? 'Tahun mulai' : 'Start year'}
-              value={state.mulaiTahun}
-              onChange={(mulaiTahun) => setState({ ...state, mulaiTahun })}
-              min={2000}
-              max={2100}
+          >
+            <MoneyField
+              label={t.form.plafon}
+              value={state.plafon}
+              onChange={(plafon) => setState({ ...state, plafon })}
             />
             <NumberField
-              label={id ? 'Bulan mulai' : 'Start month'}
-              value={state.mulaiBulan}
-              onChange={(mulaiBulan) => setState({ ...state, mulaiBulan })}
+              label={t.form.tenorTahun}
+              value={state.tenorTahun}
+              onChange={(tenorTahun) => setState({ ...state, tenorTahun })}
+              min={2}
+              max={40}
+              suffix={id ? 'thn' : 'yr'}
+            />
+            <RateField
+              label={t.form.bungaTetap}
+              value={state.bungaTetap}
+              onChange={(bungaTetap) => setState({ ...state, bungaTetap })}
+            />
+            <NumberField
+              label={t.form.masaTetapTahun}
+              value={state.masaTetapTahun}
+              onChange={(masaTetapTahun) => setState({ ...state, masaTetapTahun })}
               min={1}
-              max={12}
+              max={Math.max(state.tenorTahun - 1, 1)}
+              suffix={id ? 'thn' : 'yr'}
             />
-          </div>
+          </FieldGroup>
+
+          <FieldGroup
+            step={2}
+            title={id ? 'Batas yang Anda tetapkan' : 'The limit you set'}
+            note={
+              id
+                ? 'Batas ini milik Anda sepenuhnya. Aplikasi ini tidak menyatakan porsi mana yang wajar.'
+                : 'The limit is entirely yours. The app does not say which share is sensible.'
+            }
+          >
+            <MoneyField
+              label={t.form.penghasilan}
+              value={state.penghasilan}
+              onChange={(penghasilan) => setState({ ...state, penghasilan })}
+              hint={
+                id
+                  ? 'Tidak dikirim ke mana pun. Masukan tersimpan di tanda pagar alamat, bukan di kueri.'
+                  : 'Sent nowhere. Inputs live in the URL fragment, never the query string.'
+              }
+            />
+            <RateField
+              label={t.form.porsiPenghasilan}
+              value={state.porsi}
+              onChange={(porsi) => setState({ ...state, porsi: Math.min(Math.max(porsi, 0.01), 1) })}
+              max={100}
+              step={1}
+            />
+          </FieldGroup>
+
+          <details className="border-t border-annotation/25 pt-4">
+            <summary className="sheet-label cursor-pointer text-xs text-annotation">
+              {id ? 'Rincian teknis' : 'Technical details'}
+            </summary>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <NumberField
+                label={id ? 'Tahun mulai' : 'Start year'}
+                value={state.mulaiTahun}
+                onChange={(mulaiTahun) => setState({ ...state, mulaiTahun })}
+                min={2000}
+                max={2100}
+              />
+              <NumberField
+                label={id ? 'Bulan mulai' : 'Start month'}
+                value={state.mulaiBulan}
+                onChange={(mulaiBulan) => setState({ ...state, mulaiBulan })}
+                min={1}
+                max={12}
+              />
+            </div>
+          </details>
         </form>
 
-        <div className="space-y-8">
-          <ShareBar locale={locale} />
+        <div className="space-y-10">
           {!ready && (
-            <UnknownNotice title={id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}>
-              {id
-                ? 'Isi plafon, bunga tetap yang dikutip, masa tetapnya, dan penghasilan per bulan.'
-                : 'Enter the amount financed, the fixed rate you were quoted, its length, and your monthly income.'}
-            </UnknownNotice>
+            <section className="border border-annotation/25 bg-recess px-6 py-6">
+              <p className="sheet-label text-xs text-annotation">
+                {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
+              </p>
+              <p className="measure mt-2 text-print/85">
+                {id
+                  ? 'Isi plafon, bunga tetap yang dikutip, masa tetapnya, dan penghasilan per bulan. Angka ambang muncul di sini.'
+                  : 'Enter the amount financed, the fixed rate you were quoted, its length, and your monthly income. The threshold figure appears here.'}
+              </p>
+            </section>
           )}
 
           {result?.kind === 'error' && (
@@ -239,14 +274,14 @@ export function AmbangView({ locale }: { locale: Locale }) {
           {result?.kind === 'ok' && (
             <>
               {result.outcome.kind === 'found' && (
-                <section className="border-2 border-threshold bg-threshold/10 px-6 py-5">
+                <section className="border-2 border-threshold bg-threshold/10 px-6 py-6">
                   <p className="sheet-label text-xs text-threshold">
                     {id ? 'Ambang — bunga mengambang' : 'Threshold — floating rate'}
                   </p>
-                  <p className="figure mt-1 text-5xl text-threshold">
+                  <p className="figure mt-2 text-headline text-threshold">
                     {formatRate(result.outcome.annualRate, intl)}
                   </p>
-                  <p className="mt-3 text-print/90">
+                  <p className="measure mt-4 text-print/90">
                     {id
                       ? 'Pada bunga ini, angsuran setelah masa tetap menjadi '
                       : 'At this rate, the instalment after the fixed period becomes '}
@@ -254,6 +289,11 @@ export function AmbangView({ locale }: { locale: Locale }) {
                     {id
                       ? ` — tepat ${formatRate(state.porsi, intl)} dari penghasilan yang Anda isikan.`
                       : ` — exactly ${formatRate(state.porsi, intl)} of the income you entered.`}
+                  </p>
+                  <p className="measure mt-3 text-sm text-print/75">
+                    {id
+                      ? 'Pertanyaan untuk bank: berapa marjin yang Anda tambahkan di atas SBDK setelah masa tetap, dan seberapa sering ditinjau? Aplikasi ini tidak menyatakan apakah angka di atas mungkin terjadi.'
+                      : 'The question for the bank: what margin do you add over SBDK once the fixed period ends, and how often is it reviewed? This app says nothing about whether the rate above is likely.'}
                   </p>
                 </section>
               )}
@@ -282,16 +322,25 @@ export function AmbangView({ locale }: { locale: Locale }) {
               )}
 
               <section className="grid gap-4 sm:grid-cols-3">
-                <Figure
+                <StatCard
                   label={id ? 'Angsuran masa tetap' : 'Instalment, fixed period'}
                   value={formatRupiah(result.outcome.fixedPayment, intl)}
+                  tag={t.common.computed}
+                  note={
+                    id ? 'Dari bunga yang dikutip bank.' : 'From the rate the bank quoted.'
+                  }
                 />
-                <Figure
+                <StatCard
+                  tone="threshold"
                   label={id ? 'Batas yang Anda tetapkan' : 'The limit you set'}
                   value={formatRupiah(result.outcome.limit, intl)}
-                  threshold
+                  note={
+                    id
+                      ? `${formatRate(state.porsi, intl)} dari penghasilan Anda.`
+                      : `${formatRate(state.porsi, intl)} of your income.`
+                  }
                 />
-                <Figure
+                <StatCard
                   label={
                     id
                       ? `Sisa pokok saat masa tetap berakhir (bulan ${fixedMonths})`
@@ -306,57 +355,30 @@ export function AmbangView({ locale }: { locale: Locale }) {
                 />
               </section>
 
+              <ShareBar locale={locale} />
+
               <UnknownNotice title={t.floating.title}>{t.floating.body}</UnknownNotice>
 
               {result.schedule && (
-                <section className="space-y-3">
-                  <h2 className="sheet-label text-sm text-annotation">
-                    {id
-                      ? 'Jadwal pada suku bunga ambang'
-                      : 'The schedule at the threshold rate'}
-                  </h2>
-                  <p className="text-sm text-print/75">
-                    {id
+                <Panel
+                  title={id ? 'Jadwal pada suku bunga ambang' : 'The schedule at the threshold rate'}
+                  note={
+                    id
                       ? 'Suku bunga di atas dikembalikan ke mesin perhitungan; inilah jadwal yang dihasilkannya. Angsuran pertama setelah batas sama persis dengan batas yang Anda tetapkan.'
-                      : 'The rate above was fed back through the engine; this is the schedule it produces. The first instalment past the boundary equals the limit you set, to the rupiah.'}
-                  </p>
+                      : 'The rate above was fed back through the engine; this is the schedule it produces. The first instalment past the boundary equals the limit you set, to the rupiah.'
+                  }
+                >
                   <ScheduleElevation
                     schedule={result.schedule}
                     locale={locale}
                     boundaryMonth={fixedMonths}
                   />
-                </section>
+                </Panel>
               )}
             </>
           )}
         </div>
       </div>
-    </div>
-  )
-}
-
-function Figure({
-  label,
-  value,
-  note,
-  threshold,
-}: {
-  label: string
-  value: string
-  note?: string
-  threshold?: boolean
-}) {
-  return (
-    <div
-      className={`border px-4 py-3 ${
-        threshold ? 'border-threshold/60 bg-threshold/10' : 'border-annotation/25 bg-recess'
-      }`}
-    >
-      <p className={`sheet-label text-xs ${threshold ? 'text-threshold' : 'text-annotation'}`}>
-        {label}
-      </p>
-      <p className={`figure mt-1 text-xl ${threshold ? 'text-threshold' : 'text-print'}`}>{value}</p>
-      {note && <p className="mt-1 text-xs text-print/70">{note}</p>}
     </div>
   )
 }
