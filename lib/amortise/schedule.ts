@@ -155,6 +155,37 @@ export function buildSchedule(terms: LoanTerms): Schedule {
 }
 
 /**
+ * The balance still outstanding after `months` instalments of a single-rate
+ * phase, and the instalment that phase charges.
+ *
+ * The fixed-period rows do not depend on the floating rate that follows —
+ * their instalment is computed from the plafon over the full term — so the
+ * threshold solver can ask what is left at the boundary without first
+ * inventing a rate for the period beyond it.
+ *
+ * tests/threshold assert this agrees with buildSchedule row for row.
+ */
+export function balanceAfterPhase(
+  principal: Rupiah,
+  annualRate: number,
+  termMonths: number,
+  months: number,
+  rounding: LoanTerms['rounding'],
+): { readonly balance: Rupiah; readonly payment: Rupiah } {
+  if (months < 0 || months > termMonths) {
+    throw new ScheduleError(`Jumlah bulan ${months} di luar tenor ${termMonths}`)
+  }
+  const payment = annuityPayment(principal, annualRate, termMonths, rounding)
+  let balance: Rupiah = principal
+  for (let step = 0; step < months; step += 1) {
+    const interest = applyRate(balance, monthlyRate(annualRate), rounding)
+    const principalPortion = clampPrincipal(subtract(payment.value, interest.value), balance)
+    balance = subtract(balance, principalPortion)
+  }
+  return { balance, payment: payment.value }
+}
+
+/**
  * A negative principal portion means the instalment does not even cover the
  * month's interest, so the loan would never amortise. That is a real
  * condition, not a rounding artefact, and it must not be silently absorbed.
