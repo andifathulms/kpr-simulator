@@ -37,6 +37,7 @@ pnpm test:conservation      # principal sums, zero balance, total paid
 pnpm test:irr               # effective rate vs independently solved IRR
 pnpm test:threshold         # threshold solver round-trip
 pnpm rules:validate         # schema, citations, period continuity
+pnpm check:offline          # no external requests, no analytics, against ./out
 pnpm rules:report           # every parameter with basis and verifiedAt
 pnpm banks:record           # DEV ONLY — records published bank-calculator outputs
 pnpm typecheck
@@ -164,7 +165,9 @@ M0–M6 built and green. `pnpm test:run` covers 1614 assertions; `pnpm rules:val
 
 Routes: `hitung`, `ambang`, `subsidi`, `banding`, `biaya`, `parameter`, in `id` and `en`. The locale is a root-level segment so each page carries the right `lang`; `/` is a static redirect written by `scripts/finalise-export.mjs`, which also writes `.nojekyll`.
 
-**Nothing has been pushed.** There is no git remote. The Actions workflow expects a repository named `kpr-simulator`, matching `basePath`.
+Pushed to `github.com/andifathulms/kpr-simulator`. CI (`verify`) is green on every push: rule validation, types, lint, tests, build, `check:offline`, and an export sanity check.
+
+**GitHub Pages does not deploy.** `actions/deploy-pages` is accepted and then never progresses, timing out after ten minutes; `repos/.../pages` still reports `status: null`. Pages is configured correctly — `build_type: workflow`, public repository, artifact uploads fine — and the same failure predates this project on this account, so it is not a fault in the workflow or the export. The deploy job therefore runs only on `workflow_dispatch`; restore `push` to its `if` when Pages works. Meanwhile the export is downloadable from any run's artifact and can be served anywhere static.
 
 ### Known gaps, all deliberate
 

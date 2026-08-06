@@ -5,7 +5,7 @@
   "description": "KPR Simulator — a KPR calculator built around the floating-rate period.",
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm rules:validate && next build && node scripts/finalise-export.mjs",
+    "build": "pnpm rules:validate && next build && node scripts/finalise-export.mjs && node scripts/check-offline.mjs",
     "preview": "node scripts/preview.mjs",
     "test": "vitest",
     "test:run": "vitest run",
@@ -14,6 +14,7 @@
     "test:threshold": "vitest run tests/threshold",
     "test:refusal": "vitest run tests/refusal",
     "rules:validate": "tsx scripts/rules-validate.ts",
+    "check:offline": "node scripts/check-offline.mjs",
     "rules:report": "tsx scripts/rules-report.ts",
     "banks:record": "tsx scripts/banks-record.ts",
     "typecheck": "tsc --noEmit",

@@ -39,6 +39,8 @@ jobs:
       - run: pnpm test:run
 
       - run: pnpm build
+      # Guards invariant 13 against the built output rather than trusting it.
+      - run: pnpm check:offline
       - name: Confirm the export is servable by Pages
         run: |
           test -f out/.nojekyll || { echo "out/.nojekyll missing"; exit 1; }

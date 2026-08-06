@@ -35,6 +35,7 @@ pnpm dev
 
 pnpm test:run          # before every commit
 pnpm rules:validate    # gates the build and CI
+pnpm check:offline     # asserts the export makes no external request
 pnpm rules:report      # every parameter with its basis and verification date
 pnpm build             # static export to ./out
 pnpm preview           # serve ./out under the production basePath
