@@ -1,0 +1,7 @@
+{
+  "snapshots": [],
+  "coverageNote": {
+    "id": "Belum ada snapshot SBDK yang direkam untuk build ini. SBDK dipublikasikan per bank, bukan sebagai satu angka nasional, dan menyebut satu bank akan melanggar aturan bahwa nama bank hanya muncul bila Anda yang mengetiknya. Sampai agregat OJK terekam dengan sumber dan tanggalnya, tidak ada angka acuan yang ditawarkan di sini — silakan isi sendiri suku bunga acuan yang Anda baca, beserta sumbernya. Cara merekamnya ada di UPDATING.md.",
+    "en": "No SBDK snapshot has been recorded for this build. SBDK is published per bank rather than as one national figure, and naming a single bank would break the rule that a bank name appears only because you typed it. Until an OJK aggregate is recorded with its source and date, no reference figure is offered here — enter the base rate you read yourself, along with where you read it. UPDATING.md explains how to record one."
+  }
+}
