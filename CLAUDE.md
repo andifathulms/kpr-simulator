@@ -1,6 +1,6 @@
-# CLAUDE.md — Ambang
+# CLAUDE.md — KPR Simulator
 
-KPR simulator built around the floating-rate period. Cited rule packs, integer-rupiah amortisation, scenario bands for the unknown period, and an affordability threshold solver. Static site, GitHub Pages, no backend.
+KPR simulator built around the floating-rate period. Named **KPR Simulator**; `ambang` survives only as the route name of the threshold page, where it is the Indonesian word for threshold rather than a brand. Cited rule packs, integer-rupiah amortisation, scenario bands for the unknown period, and an affordability threshold solver. Static site, GitHub Pages, no backend.
 
 Read `PRD.md` before starting any task — **§9 in particular**. It fixes scope; this file describes how to work in the repo.
 
@@ -160,4 +160,20 @@ The site states plainly that it is a personal project, not financial advice, tha
 
 ## Current state
 
-M0 — not yet scaffolded. Next: static export deploying to Pages, then the rule-pack schema and validator. **No rule content before the validator exists; no amortisation code before the conservation assertion does.**
+M0–M6 built and green. `pnpm test:run` covers 1614 assertions; `pnpm rules:validate`, `pnpm typecheck`, and `pnpm lint` are clean; the export serves under the production `basePath` via `pnpm preview`.
+
+Routes: `hitung`, `ambang`, `subsidi`, `banding`, `biaya`, `parameter`, in `id` and `en`. The locale is a root-level segment so each page carries the right `lang`; `/` is a static redirect written by `scripts/finalise-export.mjs`, which also writes `.nojekyll`.
+
+**Nothing has been pushed.** There is no git remote. The Actions workflow expects a repository named `kpr-simulator`, matching `basePath`.
+
+### Known gaps, all deliberate
+
+Seven values are declared in `data/gaps.json` and refused by name rather than filled with a plausible number: LTV ratios, FLPP tenor, minimum down payment, SBUM, per-kabupaten NPOPTKP, bank fees, and SBDK snapshots. `data/sbdk/snapshots.json` is empty by design — SBDK is published per bank, and §9 forbids naming one, so no reference anchor is offered. Recording an OJK segment-level aggregate would close it; see `UPDATING.md`.
+
+`flpp.rate` is carried at 5% but rests on a ministry statement rather than an article traced to its clause, and its note says so on the parameter page.
+
+`tests/banks/corpus.json` holds the classification vocabulary but no recordings yet. Bank calculators are recorded by hand; `pnpm banks:record` compares one and fails while any difference is unclassified.
+
+### Corrections to earlier assumptions
+
+The PRD's "a flat 5% is roughly a 9% effective rate" holds over 1–5 year tenors (9,11%–9,32%) but not over a KPR tenor: the computed figure is 7,95% at 20 years. Tests assert the computed shape, and the app states the computed number.

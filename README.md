@@ -14,6 +14,19 @@ Static site. No backend, no accounts, no runtime network requests. Inputs encode
 
 This is a personal project and not financial advice. Confirm every figure with the bank.
 
+## Pages
+
+| | |
+|---|---|
+| `hitung` | The full schedule, fixed and floating shown apart, flat beside effective, the table, the derivation, and the extra-payment simulator. |
+| `ambang` | The threshold: the floating rate at which the instalment crosses your stated share of income. |
+| `subsidi` | The FLPP path — 5% fixed to the end of the term, with each eligibility criterion checked against a cited ceiling. |
+| `banding` | Both paths side by side for one profile, and how certain each figure actually is. |
+| `biaya` | BPHTB and taxes cited; bank and notary fees as your own figures. |
+| `parameter` | Every parameter with its basis, source, and verification date — and every gap the tool refuses to fill. |
+
+Indonesian at `/id`, English at `/en`.
+
 ## Development
 
 ```bash
