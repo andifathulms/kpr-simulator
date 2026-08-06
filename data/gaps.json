@@ -1,0 +1,81 @@
+{
+  "gaps": [
+    {
+      "reference": "ltv.*",
+      "title": {
+        "id": "Rasio LTV / batas uang muka",
+        "en": "LTV ratios / minimum down payment"
+      },
+      "detail": {
+        "id": "Bank Indonesia melonggarkan rasio LTV menjadi 100% untuk semua jenis properti sejak Maret 2021, dan kebijakan itu diperpanjang beberapa kali. Status yang berlaku untuk periode berjalan tidak berhasil diverifikasi terhadap PADG yang masih berlaku, dan untuk rumah pertama BI memang menyerahkan batas maksimum LTV kepada kebijakan bank. Karena itu tidak ada paket aturan LTV yang dimuat: uang muka adalah angka yang Anda isi sendiri, dan aplikasi tidak akan menyatakan berapa uang muka minimum yang sah.",
+        "en": "Bank Indonesia relaxed LTV to 100% for all property types from March 2021 and extended it several times. The status in force for the current period could not be verified against a PADG still in effect, and for a first home BI has in any case released the maximum LTV to bank discretion. No LTV rule pack is therefore carried: the down payment is a figure you enter, and the app will not state a legal minimum."
+      }
+    },
+    {
+      "reference": "flpp.tenor.max",
+      "title": {
+        "id": "Tenor maksimum FLPP",
+        "en": "Maximum FLPP tenor"
+      },
+      "detail": {
+        "id": "Tenor FLPP umum dikutip 20 tahun, dan pada 2025 pemerintah mengumumkan persetujuan tenor sampai 40 tahun. Tidak satu pun berhasil ditelusuri ke pasal peraturan yang berlaku, sehingga tidak ada batas tenor yang dimuat sebagai parameter. Tenor adalah masukan Anda; aplikasi tidak akan menolak atau membenarkan panjang tenor atas nama aturan yang belum diverifikasi.",
+        "en": "FLPP tenor is commonly quoted as 20 years, and in 2025 the government announced approval of tenors up to 40 years. Neither could be traced to an article of a regulation in force, so no tenor ceiling is carried as a parameter. Tenor is your input; the app will not reject or bless a tenor length on the authority of an unverified rule."
+      }
+    },
+    {
+      "reference": "flpp.uang.muka.min",
+      "title": {
+        "id": "Uang muka minimum FLPP",
+        "en": "Minimum FLPP down payment"
+      },
+      "detail": {
+        "id": "Uang muka FLPP kerap disebut mulai dari 1%. Angka itu tidak berhasil ditelusuri ke pasal peraturan, dan besarannya juga bergantung pada bank penyalur. Uang muka karena itu adalah masukan Anda.",
+        "en": "FLPP down payments are often quoted as starting from 1%. That figure could not be traced to an article of a regulation, and it also depends on the disbursing bank. The down payment is therefore your input."
+      }
+    },
+    {
+      "reference": "flpp.sbum",
+      "title": {
+        "id": "Subsidi Bantuan Uang Muka (SBUM)",
+        "en": "Down payment assistance subsidy (SBUM)"
+      },
+      "detail": {
+        "id": "SBUM diatur dalam Kepmen PUPR 689/KPTS/M/2023 dan umum dikutip sebesar Rp4 juta, tetapi nilai itu belum diverifikasi terhadap salinan resmi keputusan tersebut. Sampai terverifikasi, SBUM tidak dimuat sebagai parameter dan tidak ikut mengurangi kebutuhan uang muka dalam perhitungan.",
+        "en": "SBUM is set by Kepmen PUPR 689/KPTS/M/2023 and commonly quoted as Rp4 million, but that figure has not been verified against an official copy of the decision. Until it is, SBUM is not carried as a parameter and does not reduce the down payment in any calculation."
+      }
+    },
+    {
+      "reference": "pajak.bphtb.npoptkp.daerah",
+      "title": {
+        "id": "NPOPTKP per kabupaten/kota",
+        "en": "NPOPTKP by kabupaten/kota"
+      },
+      "detail": {
+        "id": "Yang dimuat hanyalah batas bawah nasional Rp80 juta dari UU 1/2022. NPOPTKP sebenarnya ditetapkan tiap kabupaten/kota lewat perda, ratusan nilai yang direvisi secara lokal, dan banyak yang lebih tinggi dari batas bawah. Aplikasi menyediakan isian manual dan menyatakan celah ini di halaman biaya, bukan menyembunyikannya di balik satu angka nasional.",
+        "en": "Only the national floor of Rp80 million from UU 1/2022 is carried. The actual NPOPTKP is set by each kabupaten/kota by-law — hundreds of locally revised values, many above the floor. The app offers a manual override and states this gap on the costs page rather than hiding it behind a single national figure."
+      }
+    },
+    {
+      "reference": "biaya.bank.*",
+      "title": {
+        "id": "Biaya bank — provisi, administrasi, appraisal, asuransi",
+        "en": "Bank fees — provisi, administration, appraisal, insurance"
+      },
+      "detail": {
+        "id": "Tidak dipublikasikan secara terpusat dan berbeda antar bank serta antar kampanye. Semuanya adalah isian Anda. Di mana rentang lazim ditampilkan, rentang itu ditandai sebagai lazim, bukan sebagai ketentuan.",
+        "en": "Not centrally published, and they vary by bank and by campaign. All are your input. Where a typical range is shown it is marked as typical, never as authoritative."
+      }
+    },
+    {
+      "reference": "sbdk",
+      "title": {
+        "id": "Snapshot SBDK",
+        "en": "SBDK snapshots"
+      },
+      "detail": {
+        "id": "Belum ada yang direkam. SBDK dipublikasikan per bank, dan menyebut satu bank akan melanggar aturan bahwa nama bank hanya muncul bila Anda yang mengetiknya. Suku bunga acuan pada halaman skenario adalah angka yang Anda isi sendiri.",
+        "en": "None recorded. SBDK is published per bank, and naming one would break the rule that a bank name appears only because you typed it. The base rate on the scenario page is a figure you enter yourself."
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "pack": "flpp",
+  "title": {
+    "id": "Ketentuan pembiayaan FLPP",
+    "en": "FLPP financing terms"
+  },
+  "parameters": [
+    {
+      "id": "flpp.rate",
+      "label": {
+        "id": "Suku bunga FLPP, tetap sampai akhir tenor",
+        "en": "FLPP interest rate, fixed to the end of the term"
+      },
+      "value": { "kind": "rate", "decimal": 0.05 },
+      "effectiveFrom": "2025-01",
+      "effectiveTo": null,
+      "basis": "Siaran pers Kementerian Perumahan dan Kawasan Permukiman — bunga FLPP tetap 5% hingga akhir tenor",
+      "sourceUrl": "https://pkp.go.id/berita/detail/bi-rate-naik-kementerian-pkp-pastikan-bunga-flpp-tetap-5-persen-hingga-akhir-tenor",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-01",
+      "note": {
+        "id": "5% efektif — bukan flat. Angka ini bersumber dari pernyataan resmi kementerian, bukan dari pasal peraturan yang sudah ditelusuri sampai ke ayatnya; dasar hukum operasionalnya ada pada perjanjian penyaluran FLPP. Diberi tanggal tinjau tahunan karena bersifat kebijakan.",
+        "en": "5% effective, not flat. This figure comes from an official ministry statement rather than from an article of a regulation traced to its clause; the operating instrument is the FLPP disbursement agreement. Given an annual review date because it is a policy figure."
+      }
+    }
+  ]
+}

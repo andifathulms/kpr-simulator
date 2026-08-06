@@ -1,0 +1,219 @@
+{
+  "pack": "flpp",
+  "title": {
+    "id": "Batas penghasilan MBR — Permen PKP 5/2025",
+    "en": "MBR income ceilings — Permen PKP 5/2025"
+  },
+  "parameters": [
+    {
+      "id": "flpp.penghasilan.ceiling.zona.satu.tidak.kawin",
+      "label": {
+        "id": "Zona 1 — penghasilan paling banyak, tidak kawin",
+        "en": "Zone 1 — maximum income, unmarried"
+      },
+      "value": { "kind": "money", "amount": 8500000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 1 (Jawa kecuali Jabodetabek, Sumatera, NTT, NTB)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04",
+      "note": {
+        "id": "Penghasilan orang perseorangan yang tidak kawin adalah seluruh pendapatan bersih dari gaji, upah, dan/atau hasil usaha sendiri (Pasal 5 ayat 4).",
+        "en": "For an unmarried applicant this is all net income from salary, wages, and/or own business (Article 5(4))."
+      }
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.satu.kawin",
+      "label": {
+        "id": "Zona 1 — penghasilan paling banyak, kawin",
+        "en": "Zone 1 — maximum income, married"
+      },
+      "value": { "kind": "money", "amount": 10000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 1 (Jawa kecuali Jabodetabek, Sumatera, NTT, NTB)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04",
+      "note": {
+        "id": "Untuk yang kawin, penghasilan dihitung gabungan suami istri (Pasal 5 ayat 5).",
+        "en": "For a married applicant, income is the combined income of both spouses (Article 5(5))."
+      }
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.satu.tapera",
+      "label": {
+        "id": "Zona 1 — penghasilan paling banyak, peserta Tapera",
+        "en": "Zone 1 — maximum income, Tapera participant"
+      },
+      "value": { "kind": "money", "amount": 10000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 1, kolom satu orang untuk peserta Tapera",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04",
+      "note": {
+        "id": "Untuk mekanisme tabungan perumahan rakyat, besaran penghasilan ditentukan hanya berdasarkan penghasilan 1 orang (Pasal 5 ayat 6).",
+        "en": "Under the Tapera mechanism the ceiling is assessed on one person's income only (Article 5(6))."
+      }
+    },
+
+    {
+      "id": "flpp.penghasilan.ceiling.zona.dua.tidak.kawin",
+      "label": {
+        "id": "Zona 2 — penghasilan paling banyak, tidak kawin",
+        "en": "Zone 2 — maximum income, unmarried"
+      },
+      "value": { "kind": "money", "amount": 9000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 2 (Kalimantan, Sulawesi, Kep. Bangka Belitung, Kep. Riau, Maluku, Maluku Utara, Bali)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.dua.kawin",
+      "label": {
+        "id": "Zona 2 — penghasilan paling banyak, kawin",
+        "en": "Zone 2 — maximum income, married"
+      },
+      "value": { "kind": "money", "amount": 11000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 2 (Kalimantan, Sulawesi, Kep. Bangka Belitung, Kep. Riau, Maluku, Maluku Utara, Bali)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.dua.tapera",
+      "label": {
+        "id": "Zona 2 — penghasilan paling banyak, peserta Tapera",
+        "en": "Zone 2 — maximum income, Tapera participant"
+      },
+      "value": { "kind": "money", "amount": 11000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 2, kolom satu orang untuk peserta Tapera",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+
+    {
+      "id": "flpp.penghasilan.ceiling.zona.tiga.tidak.kawin",
+      "label": {
+        "id": "Zona 3 — penghasilan paling banyak, tidak kawin",
+        "en": "Zone 3 — maximum income, unmarried"
+      },
+      "value": { "kind": "money", "amount": 10500000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 3 (Papua, Papua Barat, Papua Tengah, Papua Selatan, Papua Pegunungan, Papua Barat Daya)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.tiga.kawin",
+      "label": {
+        "id": "Zona 3 — penghasilan paling banyak, kawin",
+        "en": "Zone 3 — maximum income, married"
+      },
+      "value": { "kind": "money", "amount": 12000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 3 (Papua, Papua Barat, Papua Tengah, Papua Selatan, Papua Pegunungan, Papua Barat Daya)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.tiga.tapera",
+      "label": {
+        "id": "Zona 3 — penghasilan paling banyak, peserta Tapera",
+        "en": "Zone 3 — maximum income, Tapera participant"
+      },
+      "value": { "kind": "money", "amount": 12000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 3, kolom satu orang untuk peserta Tapera",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+
+    {
+      "id": "flpp.penghasilan.ceiling.zona.empat.tidak.kawin",
+      "label": {
+        "id": "Zona 4 — penghasilan paling banyak, tidak kawin",
+        "en": "Zone 4 — maximum income, unmarried"
+      },
+      "value": { "kind": "money", "amount": 12000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 4 (Jakarta, Bogor, Depok, Tangerang, Bekasi)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.empat.kawin",
+      "label": {
+        "id": "Zona 4 — penghasilan paling banyak, kawin",
+        "en": "Zone 4 — maximum income, married"
+      },
+      "value": { "kind": "money", "amount": 14000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 4 (Jakarta, Bogor, Depok, Tangerang, Bekasi)",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+    {
+      "id": "flpp.penghasilan.ceiling.zona.empat.tapera",
+      "label": {
+        "id": "Zona 4 — penghasilan paling banyak, peserta Tapera",
+        "en": "Zone 4 — maximum income, Tapera participant"
+      },
+      "value": { "kind": "money", "amount": 14000000 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Lampiran Permen PKP 5/2025 — Zona 4, kolom satu orang untuk peserta Tapera",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2027-04"
+    },
+
+    {
+      "id": "flpp.luas.lantai.max.rumah.umum",
+      "label": {
+        "id": "Batasan luas lantai rumah umum",
+        "en": "Maximum floor area, rumah umum"
+      },
+      "value": { "kind": "area", "squareMetres": 36 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Permen PKP 5/2025 Pasal 3 ayat (5) huruf a",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06"
+    },
+    {
+      "id": "flpp.luas.lantai.max.rumah.swadaya",
+      "label": {
+        "id": "Batasan luas lantai rumah swadaya",
+        "en": "Maximum floor area, rumah swadaya"
+      },
+      "value": { "kind": "area", "squareMetres": 48 },
+      "effectiveFrom": "2025-04",
+      "effectiveTo": null,
+      "basis": "Permen PKP 5/2025 Pasal 3 ayat (5) huruf b",
+      "sourceUrl": "https://my.pkp.go.id/infohukum/Salinan%20Permen%20PKP%20Nomor%205%20Tahun%202025%20tentang%20Kriteria%20MBR_signed.pdf",
+      "verifiedAt": "2026-08-06"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "pack": "pajak",
+  "title": {
+    "id": "Pajak dan pungutan atas perolehan hak",
+    "en": "Taxes on the acquisition of rights"
+  },
+  "parameters": [
+    {
+      "id": "pajak.bphtb.rate.max",
+      "label": {
+        "id": "Tarif BPHTB paling tinggi",
+        "en": "Maximum BPHTB rate"
+      },
+      "value": { "kind": "rate", "decimal": 0.05 },
+      "effectiveFrom": "2022-01",
+      "effectiveTo": null,
+      "basis": "UU 1/2022 tentang Hubungan Keuangan antara Pemerintah Pusat dan Pemerintahan Daerah, Pasal 47",
+      "sourceUrl": "https://peraturan.bpk.go.id/Details/195696/uu-no-1-tahun-2022",
+      "verifiedAt": "2026-08-06",
+      "note": {
+        "id": "Undang-undang menetapkan tarif paling tinggi 5%. Tarif yang berlaku ditetapkan masing-masing daerah dengan peraturan daerah dan bisa lebih rendah — periksa perda kabupaten/kota Anda.",
+        "en": "The statute sets a maximum of 5%. The rate actually applied is set by each region's own by-law and may be lower — check your kabupaten/kota's perda."
+      }
+    },
+    {
+      "id": "pajak.bphtb.npoptkp.min",
+      "label": {
+        "id": "NPOPTKP paling rendah — perolehan pertama",
+        "en": "Minimum NPOPTKP — first acquisition"
+      },
+      "value": { "kind": "money", "amount": 80000000 },
+      "effectiveFrom": "2022-01",
+      "effectiveTo": null,
+      "basis": "UU 1/2022 Pasal 46 — nilai perolehan objek pajak tidak kena pajak paling rendah",
+      "sourceUrl": "https://peraturan.bpk.go.id/Details/195696/uu-no-1-tahun-2022",
+      "verifiedAt": "2026-08-06",
+      "note": {
+        "id": "Ini adalah batas bawah nasional. Tiap kabupaten/kota boleh menetapkan NPOPTKP lebih tinggi, dan banyak yang melakukannya — ratusan nilai berbeda yang direvisi secara lokal. Aplikasi ini memakai batas bawah undang-undang dan menyediakan isian manual; selisihnya bisa besar.",
+        "en": "This is the national floor. Each kabupaten/kota may set a higher NPOPTKP and many do — hundreds of locally revised values. The app uses the statutory floor and offers a manual override; the difference can be large."
+      }
+    },
+    {
+      "id": "pajak.bphtb.npoptkp.min.waris",
+      "label": {
+        "id": "NPOPTKP paling rendah — waris atau hibah wasiat",
+        "en": "Minimum NPOPTKP — inheritance or bequest"
+      },
+      "value": { "kind": "money", "amount": 300000000 },
+      "effectiveFrom": "2022-01",
+      "effectiveTo": null,
+      "basis": "UU 1/2022 Pasal 46 — perolehan hak karena waris atau hibah wasiat dalam hubungan keluarga sedarah garis lurus satu derajat",
+      "sourceUrl": "https://peraturan.bpk.go.id/Details/195696/uu-no-1-tahun-2022",
+      "verifiedAt": "2026-08-06"
+    },
+    {
+      "id": "pajak.pph.pengalihan.rate",
+      "label": {
+        "id": "PPh final pengalihan hak atas tanah dan/atau bangunan",
+        "en": "Final income tax on transfer of land and/or buildings"
+      },
+      "value": { "kind": "rate", "decimal": 0.025 },
+      "effectiveFrom": "2016-09",
+      "effectiveTo": null,
+      "basis": "PP 34/2016 Pasal 2 ayat (1) huruf a — 2,5% dari jumlah bruto nilai pengalihan",
+      "sourceUrl": "https://peraturan.bpk.go.id/Details/5648/pp-no-34-tahun-2016",
+      "verifiedAt": "2026-08-06",
+      "note": {
+        "id": "Ditanggung penjual, bukan pembeli, dan dibayar sebelum akta jual beli ditandatangani. Dimuat di sini karena kerap dinegosiasikan menjadi beban pembeli.",
+        "en": "Borne by the seller, not the buyer, and paid before the deed is signed. Carried here because it is often negotiated onto the buyer."
+      }
+    }
+  ]
+}

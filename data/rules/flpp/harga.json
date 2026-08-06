@@ -1,0 +1,133 @@
+{
+  "pack": "flpp",
+  "title": {
+    "id": "Batasan harga jual rumah umum tapak — Kepmen PUPR 689/KPTS/M/2023",
+    "en": "Sale price ceilings, rumah umum tapak — Kepmen PUPR 689/KPTS/M/2023"
+  },
+  "parameters": [
+    {
+      "id": "flpp.harga.ceiling.jawa.sumatera",
+      "label": {
+        "id": "Jawa (kecuali Jabodetabek) dan Sumatera (kecuali Kep. Riau, Bangka Belitung, Kep. Mentawai)",
+        "en": "Java (excluding Jabodetabek) and Sumatra (excluding Riau Is., Bangka Belitung, Mentawai Is.)"
+      },
+      "value": { "kind": "money", "amount": 162000000 },
+      "effectiveFrom": "2023-06",
+      "effectiveTo": "2023-12",
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2023",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06"
+    },
+    {
+      "id": "flpp.harga.ceiling.jawa.sumatera",
+      "label": {
+        "id": "Jawa (kecuali Jabodetabek) dan Sumatera (kecuali Kep. Riau, Bangka Belitung, Kep. Mentawai)",
+        "en": "Java (excluding Jabodetabek) and Sumatra (excluding Riau Is., Bangka Belitung, Mentawai Is.)"
+      },
+      "value": { "kind": "money", "amount": 166000000 },
+      "effectiveFrom": "2024-01",
+      "effectiveTo": null,
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2024",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2026-09",
+      "note": {
+        "id": "Kepmen ini menetapkan tabel untuk tahun 2023 dan 2024. Tidak ditemukan tabel pengganti untuk tahun sesudahnya, sehingga nilai 2024 masih dipakai. Periksa ulang sebelum dipakai untuk keputusan.",
+        "en": "The decision sets tables for 2023 and 2024. No replacement table for later years was found, so the 2024 figure still stands. Re-check before relying on it."
+      }
+    },
+
+    {
+      "id": "flpp.harga.ceiling.kalimantan",
+      "label": {
+        "id": "Kalimantan (kecuali Kab. Murung Raya dan Kab. Mahakam Ulu)",
+        "en": "Kalimantan (excluding Murung Raya and Mahakam Ulu regencies)"
+      },
+      "value": { "kind": "money", "amount": 177000000 },
+      "effectiveFrom": "2023-06",
+      "effectiveTo": "2023-12",
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2023",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06"
+    },
+    {
+      "id": "flpp.harga.ceiling.kalimantan",
+      "label": {
+        "id": "Kalimantan (kecuali Kab. Murung Raya dan Kab. Mahakam Ulu)",
+        "en": "Kalimantan (excluding Murung Raya and Mahakam Ulu regencies)"
+      },
+      "value": { "kind": "money", "amount": 182000000 },
+      "effectiveFrom": "2024-01",
+      "effectiveTo": null,
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2024",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2026-09"
+    },
+
+    {
+      "id": "flpp.harga.ceiling.sulawesi.kepulauan",
+      "label": {
+        "id": "Sulawesi, Bangka Belitung, Kep. Mentawai, dan Kep. Riau (kecuali Kep. Anambas)",
+        "en": "Sulawesi, Bangka Belitung, Mentawai Is., and Riau Is. (excluding Anambas Is.)"
+      },
+      "value": { "kind": "money", "amount": 168000000 },
+      "effectiveFrom": "2023-06",
+      "effectiveTo": "2023-12",
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2023",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06"
+    },
+    {
+      "id": "flpp.harga.ceiling.sulawesi.kepulauan",
+      "label": {
+        "id": "Sulawesi, Bangka Belitung, Kep. Mentawai, dan Kep. Riau (kecuali Kep. Anambas)",
+        "en": "Sulawesi, Bangka Belitung, Mentawai Is., and Riau Is. (excluding Anambas Is.)"
+      },
+      "value": { "kind": "money", "amount": 173000000 },
+      "effectiveFrom": "2024-01",
+      "effectiveTo": null,
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2024",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2026-09"
+    },
+
+    {
+      "id": "flpp.harga.ceiling.maluku.balinusra.jabodetabek",
+      "label": {
+        "id": "Maluku, Maluku Utara, Bali, Nusa Tenggara, Jabodetabek, Kep. Anambas, Kab. Murung Raya, Kab. Mahakam Ulu",
+        "en": "Maluku, North Maluku, Bali, Nusa Tenggara, Jabodetabek, Anambas Is., Murung Raya, Mahakam Ulu"
+      },
+      "value": { "kind": "money", "amount": 185000000 },
+      "effectiveFrom": "2024-01",
+      "effectiveTo": null,
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2024",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2026-09",
+      "note": {
+        "id": "Nilai tahun 2023 untuk zona ini belum diverifikasi terhadap salinan resmi, sehingga hanya tabel 2024 yang dimuat. Perhitungan untuk periode 2023 akan ditolak, bukan diperkirakan.",
+        "en": "The 2023 figure for this zone has not been verified against the official copy, so only the 2024 table is carried. A calculation for a 2023 period will be refused rather than estimated."
+      }
+    },
+    {
+      "id": "flpp.harga.ceiling.papua",
+      "label": {
+        "id": "Papua, Papua Barat, Papua Tengah, Papua Selatan, Papua Pegunungan, Papua Barat Daya",
+        "en": "Papua, West Papua, Central Papua, South Papua, Highland Papua, Southwest Papua"
+      },
+      "value": { "kind": "money", "amount": 240000000 },
+      "effectiveFrom": "2024-01",
+      "effectiveTo": null,
+      "basis": "Kepmen PUPR 689/KPTS/M/2023 — batasan harga jual tahun 2024",
+      "sourceUrl": "https://jdih.pu.go.id/detail-dokumen/KepmenPUPR-nomor-689-tahun-2023-Batasan-Luas-Tanah-Luas-Lantai-Dan-Batasan-Harga-Jual-Rumah-Umum-Tapak-Dalam-Pelaksanaan-KreditPembiayaan-Perumahan-Fasilitas-Likuiditas-Pembiayaan-Perumahan-Serta-Besaran-Subsidi-Bantuan-Uang-Muka-Perumahan",
+      "verifiedAt": "2026-08-06",
+      "expectedReview": "2026-09",
+      "note": {
+        "id": "Nilai tahun 2023 untuk zona ini belum diverifikasi terhadap salinan resmi, sehingga hanya tabel 2024 yang dimuat.",
+        "en": "The 2023 figure for this zone has not been verified against the official copy, so only the 2024 table is carried."
+      }
+    }
+  ]
+}
