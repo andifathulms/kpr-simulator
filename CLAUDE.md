@@ -61,6 +61,9 @@ components/
   band/                     # floating-rate uncertainty band
   table/                    # amortisation table
   dimension/                # fixed-period boundary marker
+  ui/                       # PageHeader, Panel, StatCard, FieldGroup,
+                            # Legend, Glossary — the shared shell. Reserved
+                            # colours are applied here and nowhere else.
 lib/
   money/                    # integer rupiah, named rounding ops
   period/                   # { year, month } arithmetic
