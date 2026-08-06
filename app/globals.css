@@ -38,6 +38,87 @@ body {
   outline-offset: 2px;
 }
 
+/*
+ * Print. The amortisation table is the artefact someone takes to a bank
+ * meeting, so it has to survive being printed: white ground, black line work,
+ * every row present, and no navigation.
+ *
+ * The framing statements print too. A sheet of figures that has lost the
+ * sentence saying the floating rate is an assumption is a sheet of figures
+ * that lies, and it is the printed copy that gets handed across a desk.
+ */
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  /* The interface is white line work on Prussian blue. On paper that has to
+     invert wholesale, so everything goes black on white first... */
+  *,
+  *::before,
+  *::after {
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    color: #000 !important;
+    border-color: #767676 !important;
+  }
+
+  /* ...and then the two colours that carry meaning are put back, darkened
+     enough to hold their contrast against paper. A class beats the universal
+     selector, so these win. */
+  .text-unknown,
+  .text-unknown *,
+  .border-unknown {
+    color: #7a5410 !important;
+    border-color: #7a5410 !important;
+  }
+
+  .text-threshold,
+  .text-threshold *,
+  .border-threshold {
+    color: #8f2f24 !important;
+    border-color: #8f2f24 !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+
+  /*
+   * Colour alone never carries the distinction, in print or on screen: every
+   * amber element also states in words that it is an assumption, and every
+   * threshold element names the limit it crosses. That is what makes a
+   * greyscale print of this page still honest.
+   */
+
+  table {
+    page-break-inside: auto;
+    border-color: #000 !important;
+  }
+
+  thead {
+    display: table-header-group; /* repeat the header on every printed page */
+  }
+
+  tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  a[href^='http']::after {
+    content: ' [' attr(href) ']';
+    font-size: 0.7em;
+    word-break: break-all;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

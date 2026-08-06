@@ -18,7 +18,7 @@ export function Chrome({
 
   return (
     <div className="min-h-screen bg-blueprint text-print">
-      <header className="border-b border-annotation/25">
+      <header className="print-hidden border-b border-annotation/25">
         <div className="mx-auto flex max-w-6xl flex-wrap items-baseline gap-x-6 gap-y-3 px-6 py-5">
           <Link href={`/${locale}`} className="sheet-label text-lg text-print">
             {t.common.appName}
@@ -64,7 +64,7 @@ export function Chrome({
 export function Framing({ locale }: { locale: Locale }) {
   const t = dictionary(locale)
   return (
-    <footer className="mt-16 border-t border-annotation/25 bg-recess">
+    <footer className="mt-16 border-t border-annotation/25 bg-recess print:mt-8 print:border-t print:pt-4">
       <div className="mx-auto grid max-w-6xl gap-6 px-6 py-10 sm:grid-cols-2">
         <div className="space-y-2 text-sm text-print/85">
           <p className="sheet-label text-xs text-annotation">{t.common.appName}</p>

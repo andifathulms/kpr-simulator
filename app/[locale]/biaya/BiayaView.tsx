@@ -8,6 +8,7 @@ import { RULES, COVERAGE_GAPS } from '@/lib/rules/registry'
 import { computeOwnershipCost } from '@/lib/biaya/ownership'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
+import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField } from '@/components/field/Field'
 import { RefusalNotice, UnknownNotice } from '@/components/notice/Notice'
 
@@ -63,7 +64,10 @@ export function BiayaView({ locale }: { locale: Locale }) {
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
-        <form className="space-y-4" onSubmit={(event) => event.preventDefault()}>
+        <form
+          className="print-hidden space-y-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
           <MoneyField
             label="NPOPTKP"
@@ -114,6 +118,7 @@ export function BiayaView({ locale }: { locale: Locale }) {
         </form>
 
         <div className="space-y-8">
+          <ShareBar locale={locale} />
           {report.type === 'unsupported' ? (
             <RefusalNotice outcome={report} locale={locale} />
           ) : (

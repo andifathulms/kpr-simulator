@@ -8,6 +8,7 @@ import { buildSchedule } from '@/lib/amortise/schedule'
 import { solveThreshold } from '@/lib/rate/threshold'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
+import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField, RateField } from '@/components/field/Field'
 import { ThresholdNotice, UnknownNotice } from '@/components/notice/Notice'
 import { ScheduleElevation } from '@/components/elevation/ScheduleElevation'
@@ -149,7 +150,10 @@ export function AmbangView({ locale }: { locale: Locale }) {
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
-        <form className="space-y-4" onSubmit={(event) => event.preventDefault()}>
+        <form
+          className="print-hidden space-y-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <MoneyField
             label={t.form.plafon}
             value={state.plafon}
@@ -217,6 +221,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
         </form>
 
         <div className="space-y-8">
+          <ShareBar locale={locale} />
           {!ready && (
             <UnknownNotice title={id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}>
               {id

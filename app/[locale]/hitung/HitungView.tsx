@@ -11,6 +11,7 @@ import { effectiveFromFlat } from '@/lib/rate/effective'
 import { buildBand } from '@/lib/scenario/band'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
+import { ShareBar } from '@/components/share/ShareBar'
 import { ScheduleElevation } from '@/components/elevation/ScheduleElevation'
 import { AmortisationTable } from '@/components/table/AmortisationTable'
 import { TraceView } from '@/components/trace/TraceView'
@@ -220,7 +221,10 @@ export function HitungView({ locale }: { locale: Locale }) {
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
-        <form className="space-y-4" onSubmit={(event) => event.preventDefault()}>
+        <form
+          className="print-hidden space-y-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <MoneyField
             label={t.form.harga}
             value={state.harga}
@@ -321,6 +325,7 @@ export function HitungView({ locale }: { locale: Locale }) {
         </form>
 
         <div className="space-y-8">
+          <ShareBar locale={locale} />
           {!ready && (
             <UnknownNotice title={id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}>
               {id

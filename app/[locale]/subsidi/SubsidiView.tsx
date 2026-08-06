@@ -10,6 +10,7 @@ import { resolveRate } from '@/lib/rules/resolver'
 import { checkEligibility, type HargaWilayah, type Status, type Zona } from '@/lib/rules/flpp'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
+import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField, SelectField } from '@/components/field/Field'
 import { RefusalNotice, UnknownNotice } from '@/components/notice/Notice'
 import { ScheduleElevation } from '@/components/elevation/ScheduleElevation'
@@ -110,7 +111,10 @@ export function SubsidiView({ locale }: { locale: Locale }) {
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
-        <form className="space-y-4" onSubmit={(event) => event.preventDefault()}>
+        <form
+          className="print-hidden space-y-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <SelectField
             label={id ? 'Zona penghasilan' : 'Income zone'}
             value={zona}
@@ -185,6 +189,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
         </form>
 
         <div className="space-y-8">
+          <ShareBar locale={locale} />
           <section className="space-y-3">
             <h2 className="sheet-label text-sm text-annotation">
               {id ? 'Pemeriksaan kriteria' : 'Criteria check'}
