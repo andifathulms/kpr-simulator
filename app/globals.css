@@ -12,11 +12,21 @@
 html {
   background-color: theme('colors.blueprint');
   color: theme('colors.print');
+  /* The header is sticky, so an in-page anchor must not land under it. */
+  scroll-padding-top: 5.5rem;
 }
 
 body {
   font-family: var(--font-prose);
+  font-size: 1.0625rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: theme('colors.annotation');
+  color: theme('colors.recess');
 }
 
 /* Every rupiah amount, rate, and period. Without exception (CLAUDE.md). */
@@ -24,6 +34,7 @@ body {
   font-family: var(--font-figure);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.01em;
 }
 
 /* Drawing-sheet lettering for headings and labels. */
@@ -31,11 +42,50 @@ body {
   font-family: var(--font-sheet);
   text-transform: uppercase;
   letter-spacing: 0.14em;
+  font-weight: 500;
+}
+
+/*
+ * Titles are drawing-sheet lettering too, but set in sentence case rather than
+ * uppercase: a whole heading in tracked capitals is slow to read, and these
+ * pages are being read by someone working out what a word like *plafon* means.
+ */
+.sheet-title {
+  font-family: var(--font-sheet);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
+}
+
+/* Prose is limited to a comfortable measure wherever it appears. */
+.measure {
+  max-width: theme('maxWidth.measure');
 }
 
 *:focus-visible {
   outline: 2px solid theme('colors.annotation');
   outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* Hairlines in the register of a drawing sheet: one weight, one colour. */
+.sheet-panel {
+  border: 1px solid rgb(127 178 204 / 0.25);
+  background-color: theme('colors.recess');
+}
+
+.sheet-panel-hover {
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+@media (hover: hover) {
+  .sheet-panel-hover:hover {
+    border-color: rgb(127 178 204 / 0.75);
+    background-color: theme('colors.raised');
+  }
 }
 
 /*
