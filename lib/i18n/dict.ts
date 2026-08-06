@@ -6,7 +6,7 @@ import type { Locale } from './locales'
  * stated in the same plain voice as everything else.
  */
 export interface Dictionary {
-  readonly nav: Record<'hitung' | 'ambang' | 'subsidi' | 'biaya' | 'parameter', string>
+  readonly nav: Record<'hitung' | 'ambang' | 'subsidi' | 'banding' | 'biaya' | 'parameter', string>
   readonly common: Record<
     | 'appName'
     | 'tagline'
@@ -70,6 +70,7 @@ const id: Dictionary = {
     hitung: 'Hitung',
     ambang: 'Ambang',
     subsidi: 'Subsidi',
+    banding: 'Banding',
     biaya: 'Biaya',
     parameter: 'Parameter',
   },
@@ -138,6 +139,7 @@ const en: Dictionary = {
     hitung: 'Calculate',
     ambang: 'Threshold',
     subsidi: 'Subsidised',
+    banding: 'Side by side',
     biaya: 'Costs',
     parameter: 'Parameters',
   },

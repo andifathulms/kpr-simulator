@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { dictionary } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
 
-const ROUTES = ['hitung', 'ambang', 'subsidi', 'biaya', 'parameter'] as const
+const ROUTES = ['hitung', 'ambang', 'subsidi', 'banding', 'biaya', 'parameter'] as const
 
 export function Chrome({
   locale,

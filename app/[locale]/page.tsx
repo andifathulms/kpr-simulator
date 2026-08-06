@@ -62,6 +62,15 @@ export default function Home({ params }: { params: { locale: string } }) {
             }
           />
           <Card
+            href={`/${locale}/banding`}
+            title={t.nav.banding}
+            body={
+              id
+                ? 'Satu profil, kedua jalur berdampingan — dan seberapa pasti masing-masing angka.'
+                : 'One profile, both paths side by side — and how certain each figure actually is.'
+            }
+          />
+          <Card
             href={`/${locale}/biaya`}
             title={t.nav.biaya}
             body={
