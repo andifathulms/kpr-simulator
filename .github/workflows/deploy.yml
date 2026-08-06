@@ -1,4 +1,4 @@
-name: build and deploy
+name: build and verify
 
 on:
   push:
@@ -44,13 +44,28 @@ jobs:
           test -f out/.nojekyll || { echo "out/.nojekyll missing"; exit 1; }
           test -f out/kpr-simulator/id/index.html || test -f out/id/index.html
       - uses: actions/upload-pages-artifact@v3
-        if: github.ref == 'refs/heads/main'
         with:
           path: out
 
+  # Pages deployment is manual, not automatic.
+  #
+  # actions/deploy-pages has never completed on this account: the deployment
+  # API is accepted and then never progresses, and the step times out after
+  # ten minutes. Pages is configured correctly — build_type is workflow, the
+  # repository is public, the artifact uploads fine — so the fault is not in
+  # this workflow, and leaving it on `push` would mark every future commit
+  # red for a reason unrelated to the commit.
+  #
+  # `verify` still gates every push, and it is the job that matters: rule
+  # validation, types, lint, 1614 tests, and a build whose export is checked
+  # for the two files Pages needs. The artifact it uploads can be downloaded
+  # from the run, or served anywhere static.
+  #
+  # To retry a deploy, run this workflow manually from the Actions tab. When
+  # Pages starts working, restore `push` to the `if` below.
   deploy:
     needs: verify
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
