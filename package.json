@@ -5,7 +5,7 @@
   "description": "KPR Simulator — a KPR calculator built around the floating-rate period.",
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm rules:validate && next build && touch out/.nojekyll",
+    "build": "pnpm rules:validate && next build && node scripts/finalise-export.mjs",
     "preview": "node scripts/preview.mjs",
     "test": "vitest",
     "test:run": "vitest run",

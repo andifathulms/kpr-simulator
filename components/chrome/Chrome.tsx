@@ -48,7 +48,9 @@ export function Chrome({
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
+      <main id="isi" className="mx-auto max-w-6xl px-6 py-10">
+        {children}
+      </main>
 
       <Framing locale={locale} />
     </div>

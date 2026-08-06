@@ -3,16 +3,11 @@
 @tailwind utilities;
 
 /*
- * Fonts are self-hosted rather than fetched, because the site must work fully
- * offline after first load and must make no runtime network request.
- * Until the woff2 files are vendored the stacks fall back to system faces of
- * the same register; the semantic roles are what the components depend on.
+ * --font-sheet, --font-prose, and --font-figure are supplied by next/font in
+ * the root layout, which self-hosts the woff2 files into the export. Nothing
+ * here declares them, so there is no specificity race between this file and
+ * the injected font styles.
  */
-:root {
-  --font-sheet: 'Barlow Condensed', 'Oswald', 'Arial Narrow', sans-serif;
-  --font-prose: 'Barlow', 'Inter', system-ui, sans-serif;
-  --font-figure: 'Roboto Mono', ui-monospace, 'SF Mono', monospace;
-}
 
 html {
   background-color: theme('colors.blueprint');
