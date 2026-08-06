@@ -9,6 +9,8 @@ import { RULES } from '@/lib/rules/registry'
 import { resolveRate } from '@/lib/rules/resolver'
 import { checkEligibility, type HargaWilayah, type Status, type Zona } from '@/lib/rules/flpp'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { StatCard } from '@/components/ui/StatCard'
 import type { Locale } from '@/lib/i18n/locales'
 import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField, SelectField } from '@/components/field/Field'
@@ -101,18 +103,23 @@ export function SubsidiView({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-10">
-      <header className="max-w-3xl">
-        <h1 className="sheet-label text-2xl">{t.nav.subsidi}</h1>
-        <p className="mt-2 text-print/80">
-          {id
+      <PageHeader
+        eyebrow={t.nav.subsidi}
+        title={
+          id
+            ? 'Apakah saya memenuhi syarat FLPP — dan berapa angsurannya?'
+            : 'Do I qualify for FLPP — and what would the instalment be?'
+        }
+        lede={
+          id
             ? 'FLPP bersuku bunga tetap sampai akhir tenor, jadi jalur ini terhitung persis: tidak ada periode mengambang dan tidak ada satu pun angka kuning di jadwalnya. Perbandingan dengan jalur komersial adalah inti dari aplikasi ini.'
-            : 'FLPP is fixed to the end of the term, so this path computes exactly: no floating period and nothing amber in its schedule at all. The contrast with the commercial path is the point of this tool.'}
-        </p>
-      </header>
+            : 'FLPP is fixed to the end of the term, so this path computes exactly: no floating period and nothing amber in its schedule at all. The contrast with the commercial path is the point of this tool.'
+        }
+      />
 
-      <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
         <form
-          className="print-hidden space-y-4"
+          className="print-hidden space-y-4 lg:sticky lg:top-36 lg:self-start"
           onSubmit={(event) => event.preventDefault()}
         >
           <SelectField
@@ -276,15 +283,15 @@ export function SubsidiView({ locale }: { locale: Locale }) {
             {schedule ? (
               <>
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <Figure
+                  <StatCard
                     label={t.table.angsuran}
                     value={formatRupiah(schedule.instalments[0]?.payment ?? rupiah(0), intl)}
                   />
-                  <Figure
+                  <StatCard
                     label={t.table.totalBunga}
                     value={formatRupiah(schedule.totalInterest, intl)}
                   />
-                  <Figure
+                  <StatCard
                     label={t.table.totalDibayar}
                     value={formatRupiah(schedule.totalPaid, intl)}
                   />
@@ -302,15 +309,6 @@ export function SubsidiView({ locale }: { locale: Locale }) {
           </section>
         </div>
       </div>
-    </div>
-  )
-}
-
-function Figure({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border border-annotation/25 bg-recess px-4 py-3">
-      <p className="sheet-label text-xs text-annotation">{label}</p>
-      <p className="figure mt-1 text-xl">{value}</p>
     </div>
   )
 }

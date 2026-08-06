@@ -7,6 +7,7 @@ import { period } from '@/lib/period/period'
 import { RULES, COVERAGE_GAPS } from '@/lib/rules/registry'
 import { computeOwnershipCost } from '@/lib/biaya/ownership'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
+import { PageHeader } from '@/components/ui/PageHeader'
 import type { Locale } from '@/lib/i18n/locales'
 import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField } from '@/components/field/Field'
@@ -54,18 +55,23 @@ export function BiayaView({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-10">
-      <header className="max-w-3xl">
-        <h1 className="sheet-label text-2xl">{t.nav.biaya}</h1>
-        <p className="mt-2 text-print/80">
-          {id
-            ? 'Biaya di luar pinjaman. Yang diatur peraturan dikutip sumbernya; yang ditetapkan bank atau notaris adalah angka Anda sendiri dan ditandai kuning.'
-            : 'The costs beyond the loan. Regulated items carry their source; items a bank or notary sets are your own figures and are marked amber.'}
-        </p>
-      </header>
+      <PageHeader
+        eyebrow={t.nav.biaya}
+        title={
+          id
+            ? 'Berapa yang harus saya siapkan di luar cicilan?'
+            : 'What do I need to find, beyond the monthly instalment?'
+        }
+        lede={
+          id
+            ? 'Biaya di luar pinjaman: pajak, notaris, dan biaya bank. Yang diatur peraturan dikutip sumbernya; yang ditetapkan bank atau notaris adalah angka Anda sendiri dan ditandai kuning.'
+            : 'The costs beyond the loan: taxes, notary, and bank fees. Regulated items carry their source; items a bank or notary sets are your own figures and are marked amber.'
+        }
+      />
 
-      <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
         <form
-          className="print-hidden space-y-4"
+          className="print-hidden space-y-4 lg:sticky lg:top-36 lg:self-start"
           onSubmit={(event) => event.preventDefault()}
         >
           <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />

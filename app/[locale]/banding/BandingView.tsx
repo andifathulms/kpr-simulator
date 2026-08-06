@@ -10,6 +10,7 @@ import { RULES } from '@/lib/rules/registry'
 import { resolveRate } from '@/lib/rules/resolver'
 import { checkEligibility, type HargaWilayah, type Status, type Zona } from '@/lib/rules/flpp'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
+import { PageHeader } from '@/components/ui/PageHeader'
 import type { Locale } from '@/lib/i18n/locales'
 import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField, RateField, SelectField } from '@/components/field/Field'
@@ -129,17 +130,25 @@ export function BandingView({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-10">
-      <header className="max-w-3xl">
-        <h1 className="sheet-label text-2xl">{t.nav.banding}</h1>
-        <p className="mt-2 text-print/80">
-          {id
+      <PageHeader
+        eyebrow={t.nav.banding}
+        title={
+          id
+            ? 'Subsidi atau komersial — apa bedanya untuk profil saya?'
+            : 'Subsidised or commercial — what differs for my profile?'
+        }
+        lede={
+          id
             ? 'Satu profil, dua jalur, berdampingan. Yang dibandingkan adalah dua jenis produk, bukan dua bank, dan tidak ada yang diunggulkan. Yang paling berguna di halaman ini bukan selisihnya, melainkan perbedaan seberapa pasti masing-masing angka.'
-            : 'One profile, both paths, side by side. This compares two kinds of product, not two banks, and favours neither. The useful thing here is not the difference between the totals — it is the difference in how certain each of them is.'}
-        </p>
-      </header>
+            : 'One profile, both paths, side by side. This compares two kinds of product, not two banks, and favours neither. The useful thing here is not the difference between the totals — it is the difference in how certain each of them is.'
+        }
+      />
 
-      <div className="grid gap-8 lg:grid-cols-[22rem_1fr]">
-        <form className="print-hidden space-y-4" onSubmit={(event) => event.preventDefault()}>
+      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
+        <form
+          className="print-hidden space-y-4 lg:sticky lg:top-36 lg:self-start"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
           <MoneyField label={t.form.uangMuka} value={uangMuka} onChange={setUangMuka} />
           <MoneyField label={t.form.penghasilan} value={penghasilan} onChange={setPenghasilan} />

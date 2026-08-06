@@ -3,6 +3,7 @@ import { Chrome } from '@/components/chrome/Chrome'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n/locales'
 import { COVERAGE_GAPS, PACKS } from '@/lib/rules/registry'
 import { dictionary } from '@/lib/i18n/dict'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 export function generateStaticParams(): { locale: Locale }[] {
   return LOCALES.map((locale) => ({ locale }))
@@ -25,14 +26,15 @@ export default function ParameterPage({ params }: { params: { locale: string } }
   return (
     <Chrome locale={locale} active="parameter">
       <div className="space-y-12">
-        <header className="max-w-3xl">
-          <h1 className="sheet-label text-2xl">{t.nav.parameter}</h1>
-          <p className="mt-2 text-print/80">
-            {id
+        <PageHeader
+          eyebrow={t.nav.parameter}
+          title={id ? 'Dari mana angka-angka ini berasal?' : 'Where do these numbers come from?'}
+          lede={
+            id
               ? 'Tidak ada satu pun nilai peraturan yang ditulis di dalam kode. Semuanya ada di paket aturan bersama dasar hukum, tautan sumber, periode berlaku, dan tanggal verifikasinya — dan build ditolak bila ada parameter tanpa sitasi.'
-              : 'No regulatory value is written into the application code. Every one lives in a rule pack with its legal basis, source link, effective period, and verification date — and the build is rejected if any parameter lacks a citation.'}
-          </p>
-        </header>
+              : 'No regulatory value is written into the application code. Every one lives in a rule pack with its legal basis, source link, effective period, and verification date — and the build is rejected if any parameter lacks a citation.'
+          }
+        />
 
         {PACKS.map((pack, packIndex) => (
           <section key={`${pack.pack}-${packIndex}`} className="space-y-4">
