@@ -1,5 +1,7 @@
 # KPR Simulator
 
+**[andifathulms.github.io/kpr-simulator](https://andifathulms.github.io/kpr-simulator/)**
+
 A KPR calculator built around the question every other calculator hides: **what happens when the fixed period ends.**
 
 A commercial KPR is two loans stitched together — a known one and an unknown one. This tool models it that way: the fixed rate and fixed period are explicit inputs, and beyond the boundary it draws a *band* of outcomes rather than a single line. The headline figure is the **ambang** — the floating rate at which the payment crosses a stated share of income.

@@ -170,7 +170,9 @@ Routes: `hitung`, `ambang`, `subsidi`, `banding`, `biaya`, `parameter`, in `id` 
 
 Pushed to `github.com/andifathulms/kpr-simulator`. CI (`verify`) is green on every push: rule validation, types, lint, tests, build, `check:offline`, and an export sanity check.
 
-**GitHub Pages does not deploy.** `actions/deploy-pages` is accepted and then never progresses, timing out after ten minutes; `repos/.../pages` still reports `status: null`. Pages is configured correctly — `build_type: workflow`, public repository, artifact uploads fine — and the same failure predates this project on this account, so it is not a fault in the workflow or the export. The deploy job therefore runs only on `workflow_dispatch`; restore `push` to its `if` when Pages works. Meanwhile the export is downloadable from any run's artifact and can be served anywhere static.
+**Live at `https://andifathulms.github.io/kpr-simulator/`.** Deploys on every push to `main`, and on `workflow_dispatch`.
+
+Pages was stuck for a while: `actions/deploy-pages` was accepted by the deployment API and then sat at `deployment_in_progress` until its own ten-minute timeout, with `repos/.../pages` reporting `status: null` throughout. It started working on 2026-08-07 with no change to the workflow, the export, or the Pages settings — the first successful deployment took fourteen seconds — which confirms the fault was never in this repository. If it regresses it will present the same way: the `deploy` job hangs rather than failing fast, and `verify` stays green.
 
 ### Known gaps, all deliberate
 

@@ -11,8 +11,11 @@ permissions:
   pages: write
   id-token: write
 
+# Redundant verifies are worth cancelling; a deployment in flight is not. The
+# deploy job carries its own group below so a second push cannot cancel a
+# publish half-way through and leave the live site on a partial upload.
 concurrency:
-  group: pages
+  group: verify-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -49,25 +52,27 @@ jobs:
         with:
           path: out
 
-  # Pages deployment is manual, not automatic.
+  # Deploys on every push to main, and on demand.
   #
-  # actions/deploy-pages has never completed on this account: the deployment
-  # API is accepted and then never progresses, and the step times out after
-  # ten minutes. Pages is configured correctly — build_type is workflow, the
-  # repository is public, the artifact uploads fine — so the fault is not in
-  # this workflow, and leaving it on `push` would mark every future commit
-  # red for a reason unrelated to the commit.
+  # This job was manual-only for a while: actions/deploy-pages was accepted by
+  # the deployment API and then sat at deployment_in_progress until its own
+  # ten-minute timeout, on a repository that was configured correctly the whole
+  # time. It began working on 2026-08-07 with no change to this workflow, the
+  # export, or the Pages settings, which places the fault outside the
+  # repository. The first successful deployment completed in fourteen seconds.
   #
-  # `verify` still gates every push, and it is the job that matters: rule
-  # validation, types, lint, 1614 tests, and a build whose export is checked
-  # for the two files Pages needs. The artifact it uploads can be downloaded
-  # from the run, or served anywhere static.
+  # If it regresses, it will show as this job hanging rather than failing fast.
+  # `verify` is the job that gates correctness and it runs on every push
+  # regardless; the artifact it uploads can be served anywhere static.
   #
-  # To retry a deploy, run this workflow manually from the Actions tab. When
-  # Pages starts working, restore `push` to the `if` below.
+  # Never deploy a pull request: the artifact would publish unreviewed work to
+  # the live site.
   deploy:
     needs: verify
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     environment:
       name: github-pages
