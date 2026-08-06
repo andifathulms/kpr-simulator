@@ -16,6 +16,8 @@ import { AmortisationTable } from '@/components/table/AmortisationTable'
 import { TraceView } from '@/components/trace/TraceView'
 import { MoneyField, NumberField, RateField, SelectField } from '@/components/field/Field'
 import { UnknownNotice } from '@/components/notice/Notice'
+import { PrepayPanel } from '@/components/prepay/PrepayPanel'
+import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
 
 /**
@@ -117,34 +119,36 @@ export function HitungView({ locale }: { locale: Locale }) {
       const principal = rupiah(plafon)
       const hasFloating = fixedMonths > 0 && fixedMonths < termMonths && floatingStated
 
+      const segments: RateSegment[] = hasFloating
+        ? [
+            {
+              months: fixedMonths,
+              annualRate: state.bungaTetap,
+              phase: 'tetap',
+              assumed: false,
+            },
+            {
+              months: termMonths - fixedMonths,
+              annualRate: state.bungaMengambang,
+              phase: 'mengambang',
+              assumed: true,
+            },
+          ]
+        : [
+            {
+              months: termMonths,
+              annualRate: state.bungaTetap,
+              phase: 'tetap',
+              assumed: false,
+            },
+          ]
+
       const schedule = buildSchedule({
         principal,
         start,
         termMonths,
         rounding: state.rounding,
-        segments: hasFloating
-          ? [
-              {
-                months: fixedMonths,
-                annualRate: state.bungaTetap,
-                phase: 'tetap',
-                assumed: false,
-              },
-              {
-                months: termMonths - fixedMonths,
-                annualRate: state.bungaMengambang,
-                phase: 'mengambang',
-                assumed: true,
-              },
-            ]
-          : [
-              {
-                months: termMonths,
-                annualRate: state.bungaTetap,
-                phase: 'tetap',
-                assumed: false,
-              },
-            ],
+        segments,
       })
 
       const band =
@@ -187,6 +191,8 @@ export function HitungView({ locale }: { locale: Locale }) {
       return {
         kind: 'ok' as const,
         schedule,
+        segments,
+        start,
         band,
         hasFloating,
         irr: scheduleIrr(schedule),
@@ -424,6 +430,15 @@ export function HitungView({ locale }: { locale: Locale }) {
                 <h2 className="sheet-label text-sm text-annotation">{t.common.derivation}</h2>
                 <TraceView trace={result.schedule.trace} locale={locale} />
               </section>
+
+              <PrepayPanel
+                principal={plafon}
+                start={result.start}
+                termMonths={termMonths}
+                segments={result.segments}
+                rounding={state.rounding}
+                locale={locale}
+              />
             </>
           )}
         </div>
