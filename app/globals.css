@@ -13,7 +13,7 @@ html {
   background-color: theme('colors.blueprint');
   color: theme('colors.print');
   /* The header is sticky, so an in-page anchor must not land under it. */
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: 8rem;
 }
 
 body {
