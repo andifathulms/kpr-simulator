@@ -174,6 +174,8 @@ Pushed to `github.com/andifathulms/kpr-simulator`. CI (`verify`) is green on eve
 
 Pages was stuck for a while: `actions/deploy-pages` was accepted by the deployment API and then sat at `deployment_in_progress` until its own ten-minute timeout, with `repos/.../pages` reporting `status: null` throughout. It started working on 2026-08-07 with no change to the workflow, the export, or the Pages settings — the first successful deployment took fourteen seconds — which confirms the fault was never in this repository. If it regresses it will present the same way: the `deploy` job hangs rather than failing fast, and `verify` stays green.
 
+`repos/.../pages` reports `status: null` even now that deployments succeed, so it is not a health check. Check `repos/.../deployments?environment=github-pages` for the deployment state, or just fetch the live URL.
+
 ### Known gaps, all deliberate
 
 Seven values are declared in `data/gaps.json` and refused by name rather than filled with a plausible number: LTV ratios, FLPP tenor, minimum down payment, SBUM, per-kabupaten NPOPTKP, bank fees, and SBDK snapshots. `data/sbdk/snapshots.json` is empty by design — SBDK is published per bank, and §9 forbids naming one, so no reference anchor is offered. Recording an OJK segment-level aggregate would close it; see `UPDATING.md`.
