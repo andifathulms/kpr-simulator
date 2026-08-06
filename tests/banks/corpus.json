@@ -1,0 +1,31 @@
+{
+  "note": "Outputs recorded by hand from published bank calculators, plus the classification of every difference from this engine. Recorded by `pnpm banks:record`, which is development-only and never ships. Institutions are identified by an opaque key rather than a name: PRD §9 forbids naming a bank in the product, and a corpus that named them would leak into the build through the test output. Nothing here is ever auto-aligned — when a figure disagrees, the difference is explained in writing or it stays red.",
+  "recordings": [],
+  "classifications": [
+    {
+      "key": "pembulatan-angsuran",
+      "title": "Rounding of the instalment",
+      "detail": "The published calculator rounds the level instalment to a different unit — commonly the nearest hundred or thousand rupiah rather than the nearest rupiah. Expect a divergence bounded by that unit in every row, and a matching divergence in total interest. Not a defect in either engine."
+    },
+    {
+      "key": "pembulatan-bunga-bulanan",
+      "title": "Rounding of monthly interest",
+      "detail": "The monthly interest is rounded before the principal portion is derived, or after. The two orders differ by at most one rupiah per row but accumulate across a 240-month term."
+    },
+    {
+      "key": "hari-bunga",
+      "title": "Day-count convention",
+      "detail": "Interest computed on actual days in the month rather than as an exact twelfth of the annual rate. This engine uses a twelfth throughout and says so; a calculator using actual/365 will differ in every month and the difference is systematic, not random."
+    },
+    {
+      "key": "pembulatan-akhir",
+      "title": "Final instalment",
+      "detail": "This engine clears the whole residual balance in the last instalment, as a bank statement does. A calculator that leaves a residual, or that spreads it, will differ in the final row only."
+    },
+    {
+      "key": "flat-vs-efektif",
+      "title": "Convention mismatch",
+      "detail": "The published calculator is quoting flat where this comparison assumed effective, or the reverse. This is not a rounding difference and must never be classified as one — it is the confusion the whole project exists to separate."
+    }
+  ]
+}
