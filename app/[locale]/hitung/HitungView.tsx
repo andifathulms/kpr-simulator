@@ -230,6 +230,34 @@ export function HitungView({ locale }: { locale: Locale }) {
         // The step at the boundary, which is the whole subject of this app.
         // Money arithmetic, in the money type, on the container side.
         step: floatingPayment ? subtract(floatingPayment, firstPayment) : undefined,
+        /*
+         * Two months, read off both schedules: where the conventions agree and
+         * where they have come apart. Reading only, nothing computed here.
+         *
+         * The effective side must be the single-rate schedule, not the real
+         * one. A late month of the real schedule sits in the floating segment,
+         * so comparing it against a flat quote at the fixed rate would be
+         * comparing two different rates and calling the difference convention.
+         * Both columns here are the same nominal rate over the same term —
+         * which is the only comparison that says anything about convention.
+         */
+        compare: (() => {
+          const effectiveSchedule = singleRate ?? schedule
+          const late = Math.max(Math.floor(termMonths * 0.75) - 1, 1)
+          return [0, late]
+            .map((index) => {
+              const effective = effectiveSchedule.instalments[index]
+              const flatRow = flat.instalments[index]
+              if (!effective || !flatRow) return undefined
+              return {
+                month: effective.index,
+                balance: effective.openingBalance,
+                effectiveInterest: effective.interest,
+                flatInterest: flatRow.interest,
+              }
+            })
+            .filter((row): row is NonNullable<typeof row> => row !== undefined)
+        })(),
         singleRate,
         // What the single-rate assumption leaves out of the total.
         hidden: singleRate ? subtract(schedule.totalPaid, singleRate.totalPaid) : undefined,
@@ -594,8 +622,8 @@ export function HitungView({ locale }: { locale: Locale }) {
                 title={id ? 'Flat dibanding efektif' : 'Flat versus effective'}
                 note={
                   id
-                    ? 'Angka nominal yang sama, dua konvensi yang berbeda. Kutipan flat menghitung bunga atas plafon awal sepanjang tenor, termasuk atas uang yang sudah Anda kembalikan.'
-                    : 'The same nominal figure under two different conventions. A flat quote charges interest on the original plafon for the whole term, including on money you have already repaid.'
+                    ? 'Angka nominal yang sama, dua konvensi yang berbeda. Keduanya menagih bunga yang sama persis di bulan pertama — perbedaannya baru terlihat setelah Anda mulai mengembalikan pokok.'
+                    : 'The same nominal figure under two different conventions. Both charge exactly the same interest in month one — the difference only appears once you have started paying the loan back.'
                 }
               >
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -628,6 +656,56 @@ export function HitungView({ locale }: { locale: Locale }) {
                     </p>
                   </div>
                 </div>
+
+                {result.compare && (
+                  <div className="overflow-x-auto border border-annotation/25">
+                    <table className="w-full min-w-[36rem] border-collapse text-caption">
+                      <caption className="sr-only">
+                        {id
+                          ? 'Bunga yang ditagih pada dua bulan, di bawah konvensi efektif dan flat, pada bunga nominal yang sama.'
+                          : 'Interest charged in two months, under the effective and flat conventions, at the same nominal rate.'}
+                      </caption>
+                      <thead>
+                        <tr className="border-b border-annotation/40 bg-recess">
+                          <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-normal text-annotation">
+                            {t.table.bulan}
+                          </th>
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                            {id ? 'Sisa utang (efektif)' : 'Still owed (effective)'}
+                          </th>
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                            {id ? 'Bunga — efektif' : 'Interest — effective'}
+                          </th>
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                            {id ? 'Bunga — flat' : 'Interest — flat'}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {result.compare.map((row) => (
+                          <tr key={row.month} className="border-b border-annotation/15">
+                            <td className="figure px-3 py-2">{row.month}</td>
+                            <td className="figure px-3 py-2 text-right">
+                              {formatRupiah(row.balance, intl)}
+                            </td>
+                            <td className="figure px-3 py-2 text-right">
+                              {formatRupiah(row.effectiveInterest, intl)}
+                            </td>
+                            <td className="figure px-3 py-2 text-right">
+                              {formatRupiah(row.flatInterest, intl)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                <p className="measure text-caption text-muted">
+                  {id
+                    ? `Kedua kolom memakai bunga nominal yang sama, ${formatRate(state.bungaTetap, intl)}, selama tenor penuh — jadi yang dibandingkan benar-benar konvensinya, bukan dua bunga yang berbeda. Di bulan pertama kedua kolom sama, karena Anda memang masih berutang penuh. Di baris kedua Anda sudah mengembalikan sebagian besar pokok — bunga efektif ikut turun, bunga flat tidak, karena flat tetap menghitung dari plafon awal. Selisih itulah yang membuat “flat 5%” tidak sebanding dengan “efektif 5%”.`
+                    : `Both columns use the same nominal rate, ${formatRate(state.bungaTetap, intl)}, over the full term — so what is being compared really is the convention rather than two different rates. In month one the two columns agree, because you really do still owe the whole amount. By the second row you have repaid most of the principal — effective interest has fallen with it, flat interest has not, because flat keeps charging on the original plafon. That gap is why "flat 5%" is not comparable to "effective 5%".`}
+                </p>
               </Panel>
 
               <Panel
