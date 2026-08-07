@@ -200,6 +200,24 @@ export function HitungView({ locale }: { locale: Locale }) {
         rounding: state.rounding,
       })
 
+      /*
+       * The counterfactual: this loan as every other calculator models it —
+       * the quoted rate held for the whole term. Its monthly figure is
+       * identical to the fixed-period one, which is exactly why the error is
+       * invisible; the divergence is in the total.
+       */
+      const singleRate = hasFloating
+        ? buildSchedule({
+            principal,
+            start,
+            termMonths,
+            rounding: state.rounding,
+            segments: [
+              { months: termMonths, annualRate: state.bungaTetap, phase: 'tetap', assumed: false },
+            ],
+          })
+        : undefined
+
       const firstPayment = schedule.instalments[0]?.payment ?? rupiah(0)
       const floatingPayment = hasFloating ? schedule.instalments[fixedMonths]?.payment : undefined
 
@@ -212,6 +230,9 @@ export function HitungView({ locale }: { locale: Locale }) {
         // The step at the boundary, which is the whole subject of this app.
         // Money arithmetic, in the money type, on the container side.
         step: floatingPayment ? subtract(floatingPayment, firstPayment) : undefined,
+        singleRate,
+        // What the single-rate assumption leaves out of the total.
+        hidden: singleRate ? subtract(schedule.totalPaid, singleRate.totalPaid) : undefined,
         // A ratio, so a float — the one direction across the boundary that is
         // allowed. Display only; nothing downstream is computed from it.
         interestShare:
@@ -506,6 +527,46 @@ export function HitungView({ locale }: { locale: Locale }) {
                   />
                 </div>
               </section>
+
+              {result.singleRate && result.hidden && (
+                <Panel
+                  title={id ? 'Yang dilewatkan kalkulator lain' : 'What other calculators leave out'}
+                  note={
+                    id
+                      ? 'Kalkulator KPR pada umumnya memakai satu bunga untuk seluruh tenor. Angka bulanannya sama persis dengan angsuran masa tetap di atas — justru itu sebabnya kekeliruannya tidak terlihat. Yang berbeda adalah totalnya.'
+                      : 'A typical KPR calculator applies one rate for the whole term. Its monthly figure is identical to the fixed-period instalment above — which is precisely why the error is invisible. The total is what differs.'
+                  }
+                >
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <StatCard
+                      label={
+                        id
+                          ? 'Total bila bunga tidak pernah berubah'
+                          : 'Total if the rate never changed'
+                      }
+                      value={formatRupiah(result.singleRate.totalPaid, intl)}
+                      note={
+                        id
+                          ? `Bunga ${formatRate(state.bungaTetap, intl)} selama ${state.tenorTahun} tahun penuh — asumsi yang tidak dinyatakan kalkulator mana pun.`
+                          : `${formatRate(state.bungaTetap, intl)} for all ${state.tenorTahun} years — an assumption no calculator states out loud.`
+                      }
+                    />
+                    <StatCard
+                      tone="unknown"
+                      label={
+                        id ? 'Selisih dengan asumsi Anda' : 'Difference under your assumption'
+                      }
+                      value={formatRupiah(result.hidden, intl)}
+                      tag={t.common.assumption}
+                      note={
+                        id
+                          ? `Sebanyak itu tidak muncul di mana pun bila bunga setelah masa tetap diandaikan tetap ${formatRate(state.bungaTetap, intl)}.`
+                          : `That much appears nowhere if the rate after the fixed period is assumed to stay at ${formatRate(state.bungaTetap, intl)}.`
+                      }
+                    />
+                  </div>
+                </Panel>
+              )}
 
               {!result.hasFloating && fixedMonths > 0 && (
                 <UnknownNotice title={t.floating.title}>{t.floating.body}</UnknownNotice>
