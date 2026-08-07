@@ -290,16 +290,8 @@ export function HitungView({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <PageHeader
         eyebrow={t.nav.hitung}
-        title={
-          id
-            ? 'Berapa angsuran saya, sebelum dan sesudah bunga tetap berakhir?'
-            : 'What is my instalment, before and after the fixed rate ends?'
-        }
-        lede={
-          id
-            ? 'Isi apa yang bank kutip kepada Anda. Tidak ada satu pun suku bunga yang diisikan aplikasi ini — kolom bunga mulai kosong, karena angka yang sudah terisi akan terbaca seperti data.'
-            : 'Enter what the bank quoted you. No rate on this page is supplied by the app — the rate fields start empty, because a pre-filled figure reads like data.'
-        }
+        title={t.pages.hitung.title}
+        lede={t.pages.hitung.lede}
       />
 
       <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">

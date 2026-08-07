@@ -1,12 +1,18 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Chrome } from '@/components/chrome/Chrome'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n/locales'
 import { COVERAGE_GAPS, PACKS } from '@/lib/rules/registry'
 import { dictionary } from '@/lib/i18n/dict'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { pageMetadata } from '@/lib/metadata'
 
 export function generateStaticParams(): { locale: Locale }[] {
   return LOCALES.map((locale) => ({ locale }))
+}
+
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  return pageMetadata(isLocale(params.locale) ? params.locale : 'id', 'parameter')
 }
 
 /**
@@ -28,12 +34,8 @@ export default function ParameterPage({ params }: { params: { locale: string } }
       <div className="space-y-12">
         <PageHeader
           eyebrow={t.nav.parameter}
-          title={id ? 'Dari mana angka-angka ini berasal?' : 'Where do these numbers come from?'}
-          lede={
-            id
-              ? 'Tidak ada satu pun nilai peraturan yang ditulis di dalam kode. Semuanya ada di paket aturan bersama dasar hukum, tautan sumber, periode berlaku, dan tanggal verifikasinya — dan build ditolak bila ada parameter tanpa sitasi.'
-              : 'No regulatory value is written into the application code. Every one lives in a rule pack with its legal basis, source link, effective period, and verification date — and the build is rejected if any parameter lacks a citation.'
-          }
+          title={t.pages.parameter.title}
+          lede={t.pages.parameter.lede}
         />
 
         {PACKS.map((pack, packIndex) => (

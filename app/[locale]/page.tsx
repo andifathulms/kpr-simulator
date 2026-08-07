@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Chrome } from '@/components/chrome/Chrome'
 import { Glossary } from '@/components/ui/Glossary'
@@ -5,11 +6,16 @@ import { Panel } from '@/components/ui/Panel'
 import { Mark } from '@/components/ui/Mark'
 import { FixedFloatingDiagram } from '@/components/ui/FixedFloatingDiagram'
 import { dictionary } from '@/lib/i18n/dict'
+import { pageMetadata } from '@/lib/metadata'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n/locales'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams(): { locale: Locale }[] {
   return LOCALES.map((locale) => ({ locale }))
+}
+
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  return pageMetadata(isLocale(params.locale) ? params.locale : 'id', 'home')
 }
 
 export default function Home({ params }: { params: { locale: string } }) {
@@ -37,16 +43,8 @@ export default function Home({ params }: { params: { locale: string } }) {
                 {id ? 'Kalkulator KPR' : 'KPR calculator'}
               </p>
             </div>
-            <h1 className="sheet-title mt-4 text-display">
-              {id
-                ? 'Bunga yang dikutip bank hanya berlaku beberapa tahun. Sisanya, tidak ada yang tahu.'
-                : 'The rate your bank quotes lasts a few years. Nobody knows the rest.'}
-            </h1>
-            <p className="measure mt-5 text-lead text-muted">
-              {id
-                ? 'Hitung angsuran KPR Anda untuk kedua bagian itu secara terpisah — yang dikunci bank, dan yang datang sesudahnya.'
-                : 'Work out your KPR instalment for both parts separately — the one the bank locks, and the one that comes after it.'}
-            </p>
+            <h1 className="sheet-title mt-4 text-display">{t.pages.home.title}</h1>
+            <p className="measure mt-5 text-lead text-muted">{t.pages.home.lede}</p>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

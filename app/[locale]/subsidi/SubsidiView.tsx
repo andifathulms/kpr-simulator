@@ -105,16 +105,8 @@ export function SubsidiView({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <PageHeader
         eyebrow={t.nav.subsidi}
-        title={
-          id
-            ? 'Apakah saya memenuhi syarat FLPP — dan berapa angsurannya?'
-            : 'Do I qualify for FLPP — and what would the instalment be?'
-        }
-        lede={
-          id
-            ? 'FLPP bersuku bunga tetap sampai akhir tenor, jadi jalur ini terhitung persis: tidak ada periode mengambang dan tidak ada satu pun angka kuning di jadwalnya. Perbandingan dengan jalur komersial adalah inti dari aplikasi ini.'
-            : 'FLPP is fixed to the end of the term, so this path computes exactly: no floating period and nothing amber in its schedule at all. The contrast with the commercial path is the point of this tool.'
-        }
+        title={t.pages.subsidi.title}
+        lede={t.pages.subsidi.lede}
       />
 
       <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">

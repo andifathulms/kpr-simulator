@@ -194,16 +194,8 @@ export function AmbangView({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <PageHeader
         eyebrow={t.nav.ambang}
-        title={
-          id
-            ? 'Sampai bunga berapa angsuran ini masih di bawah batas Anda?'
-            : 'How high can the rate go before the instalment passes your limit?'
-        }
-        lede={
-          id
-            ? 'Anda menetapkan berapa bagian penghasilan yang boleh dipakai untuk angsuran; aplikasi mencari suku bunga mengambang yang persis mencapainya. Satu angka, untuk dibawa dan ditanyakan langsung ke bank.'
-            : 'You set how much of your income may go to the instalment; the app solves for the floating rate that reaches exactly that. One figure, to carry into a bank meeting and ask about directly.'
-        }
+        title={t.pages.ambang.title}
+        lede={t.pages.ambang.lede}
       />
 
       <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">

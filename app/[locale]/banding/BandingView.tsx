@@ -132,16 +132,8 @@ export function BandingView({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <PageHeader
         eyebrow={t.nav.banding}
-        title={
-          id
-            ? 'Subsidi atau komersial — apa bedanya untuk profil saya?'
-            : 'Subsidised or commercial — what differs for my profile?'
-        }
-        lede={
-          id
-            ? 'Satu profil, dua jalur, berdampingan. Yang dibandingkan adalah dua jenis produk, bukan dua bank, dan tidak ada yang diunggulkan. Yang paling berguna di halaman ini bukan selisihnya, melainkan perbedaan seberapa pasti masing-masing angka.'
-            : 'One profile, both paths, side by side. This compares two kinds of product, not two banks, and favours neither. The useful thing here is not the difference between the totals — it is the difference in how certain each of them is.'
-        }
+        title={t.pages.banding.title}
+        lede={t.pages.banding.lede}
       />
 
       <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">

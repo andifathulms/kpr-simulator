@@ -57,16 +57,8 @@ export function BiayaView({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <PageHeader
         eyebrow={t.nav.biaya}
-        title={
-          id
-            ? 'Berapa yang harus saya siapkan di luar cicilan?'
-            : 'What do I need to find, beyond the monthly instalment?'
-        }
-        lede={
-          id
-            ? 'Biaya di luar pinjaman: pajak, notaris, dan biaya bank. Yang diatur peraturan dikutip sumbernya; yang ditetapkan bank atau notaris adalah angka Anda sendiri dan ditandai kuning.'
-            : 'The costs beyond the loan: taxes, notary, and bank fees. Regulated items carry their source; items a bank or notary sets are your own figures and are marked amber.'
-        }
+        title={t.pages.biaya.title}
+        lede={t.pages.biaya.lede}
       />
 
       <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
