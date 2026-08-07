@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { dictionary } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
 import { Legend } from '@/components/ui/Legend'
+import { MakerSignature } from '@/components/ui/MakerSignature'
 
 const ROUTES = ['hitung', 'ambang', 'subsidi', 'banding', 'biaya', 'parameter'] as const
 
@@ -95,17 +96,27 @@ export function Framing({ locale }: { locale: Locale }) {
       <div className="mx-auto max-w-6xl space-y-8 px-6 py-10">
         <Legend locale={locale} />
 
-        <div className="grid gap-x-10 gap-y-6 border-t border-annotation/15 pt-8 sm:grid-cols-2">
-          <div className="space-y-1 text-sm text-print/85">
-            <p className="sheet-label text-xs text-annotation">{t.common.appName}</p>
-            <p>{t.common.personalProject}</p>
-            <p>{t.common.notAdvice}</p>
+        {/*
+         * One seam, two unrelated things either side of it. Left: what the app
+         * says about its own limits. Right: who built it. They share a row and
+         * nothing else — a name folded into the framing statements would read
+         * as an endorsement of the figures rather than as authorship.
+         */}
+        <div className="grid gap-x-10 gap-y-8 border-t border-annotation/15 pt-8 lg:grid-cols-[1fr_auto]">
+          <div className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+            <div className="space-y-1 text-sm text-print/85">
+              <p className="sheet-label text-xs text-annotation">{t.common.appName}</p>
+              <p>{t.common.personalProject}</p>
+              <p>{t.common.notAdvice}</p>
+            </div>
+            <div className="space-y-1 text-sm text-print/85">
+              <p>{t.common.confirmWithBank}</p>
+              <p>{t.common.approvalNotModelled}</p>
+              <p className="text-print/70">{t.floating.short}</p>
+            </div>
           </div>
-          <div className="space-y-1 text-sm text-print/85">
-            <p>{t.common.confirmWithBank}</p>
-            <p>{t.common.approvalNotModelled}</p>
-            <p className="text-print/70">{t.floating.short}</p>
-          </div>
+
+          <MakerSignature />
         </div>
       </div>
     </footer>
