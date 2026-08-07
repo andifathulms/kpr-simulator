@@ -220,6 +220,46 @@ export function HitungView({ locale }: { locale: Locale }) {
           })
         : undefined
 
+      /*
+       * Which lever actually moves the total.
+       *
+       * The app's argument is that the unknown part dominates the known one,
+       * and until now that was a sentence on the home page rather than
+       * something the reader's own loan demonstrated. Each row re-runs the
+       * engine with one input nudged and everything else held — deterministic,
+       * traceable, and about a millisecond each.
+       *
+       * Magnitudes only. It reports which lever is largest and stops; saying
+       * what to do about it would be the advice §9 forbids.
+       */
+      const baselineTotal = schedule.totalPaid
+      const nudge = (over: Partial<{ rate: number; floating: number; tenor: number; dp: number }>) => {
+        const tenorMonths = over.tenor ? termMonths + over.tenor * 12 : termMonths
+        const principalAfterDp = over.dp ? Math.max(plafon - over.dp, 1) : plafon
+        const fixedRate = over.rate ? state.bungaTetap + over.rate : state.bungaTetap
+        const floatRate = over.floating ? state.bungaMengambang + over.floating : state.bungaMengambang
+        const fixedFor = Math.min(fixedMonths, Math.max(tenorMonths - 1, 0))
+        const nudged = buildSchedule({
+          principal: rupiah(principalAfterDp),
+          start,
+          termMonths: tenorMonths,
+          rounding: state.rounding,
+          segments:
+            hasFloating && fixedFor > 0
+              ? [
+                  { months: fixedFor, annualRate: fixedRate, phase: 'tetap', assumed: false },
+                  {
+                    months: tenorMonths - fixedFor,
+                    annualRate: floatRate,
+                    phase: 'mengambang',
+                    assumed: true,
+                  },
+                ]
+              : [{ months: tenorMonths, annualRate: fixedRate, phase: 'tetap', assumed: false }],
+        })
+        return subtract(nudged.totalPaid, baselineTotal)
+      }
+
       const firstPayment = schedule.instalments[0]?.payment ?? rupiah(0)
       const floatingPayment = hasFloating ? schedule.instalments[fixedMonths]?.payment : undefined
 
@@ -264,6 +304,31 @@ export function HitungView({ locale }: { locale: Locale }) {
         firstPrincipal: schedule.instalments[0]?.principal ?? rupiah(0),
         firstPrincipalShare:
           firstPayment === 0 ? 0 : (schedule.instalments[0]?.principal ?? 0) / firstPayment,
+        levers: [
+          hasFloating
+            ? {
+                key: 'floating' as const,
+                delta: nudge({ floating: 0.02 }),
+                assumed: true,
+              }
+            : undefined,
+          { key: 'fixed' as const, delta: nudge({ rate: 0.02 }), assumed: false },
+          { key: 'tenor' as const, delta: nudge({ tenor: 5 }), assumed: false },
+          { key: 'dp' as const, delta: nudge({ dp: 50_000_000 }), assumed: false },
+        ]
+          .filter((lever): lever is NonNullable<typeof lever> => lever !== undefined)
+          // Largest absolute movement first — the panel is titled "which moves
+          // the total most", so the order has to be the answer to that.
+          .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)),
+        /*
+         * The comparison the sensitivity table exists to produce: identical
+         * nudges, one landing in the known period and one in the unknown one.
+         * The gap between them is the term-length asymmetry, not a rate
+         * difference — which is the thesis, stated in the reader's own rupiah.
+         */
+        samePoints: hasFloating
+          ? { floating: nudge({ floating: 0.02 }), fixed: nudge({ rate: 0.02 }) }
+          : undefined,
         singleRate,
         // What the single-rate assumption leaves out of the total.
         hidden: singleRate ? subtract(schedule.totalPaid, singleRate.totalPaid) : undefined,
@@ -741,6 +806,70 @@ export function HitungView({ locale }: { locale: Locale }) {
               </Panel>
 
               <Panel
+                title={id ? 'Mana yang paling menggerakkan total' : 'Which lever moves the total most'}
+                note={
+                  id
+                    ? 'Tiap baris menghitung ulang seluruh jadwal dengan satu masukan digeser dan sisanya ditahan. Aplikasi ini tidak menyarankan apa pun tentang angka-angka ini — hanya menunjukkan besarannya.'
+                    : 'Each row recomputes the whole schedule with one input moved and the rest held. The app recommends nothing about these figures — it only shows how large each one is.'
+                }
+              >
+                <div className="overflow-x-auto border border-annotation/25">
+                  <table className="w-full min-w-[30rem] border-collapse text-caption">
+                    <caption className="sr-only">
+                      {id
+                        ? 'Perubahan total dibayar bila satu masukan digeser.'
+                        : 'Change in total paid when one input is moved.'}
+                    </caption>
+                    <thead>
+                      <tr className="border-b border-annotation/40 bg-recess">
+                        <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-normal text-annotation">
+                          {id ? 'Bila ini bergeser' : 'Move this'}
+                        </th>
+                        <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                          {id ? 'Total dibayar berubah' : 'Total paid changes by'}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {result.levers.map((lever) => (
+                        <tr
+                          key={lever.key}
+                          className={`border-b border-annotation/15 ${lever.assumed ? 'text-unknown' : ''}`}
+                        >
+                          <td className="px-3 py-2">
+                            {LEVER_LABEL[lever.key][id ? 'id' : 'en']}
+                            {lever.assumed && (
+                              <span className="sheet-label ml-3 text-micro">
+                                {t.common.assumption}
+                              </span>
+                            )}
+                          </td>
+                          <td className="figure px-3 py-2 text-right">
+                            {lever.delta > 0 ? '+' : ''}
+                            {formatRupiah(lever.delta, intl)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {result.samePoints && (
+                  <p className="measure text-caption text-muted">
+                    {id
+                      ? `Dua poin bunga yang sama berbeda harganya tergantung di mana ia jatuh: ${formatRupiah(result.samePoints.floating, intl)} bila jatuh setelah masa tetap, ${formatRupiah(result.samePoints.fixed, intl)} bila jatuh di dalamnya. Bukan karena bunganya berbeda, melainkan karena yang satu berlaku ${state.tenorTahun - state.masaTetapTahun} tahun dan yang lain ${state.masaTetapTahun} tahun.`
+                      : `The same two points of interest cost different amounts depending on where they land: ${formatRupiah(result.samePoints.floating, intl)} after the fixed period, ${formatRupiah(result.samePoints.fixed, intl)} inside it. Not because the rate differs, but because one applies for ${state.tenorTahun - state.masaTetapTahun} years and the other for ${state.masaTetapTahun}.`}
+                  </p>
+                )}
+                {result.hasFloating && (
+                  <p className="measure text-caption text-unknown">
+                    {id
+                      ? 'Baris kuning adalah satu-satunya baris yang bukan keputusan Anda. Bunga tetap, tenor, dan uang muka Anda pilih dan Anda ketahui; bunga setelah masa tetap tidak.'
+                      : 'The amber row is the only one that is not your decision. The fixed rate, the term and the deposit are chosen and known; the rate after the fixed period is not.'}
+                  </p>
+                )}
+              </Panel>
+
+              <Panel
                 title={id ? 'Yang perlu Anda tanyakan ke bank' : 'What to ask the bank'}
                 note={
                   id
@@ -787,6 +916,17 @@ export function HitungView({ locale }: { locale: Locale }) {
       </div>
     </div>
   )
+}
+
+/** Each label states the exact nudge, so the figure beside it is reproducible. */
+const LEVER_LABEL: Record<'floating' | 'fixed' | 'tenor' | 'dp', { id: string; en: string }> = {
+  floating: {
+    id: 'Bunga setelah masa tetap, +2 poin',
+    en: 'Rate after the fixed period, +2 points',
+  },
+  fixed: { id: 'Bunga tetap, +2 poin', en: 'Fixed rate, +2 points' },
+  tenor: { id: 'Tenor, +5 tahun', en: 'Term, +5 years' },
+  dp: { id: 'Uang muka, +Rp50 juta', en: 'Down payment, +Rp50 million' },
 }
 
 /** One line of the empty state: what is still needed, and what is already in. */
