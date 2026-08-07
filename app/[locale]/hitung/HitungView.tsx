@@ -22,6 +22,7 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
+import { LiveRegion } from '@/components/ui/LiveRegion'
 import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
 
@@ -386,6 +387,21 @@ export function HitungView({ locale }: { locale: Locale }) {
         </form>
 
         <div className="space-y-10">
+          {/* The headline only — this is read out on every keystroke. */}
+          <LiveRegion>
+            {result?.kind === 'ok'
+              ? id
+                ? `Angsuran masa tetap ${formatRupiah(result.firstPayment, intl)}.` +
+                  (result.floatingPayment && result.step
+                    ? ` Setelah masa tetap ${formatRupiah(result.floatingPayment, intl)}, naik ${formatRupiah(result.step, intl)} sebulan.`
+                    : '')
+                : `Instalment during the fixed period ${formatRupiah(result.firstPayment, intl)}.` +
+                  (result.floatingPayment && result.step
+                    ? ` After the fixed period ${formatRupiah(result.floatingPayment, intl)}, up ${formatRupiah(result.step, intl)} a month.`
+                    : '')
+              : ''}
+          </LiveRegion>
+
           {!ready && (
             <section className="border border-annotation/25 bg-recess px-6 py-6">
               <p className="sheet-label text-caption text-annotation">

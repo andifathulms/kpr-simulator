@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { Locale } from '@/lib/i18n/locales'
+import { LiveRegion } from '@/components/ui/LiveRegion'
 
 /**
  * Sharing and printing.
@@ -52,6 +53,8 @@ export function ShareBar({ locale }: { locale: Locale }) {
           {id ? 'Cetak' : 'Print'}
         </button>
       </div>
+      <LiveRegion>{copied ? (id ? 'Tautan disalin.' : 'Link copied.') : ''}</LiveRegion>
+
       <p className="max-w-xl text-caption text-muted">
         {id
           ? 'Tautan memuat seluruh angka yang Anda isikan, termasuk penghasilan, di bagian setelah tanda pagar. Bagian itu tidak pernah dikirim ke server mana pun — tetapi siapa pun yang menerima tautannya bisa membacanya.'

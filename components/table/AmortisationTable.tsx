@@ -6,6 +6,7 @@ import { formatPeriod } from '@/lib/period/period'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
 import type { Instalment, Schedule } from '@/lib/amortise/types'
+import { LiveRegion } from '@/components/ui/LiveRegion'
 
 /**
  * The full amortisation table, to the rupiah — the artefact someone takes to
@@ -75,6 +76,12 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
           </tfoot>
         </table>
       </div>
+
+      <LiveRegion>
+        {locale === 'id'
+          ? `Menampilkan ${rows.length} dari ${schedule.instalments.length} bulan.`
+          : `Showing ${rows.length} of ${schedule.instalments.length} months.`}
+      </LiveRegion>
 
       {schedule.instalments.length > 24 && (
         <button

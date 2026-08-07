@@ -17,6 +17,7 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
+import { LiveRegion } from '@/components/ui/LiveRegion'
 
 /**
  * The threshold view. One figure, stated plainly, with the instalment it
@@ -252,6 +253,14 @@ export function AmbangView({ locale }: { locale: Locale }) {
         </form>
 
         <div className="space-y-10">
+          <LiveRegion>
+            {result?.kind === 'ok' && result.outcome.kind === 'found'
+              ? id
+                ? `Ambang bunga mengambang ${formatRate(result.outcome.annualRate, intl)}. Pada bunga itu angsuran menjadi ${formatRupiah(result.outcome.limit, intl)}.`
+                : `Floating-rate threshold ${formatRate(result.outcome.annualRate, intl)}. At that rate the instalment becomes ${formatRupiah(result.outcome.limit, intl)}.`
+              : ''}
+          </LiveRegion>
+
           {!ready && (
             <section className="border border-annotation/25 bg-recess px-6 py-6">
               <p className="sheet-label text-caption text-annotation">
