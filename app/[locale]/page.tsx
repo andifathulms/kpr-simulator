@@ -3,6 +3,7 @@ import { Chrome } from '@/components/chrome/Chrome'
 import { Glossary } from '@/components/ui/Glossary'
 import { Panel } from '@/components/ui/Panel'
 import { Mark } from '@/components/ui/Mark'
+import { FixedFloatingDiagram } from '@/components/ui/FixedFloatingDiagram'
 import { dictionary } from '@/lib/i18n/dict'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n/locales'
 import { notFound } from 'next/navigation'
@@ -26,47 +27,59 @@ export default function Home({ params }: { params: { locale: string } }) {
          * three years out of twenty. That sentence has to arrive first, before
          * any vocabulary, any form, or any figure.
          */}
-        <section>
-          {/* The mark stays under 96px, so the dashed boundary marker is left
-              off — below that size the kink alone carries it (brand kit). */}
-          <div className="flex items-center gap-4">
-            <Mark size={56} />
-            <p className="sheet-label text-caption text-annotation">
-              {id ? 'Simulator KPR · Proyek pribadi' : 'KPR simulator · A personal project'}
+        <section className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
+          <div>
+            {/* The mark stays under 96px, so the dashed boundary marker is left
+                off — below that size the kink alone carries it (brand kit). */}
+            <div className="flex items-center gap-3">
+              <Mark size={40} />
+              <p className="sheet-label text-caption text-annotation">
+                {id ? 'Kalkulator KPR' : 'KPR calculator'}
+              </p>
+            </div>
+            <h1 className="sheet-title mt-4 text-display">
+              {id
+                ? 'Bunga yang dikutip bank hanya berlaku beberapa tahun. Sisanya, tidak ada yang tahu.'
+                : 'The rate your bank quotes lasts a few years. Nobody knows the rest.'}
+            </h1>
+            <p className="measure mt-5 text-lead text-muted">
+              {id
+                ? 'Hitung angsuran KPR Anda untuk kedua bagian itu secara terpisah — yang dikunci bank, dan yang datang sesudahnya.'
+                : 'Work out your KPR instalment for both parts separately — the one the bank locks, and the one that comes after it.'}
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                href={`/${locale}/hitung`}
+                className="sheet-label bg-print px-6 py-3 text-caption text-blueprint transition-colors hover:bg-annotation"
+              >
+                {id ? 'Hitung angsuran saya' : 'Work out my instalment'}
+              </Link>
+              <Link
+                href={`/${locale}/ambang`}
+                className="sheet-label border border-annotation/60 px-6 py-3 text-caption text-annotation transition-colors hover:border-annotation hover:text-print"
+              >
+                {id ? 'Cari titik tak terjangkau' : 'Find where it stops being affordable'}
+              </Link>
+            </div>
+
+            <p className="measure mt-5 text-caption text-muted">
+              {id
+                ? 'Gratis, tanpa akun, tanpa iklan bank. Proyek pribadi, bukan nasihat keuangan. Angka yang Anda ketik dihitung di peramban Anda sendiri dan tidak dikirim ke mana pun.'
+                : 'Free, no account, no bank advertising. A personal project, not financial advice. What you type is computed in your own browser and sent nowhere.'}
             </p>
           </div>
-          <h1 className="sheet-title mt-3 max-w-4xl text-display">
-            {id
-              ? 'Bunga yang dikutip bank hanya berlaku beberapa tahun. Sisanya, tidak ada yang tahu.'
-              : 'The rate your bank quotes lasts a few years. Nobody knows the rest.'}
-          </h1>
-          <p className="measure mt-6 text-lead text-muted">
-            {id
-              ? 'Kalkulator KPR lain memakai satu bunga untuk seluruh tenor. Untuk KPR komersial itu selalu keliru: bank mengunci bunga dua atau tiga tahun, lalu sisanya mengambang. Aplikasi ini menghitung kedua bagian itu terpisah, dan mengatakan dengan jelas bagian mana yang tidak diketahui siapa pun.'
-              : 'Other KPR calculators apply one rate across the whole term. For a commercial KPR that is always wrong: the bank locks a rate for two or three years, then the loan floats. This tool computes the two parts separately, and says plainly which part nobody knows.'}
-          </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href={`/${locale}/hitung`}
-              className="sheet-label bg-print px-6 py-3 text-caption text-blueprint transition-colors hover:bg-annotation"
-            >
-              {id ? 'Hitung angsuran saya' : 'Work out my instalment'}
-            </Link>
-            <Link
-              href={`/${locale}/ambang`}
-              className="sheet-label border border-annotation/60 px-6 py-3 text-caption text-annotation transition-colors hover:border-annotation hover:text-print"
-            >
-              {id ? 'Cari titik tak terjangkau' : 'Find where it stops being affordable'}
-            </Link>
-          </div>
-
-          <p className="measure mt-6 text-caption text-muted">
-            {id
-              ? 'Gratis, tanpa akun, tanpa iklan bank. Angka yang Anda ketik tidak dikirim ke mana pun — semuanya dihitung di peramban Anda sendiri.'
-              : 'Free, no account, no bank advertising. What you type is sent nowhere — every figure is computed in your own browser.'}
-          </p>
+          {/* Shows what the app is for before a word of it is read. No numerals,
+              so there is nothing here to mistake for data. */}
+          <FixedFloatingDiagram locale={locale} />
         </section>
+
+        <p className="measure text-muted">
+          {id
+            ? 'Kalkulator KPR lain memakai satu bunga untuk seluruh tenor. Untuk KPR komersial itu selalu keliru: bank mengunci bunga dua atau tiga tahun, lalu sisanya mengambang. Aplikasi ini menghitung kedua bagian itu terpisah, dan mengatakan dengan jelas bagian mana yang tidak diketahui siapa pun.'
+            : 'Other KPR calculators apply one rate across the whole term. For a commercial KPR that is always wrong: the bank locks a rate for two or three years, then the loan floats. This tool computes the two parts separately, and says plainly which part nobody knows.'}
+        </p>
 
         {/*
          * The concrete illustration. Amber throughout and labelled as an
