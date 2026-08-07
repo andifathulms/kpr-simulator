@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Chrome } from '@/components/chrome/Chrome'
 import { Glossary } from '@/components/ui/Glossary'
 import { Panel } from '@/components/ui/Panel'
+import { Mark } from '@/components/ui/Mark'
 import { dictionary } from '@/lib/i18n/dict'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n/locales'
 import { notFound } from 'next/navigation'
@@ -26,9 +27,14 @@ export default function Home({ params }: { params: { locale: string } }) {
          * any vocabulary, any form, or any figure.
          */}
         <section>
-          <p className="sheet-label text-xs text-annotation">
-            {id ? 'Simulator KPR · Proyek pribadi' : 'KPR simulator · A personal project'}
-          </p>
+          {/* The mark stays under 96px, so the dashed boundary marker is left
+              off — below that size the kink alone carries it (brand kit). */}
+          <div className="flex items-center gap-4">
+            <Mark size={56} />
+            <p className="sheet-label text-xs text-annotation">
+              {id ? 'Simulator KPR · Proyek pribadi' : 'KPR simulator · A personal project'}
+            </p>
+          </div>
           <h1 className="sheet-title mt-3 max-w-4xl text-display">
             {id
               ? 'Bunga yang dikutip bank hanya berlaku beberapa tahun. Sisanya, tidak ada yang tahu.'

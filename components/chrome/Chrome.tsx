@@ -3,6 +3,7 @@ import { dictionary } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
 import { Legend } from '@/components/ui/Legend'
 import { MakerSignature } from '@/components/ui/MakerSignature'
+import { Mark } from '@/components/ui/Mark'
 
 const ROUTES = ['hitung', 'ambang', 'subsidi', 'banding', 'biaya', 'parameter'] as const
 
@@ -30,14 +31,17 @@ export function Chrome({
       <header className="print-hidden sticky top-0 z-40 border-b border-annotation/25 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
         <div className="mx-auto max-w-6xl px-6 pt-4">
           <div className="flex items-center gap-6">
-            <Link href={`/${locale}`} className="shrink-0">
-              <span className="sheet-label block text-lg leading-none text-print">
-                {t.common.appName}
-              </span>
-              <span className="mt-1 hidden text-xs text-annotation sm:block">
-                {id
-                  ? 'Setelah bunga tetap berakhir, berapa angsurannya?'
-                  : 'After the fixed rate ends, what does the instalment become?'}
+            <Link href={`/${locale}`} className="flex shrink-0 items-center gap-3">
+              <Mark size={34} />
+              <span>
+                <span className="sheet-label block text-lg leading-none text-print">
+                  {t.common.appName}
+                </span>
+                <span className="mt-1 hidden text-xs text-annotation sm:block">
+                  {id
+                    ? 'Setelah bunga tetap berakhir, berapa angsurannya?'
+                    : 'After the fixed rate ends, what does the instalment become?'}
+                </span>
               </span>
             </Link>
 
