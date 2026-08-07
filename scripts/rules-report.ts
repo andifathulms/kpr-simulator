@@ -4,6 +4,7 @@
  */
 import { validateRulePacks } from '@/lib/rules/validate'
 import { loadPackInputs, todayISO } from './load-packs'
+import biRate from '@/data/acuan/bi-rate.json'
 
 const today = todayISO()
 const { packs, violations } = validateRulePacks(loadPackInputs(), today)
@@ -33,5 +34,29 @@ for (const pack of packs) {
         (overdue ? '  ⚠ LEWAT TINJAUAN' : ''),
     )
   }
+}
+
+/*
+ * Reference anchors are not rule packs — they are dated observations of a
+ * published figure, not values from a regulation — but they go stale the same
+ * way and faster, so one command has to surface both. A reader running
+ * `pnpm rules:report` to find what needs looking at should not have to know
+ * that this one lives somewhere else.
+ */
+console.log(`\nACUAN — titik rujukan berkala (bukan paket aturan)`)
+console.log('─'.repeat(78))
+for (const snapshot of biRate.snapshots) {
+  const overdue = snapshot.expectedReview !== undefined && snapshot.expectedReview < currentMonth
+  console.log(`  ${biRate.id}`)
+  console.log(`    nilai      ${snapshot.value}`)
+  console.log(`    berlaku    ${snapshot.effectiveFrom} →`)
+  console.log(`    dasar      ${snapshot.basis}`)
+  console.log(`    sumber     ${snapshot.sourceUrl}`)
+  console.log(
+    `    verifikasi ${snapshot.verifiedAt}` +
+      (snapshot.expectedReview ? `  · tinjau ${snapshot.expectedReview}` : '') +
+      (overdue ? '  ⚠ LEWAT TINJAUAN' : ''),
+  )
+  console.log(`    catatan    ${biRate.reviewCadence.id}`)
 }
 console.log('')

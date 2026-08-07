@@ -23,6 +23,19 @@ import type { Locale } from '@/lib/i18n/locales'
  * One snapshot, not a series: only the current value could be verified against
  * two independent sources, and shipping a history assembled from a page
  * summary would be exactly the reconstruct-from-memory this project forbids.
+ *
+ * It carries its own staleness warning. An anchor that quietly ages is worse
+ * than no anchor: an empty field admits it knows nothing, while a figure with
+ * a date on it implies somebody checked. Bank Indonesia's Board of Governors
+ * meets monthly, so this goes out of date faster than anything in
+ * `data/rules/` — and the warning is what makes shipping it defensible.
+ *
+ * The clock is read at build time, which is allowed here and nowhere near
+ * `lib/`: this is the UI, the export is static, and the value is fixed when
+ * the page is generated. That has one honest limitation, stated on the page
+ * itself: if the site is not rebuilt for a year, the warning cannot know that.
+ * So the verification date is always printed in full beside it, and a reader
+ * can judge for themselves regardless of what the warning says.
  */
 export function RateAnchor({
   locale,
@@ -38,6 +51,11 @@ export function RateAnchor({
   if (!snapshot) return null
 
   const spread = assumedRate > 0 ? assumedRate - snapshot.value : undefined
+  const buildMonth = new Date().toISOString().slice(0, 7)
+  const overdue =
+    'expectedReview' in snapshot && typeof snapshot.expectedReview === 'string'
+      ? snapshot.expectedReview < buildMonth
+      : false
 
   return (
     <div className="border border-annotation/25 bg-recess px-4 py-3">
@@ -61,6 +79,14 @@ export function RateAnchor({
           {id
             ? `Bunga mengambang yang Anda isikan ${formatRate(spread, intl)} di atas angka itu. Selisih itulah yang tidak diumumkan siapa pun: di dalamnya ada SBDK bank Anda dan marjinnya. Aplikasi ini tidak tahu berapa seharusnya — Anda yang menetapkannya.`
             : `The floating rate you entered sits ${formatRate(spread, intl)} above that figure. That gap is the part nobody publishes: your bank's SBDK and its margin are both inside it. This app does not know what it should be — you set it.`}
+        </p>
+      )}
+
+      {overdue && (
+        <p className="measure mt-3 border-l-2 border-unknown pl-3 text-caption text-unknown">
+          {id
+            ? `Angka ini sudah lewat jadwal tinjauannya (${snapshot.expectedReview}). ${anchor.reviewCadence.id} Periksa langsung ke sumbernya sebelum memakainya sebagai acuan.`
+            : `This figure is past its review date (${snapshot.expectedReview}). ${anchor.reviewCadence.en} Check the source directly before relying on it.`}
         </p>
       )}
 

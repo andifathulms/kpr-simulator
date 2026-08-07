@@ -10,11 +10,16 @@
       "effectiveFrom": "2026-07-22",
       "basis": "Keputusan Rapat Dewan Gubernur Bank Indonesia 21–22 Juli 2026",
       "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2814226.aspx",
-      "verifiedAt": "2026-08-07"
+      "verifiedAt": "2026-08-07",
+      "expectedReview": "2026-09"
     }
   ],
   "note": {
     "id": "Ini suku bunga kebijakan Bank Indonesia, bukan bunga KPR dan bukan dasar penetapan bunga KPR Anda. KPR dihargai dari SBDK masing-masing bank ditambah marjin yang tidak diumumkan. Angka ini hanya titik acuan skala, bukan ramalan.",
     "en": "This is Bank Indonesia's policy rate. It is not a KPR rate and not the basis your KPR is priced off — that is each bank's own SBDK plus an unpublished margin. It is a reference point for scale, never a forecast."
+  },
+  "reviewCadence": {
+    "id": "Rapat Dewan Gubernur Bank Indonesia bersidang tiap bulan.",
+    "en": "Bank Indonesia's Board of Governors meets monthly."
   }
 }

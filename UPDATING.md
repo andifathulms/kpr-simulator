@@ -46,11 +46,31 @@ Put it in `data/gaps.json` with a `detail` in both languages explaining, in plai
 
 The current gaps are LTV ratios, FLPP tenor and minimum down payment, SBUM, per-kabupaten NPOPTKP, bank fees, and SBDK snapshots.
 
+The reference anchor in `data/acuan/` does **not** close the SBDK gap and is not a substitute for it: a policy rate is not a lending rate.
+
 ## Recording an SBDK snapshot
 
 `data/sbdk/snapshots.json` is deliberately empty, and the reason is in its own `coverageNote`: SBDK is published per bank, and PRD §9 says a bank name appears in this product only because the user typed it.
 
 If OJK's integrated portal (`data.ojk.go.id/SJKPublic`, under Perbankan → Bank Umum → Kelompok Informasi Acuan → Suku Bunga Dasar Kredit) publishes an **aggregate** for the KPR segment, that can be recorded: it is a segment-level figure and names no institution. Give it its `observedAt`, its `basis`, its `sourceUrl`, and the date you recorded it. It is rendered as a dated reference and never pre-filled into a rate field.
+
+## Re-verifying the reference anchor
+
+`data/acuan/bi-rate.json` holds one dated observation of Bank Indonesia's policy rate, shown on the Hitung page beside the floating-rate field. **It is the fastest-ageing figure in the project** — the Board of Governors meets monthly, so it is superseded far more often than anything in `data/rules/`.
+
+It is not a rule pack and not a regulation: it is a published number observed on a date. It exists to give scale to a field the app refuses to fill, and it must never be presented as what a KPR is priced off. That is each bank's SBDK plus an unpublished margin, and the note in the file says so on the page in both languages. **If you ever find yourself removing that sentence, stop** — without it the anchor teaches a false equivalence, which is worse than having no anchor at all.
+
+To re-verify:
+
+1. Open the BI-Rate page — `bi.go.id/en/statistik/indikator/bi-rate.aspx` — and the news release for the most recent Board of Governors meeting.
+2. **Confirm the figure in two independent places.** The value that ships now was cross-checked against BI's own release and a second market source before it was written. A page summarised by a tool is not a source.
+3. If the rate is unchanged, update `verifiedAt` and push `expectedReview` to next month. Nothing else.
+4. If it has changed, add a new object to `snapshots` with its own `value`, `effectiveFrom`, `basis`, `sourceUrl`, `verifiedAt`, and `expectedReview`. The component renders `snapshots[0]`, so the newest goes first.
+5. `pnpm rules:report` lists it under **ACUAN** and flags it `⚠ LEWAT TINJAUAN` once `expectedReview` is past.
+
+The page carries its own warning too: once the build date is past `expectedReview`, an amber line appears on the anchor telling the reader to check the source directly. That check runs at build time, so a site left un-rebuilt for a year cannot know it has aged — which is why the verification date is always printed in full beside the figure, for a reader to judge for themselves.
+
+**If you cannot verify it, delete the snapshot.** An empty anchor admits it knows nothing; a stale one with a date on it implies somebody checked.
 
 ## Cross-checking against a bank's own calculator
 
