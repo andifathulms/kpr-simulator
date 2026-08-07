@@ -229,7 +229,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
           </FieldGroup>
 
           <details className="border-t border-annotation/25 pt-4">
-            <summary className="sheet-label cursor-pointer text-xs text-annotation">
+            <summary className="sheet-label cursor-pointer text-caption text-annotation">
               {id ? 'Rincian teknis' : 'Technical details'}
             </summary>
             <div className="mt-4 grid grid-cols-2 gap-3">
@@ -254,10 +254,10 @@ export function AmbangView({ locale }: { locale: Locale }) {
         <div className="space-y-10">
           {!ready && (
             <section className="border border-annotation/25 bg-recess px-6 py-6">
-              <p className="sheet-label text-xs text-annotation">
+              <p className="sheet-label text-caption text-annotation">
                 {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
               </p>
-              <p className="measure mt-2 text-print/85">
+              <p className="measure mt-2 text-muted">
                 {id
                   ? 'Isi plafon, bunga tetap yang dikutip, masa tetapnya, dan penghasilan per bulan. Angka ambang muncul di sini.'
                   : 'Enter the amount financed, the fixed rate you were quoted, its length, and your monthly income. The threshold figure appears here.'}
@@ -274,14 +274,14 @@ export function AmbangView({ locale }: { locale: Locale }) {
           {result?.kind === 'ok' && (
             <>
               {result.outcome.kind === 'found' && (
-                <section className="border-2 border-threshold bg-threshold/10 px-6 py-6">
-                  <p className="sheet-label text-xs text-threshold">
+                <section className="border-2 border-threshold bg-threshold/[0.08] px-6 py-6">
+                  <p className="sheet-label text-caption text-threshold">
                     {id ? 'Ambang — bunga mengambang' : 'Threshold — floating rate'}
                   </p>
                   <p className="figure mt-2 text-headline text-threshold">
                     {formatRate(result.outcome.annualRate, intl)}
                   </p>
-                  <p className="measure mt-4 text-print/90">
+                  <p className="measure mt-4 text-print">
                     {id
                       ? 'Pada bunga ini, angsuran setelah masa tetap menjadi '
                       : 'At this rate, the instalment after the fixed period becomes '}
@@ -290,7 +290,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
                       ? ` — tepat ${formatRate(state.porsi, intl)} dari penghasilan yang Anda isikan.`
                       : ` — exactly ${formatRate(state.porsi, intl)} of the income you entered.`}
                   </p>
-                  <p className="measure mt-3 text-sm text-print/75">
+                  <p className="measure mt-3 text-caption text-muted">
                     {id
                       ? 'Pertanyaan untuk bank: berapa marjin yang Anda tambahkan di atas SBDK setelah masa tetap, dan seberapa sering ditinjau? Aplikasi ini tidak menyatakan apakah angka di atas mungkin terjadi.'
                       : 'The question for the bank: what margin do you add over SBDK once the fixed period ends, and how often is it reviewed? This app says nothing about whether the rate above is likely.'}

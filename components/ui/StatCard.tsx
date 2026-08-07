@@ -20,12 +20,12 @@ const TONES: Record<Tone, { readonly box: string; readonly label: string; readon
       value: 'text-print',
     },
     unknown: {
-      box: 'border-unknown/60 bg-unknown/10',
+      box: 'border-unknown/60 bg-unknown/[0.08]',
       label: 'text-unknown',
       value: 'text-unknown',
     },
     threshold: {
-      box: 'border-threshold/60 bg-threshold/10',
+      box: 'border-threshold/60 bg-threshold/[0.08]',
       label: 'text-threshold',
       value: 'text-threshold',
     },
@@ -50,14 +50,14 @@ export function StatCard({
   const palette = TONES[tone]
   return (
     <div className={`flex flex-col justify-between border px-4 py-3 ${palette.box}`}>
-      <p className={`sheet-label text-xs ${palette.label}`}>{label}</p>
+      <p className={`sheet-label text-caption ${palette.label}`}>{label}</p>
       <p
-        className={`figure mt-2 ${size === 'lg' ? 'text-3xl' : 'text-xl'} ${palette.value}`}
+        className={`figure mt-2 ${size === 'lg' ? 'text-title' : 'text-subhead'} ${palette.value}`}
       >
         {value}
       </p>
       {(note || tag) && (
-        <p className={`mt-2 text-xs ${tone === 'computed' ? 'text-print/70' : palette.label}`}>
+        <p className={`mt-2 text-caption ${tone === 'computed' ? 'text-muted' : palette.label}`}>
           {tag && <span className="sheet-label mr-2">{tag}</span>}
           {note}
         </p>

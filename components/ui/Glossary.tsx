@@ -44,8 +44,8 @@ export function Glossary({ locale }: { locale: Locale }) {
     <dl className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
       {TERMS.map((entry) => (
         <div key={entry.term}>
-          <dt className="sheet-label text-xs text-annotation">{entry.term}</dt>
-          <dd className="mt-1 text-sm text-print/80">
+          <dt className="sheet-label text-caption text-annotation">{entry.term}</dt>
+          <dd className="mt-1 text-caption text-muted">
             {locale === 'id' ? entry.id : entry.en}
           </dd>
         </div>

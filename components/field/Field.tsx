@@ -23,11 +23,11 @@ export function MoneyField({
   const id = useId()
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className={`sheet-label block text-xs ${amber ? 'text-unknown' : 'text-annotation'}`}>
+      <label htmlFor={id} className={`sheet-label block text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
         {label}
       </label>
       <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
-        <span className="figure px-3 py-2 text-print/50">Rp</span>
+        <span className="figure px-3 py-2 text-muted">Rp</span>
         <input
           id={id}
           inputMode="numeric"
@@ -41,7 +41,7 @@ export function MoneyField({
           }`}
         />
       </div>
-      {hint && <p className={`text-xs ${amber ? 'text-unknown' : 'text-print/60'}`}>{hint}</p>}
+      {hint && <p className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{hint}</p>}
     </div>
   )
 }
@@ -68,7 +68,7 @@ export function RateField({
   const percent = Number((value * 100).toFixed(4))
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className={`sheet-label block text-xs ${amber ? 'text-unknown' : 'text-annotation'}`}>
+      <label htmlFor={id} className={`sheet-label block text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
         {label}
       </label>
       <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
@@ -88,9 +88,9 @@ export function RateField({
             amber ? 'text-unknown' : 'text-print'
           }`}
         />
-        <span className="figure px-3 py-2 text-print/50">%</span>
+        <span className="figure px-3 py-2 text-muted">%</span>
       </div>
-      {hint && <p className={`text-xs ${amber ? 'text-unknown' : 'text-print/60'}`}>{hint}</p>}
+      {hint && <p className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{hint}</p>}
     </div>
   )
 }
@@ -115,7 +115,7 @@ export function NumberField({
   const id = useId()
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="sheet-label block text-xs text-annotation">
+      <label htmlFor={id} className="sheet-label block text-caption text-annotation">
         {label}
       </label>
       <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
@@ -128,9 +128,9 @@ export function NumberField({
           onChange={(event) => onChange(Number(event.target.value))}
           className="figure w-full bg-transparent px-3 py-2 text-right text-print outline-none"
         />
-        {suffix && <span className="figure px-3 py-2 text-print/50">{suffix}</span>}
+        {suffix && <span className="figure px-3 py-2 text-muted">{suffix}</span>}
       </div>
-      {hint && <p className="text-xs text-print/60">{hint}</p>}
+      {hint && <p className="text-caption text-muted">{hint}</p>}
     </div>
   )
 }
@@ -151,7 +151,7 @@ export function SelectField<T extends string>({
   const id = useId()
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="sheet-label block text-xs text-annotation">
+      <label htmlFor={id} className="sheet-label block text-caption text-annotation">
         {label}
       </label>
       <select
@@ -166,7 +166,7 @@ export function SelectField<T extends string>({
           </option>
         ))}
       </select>
-      {hint && <p className="text-xs text-print/60">{hint}</p>}
+      {hint && <p className="text-caption text-muted">{hint}</p>}
     </div>
   )
 }

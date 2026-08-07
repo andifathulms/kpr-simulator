@@ -130,7 +130,7 @@ export function ScheduleElevation({
         />
       </svg>
 
-      <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-xs">
+      <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-caption">
         <span className="figure text-annotation">
           {firstPeriod ? formatPeriod(firstPeriod) : ''} — {lastPeriod ? formatPeriod(lastPeriod) : ''}
         </span>
@@ -139,7 +139,7 @@ export function ScheduleElevation({
           <Key className="bg-print/15" label={t.table.pokok} />
           {band && <Key className="bg-unknown/40" label={t.floating.short} />}
         </span>
-        <span className="figure text-print/70">
+        <span className="figure text-muted">
           {t.table.angsuran} ≤ {formatRupiah(asRupiah(ceiling), intlLocale(locale))}
         </span>
       </figcaption>
@@ -151,7 +151,7 @@ function Key({ className, label }: { className: string; label: string }) {
   return (
     <span className="flex items-center gap-2">
       <span className={`inline-block h-2 w-6 ${className}`} aria-hidden />
-      <span className="text-print/75">{label}</span>
+      <span className="text-muted">{label}</span>
     </span>
   )
 }

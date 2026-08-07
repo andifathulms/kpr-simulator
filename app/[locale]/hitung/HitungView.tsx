@@ -271,8 +271,8 @@ export function HitungView({ locale }: { locale: Locale }) {
               }
             />
             <div className="border border-annotation/25 bg-recess px-3 py-2">
-              <p className="sheet-label text-xs text-annotation">{t.form.plafon}</p>
-              <p className="figure text-lg">{formatRupiah(rupiah(plafon), intl)}</p>
+              <p className="sheet-label text-caption text-annotation">{t.form.plafon}</p>
+              <p className="figure text-lead">{formatRupiah(rupiah(plafon), intl)}</p>
             </div>
           </FieldGroup>
 
@@ -342,7 +342,7 @@ export function HitungView({ locale }: { locale: Locale }) {
                 max={10}
               />
             </div>
-            <p className="text-xs text-unknown/90">
+            <p className="text-caption text-unknown">
               {id
                 ? 'Kedua angka itu melebarkan pita kemungkinan pada grafik — bukan ramalan, melainkan rentang yang Anda ingin lihat.'
                 : 'Those two widen the band of outcomes on the chart — not a forecast, just the range you want to look at.'}
@@ -350,7 +350,7 @@ export function HitungView({ locale }: { locale: Locale }) {
           </FieldGroup>
 
           <details className="border-t border-annotation/25 pt-4">
-            <summary className="sheet-label cursor-pointer text-xs text-annotation">
+            <summary className="sheet-label cursor-pointer text-caption text-annotation">
               {id ? 'Rincian teknis' : 'Technical details'}
             </summary>
             <div className="mt-4 space-y-4">
@@ -388,15 +388,15 @@ export function HitungView({ locale }: { locale: Locale }) {
         <div className="space-y-10">
           {!ready && (
             <section className="border border-annotation/25 bg-recess px-6 py-6">
-              <p className="sheet-label text-xs text-annotation">
+              <p className="sheet-label text-caption text-annotation">
                 {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
               </p>
-              <p className="measure mt-2 text-print/85">
+              <p className="measure mt-2 text-muted">
                 {id
                   ? 'Isi tiga hal di sebelah kiri dan jadwalnya muncul di sini.'
                   : 'Fill in three things on the left and the schedule appears here.'}
               </p>
-              <ul className="mt-4 space-y-2 text-sm">
+              <ul className="mt-4 space-y-2 text-caption">
                 <Need done={state.harga > 0} label={t.form.harga} locale={locale} />
                 <Need done={plafon > 0} label={t.form.plafon} locale={locale} />
                 <Need done={state.bungaTetap > 0} label={t.form.bungaTetap} locale={locale} />
@@ -498,13 +498,13 @@ export function HitungView({ locale }: { locale: Locale }) {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="border border-annotation/25 bg-recess px-4 py-3">
-                    <p className="sheet-label text-xs text-annotation">
+                    <p className="sheet-label text-caption text-annotation">
                       {t.form.efektif} {formatRate(state.bungaTetap, intl)}
                     </p>
-                    <p className="figure mt-1 text-lg">
+                    <p className="figure mt-1 text-lead">
                       {formatRupiah(result.firstPayment, intl)}
                     </p>
-                    <p className="mt-1 text-xs text-print/70">
+                    <p className="mt-1 text-caption text-muted">
                       {id
                         ? 'Bunga atas saldo terutang. IRR jadwal ini: '
                         : 'Interest on the outstanding balance. This schedule’s IRR: '}
@@ -512,13 +512,13 @@ export function HitungView({ locale }: { locale: Locale }) {
                     </p>
                   </div>
                   <div className="border border-annotation/25 bg-recess px-4 py-3">
-                    <p className="sheet-label text-xs text-annotation">
+                    <p className="sheet-label text-caption text-annotation">
                       {t.form.flat} {formatRate(state.bungaTetap, intl)}
                     </p>
-                    <p className="figure mt-1 text-lg">
+                    <p className="figure mt-1 text-lead">
                       {formatRupiah(result.flat.instalments[0]?.payment ?? rupiah(0), intl)}
                     </p>
-                    <p className="mt-1 text-xs text-print/70">
+                    <p className="mt-1 text-caption text-muted">
                       {id ? 'Setara efektif: ' : 'Equivalent effective rate: '}
                       <span className="figure">
                         {formatRate(result.flatAsEffective.effectiveAnnualRate, intl)}
@@ -569,7 +569,7 @@ export function HitungView({ locale }: { locale: Locale }) {
 /** One line of the empty state: what is still needed, and what is already in. */
 function Need({ done, label, locale }: { done: boolean; label: string; locale: Locale }) {
   return (
-    <li className={`flex items-baseline gap-3 ${done ? 'text-print/50' : 'text-print'}`}>
+    <li className={`flex items-baseline gap-3 ${done ? 'text-muted' : 'text-print'}`}>
       <span aria-hidden className={`figure ${done ? 'text-annotation' : 'text-unknown'}`}>
         {done ? '✓' : '·'}
       </span>

@@ -61,7 +61,7 @@ export function PrepayPanel({
 
   return (
     <section className="space-y-4">
-      <h2 className="sheet-label text-sm text-annotation">
+      <h2 className="sheet-label text-caption text-annotation">
         {id ? 'Pelunasan sebagian' : 'Extra payment'}
       </h2>
 
@@ -145,12 +145,12 @@ export function PrepayPanel({
             </ThresholdNotice>
           )}
 
-          <p className="text-sm text-print/75">
+          <p className="text-caption text-muted">
             {id
               ? `Tanpa pelunasan sebagian: total bunga ${formatRupiah(result.baseline.totalInterest, intl)} selama ${result.baseline.termMonths} bulan. Dengan pelunasan: ${formatRupiah(result.withPrepayment.totalInterest, intl)} selama ${result.withPrepayment.termMonths} bulan.`
               : `Without the extra payment: ${formatRupiah(result.baseline.totalInterest, intl)} of interest over ${result.baseline.termMonths} months. With it: ${formatRupiah(result.withPrepayment.totalInterest, intl)} over ${result.withPrepayment.termMonths} months.`}
           </p>
-          <p className="text-xs text-print/60">{t.common.confirmWithBank}</p>
+          <p className="text-caption text-muted">{t.common.confirmWithBank}</p>
         </>
       )}
     </section>
@@ -175,15 +175,15 @@ function Cell({
     <div
       className={`border px-4 py-3 ${
         negative
-          ? 'border-threshold/60 bg-threshold/10'
+          ? 'border-threshold/60 bg-threshold/[0.08]'
           : amber
-            ? 'border-unknown/60 bg-unknown/10'
+            ? 'border-unknown/60 bg-unknown/[0.08]'
             : 'border-annotation/25 bg-recess'
       }`}
     >
-      <p className={`sheet-label text-xs ${label_tone}`}>{label}</p>
+      <p className={`sheet-label text-caption ${label_tone}`}>{label}</p>
       <p
-        className={`figure mt-1 text-lg ${
+        className={`figure mt-1 text-lead ${
           negative ? 'text-threshold' : amber ? 'text-unknown' : 'text-print'
         }`}
       >

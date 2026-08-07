@@ -13,7 +13,7 @@ export function TraceView({ trace, locale }: { trace: ComputationTrace; locale: 
   const intl = intlLocale(locale)
 
   return (
-    <ol className="space-y-3 border-l border-annotation/30 pl-5 text-sm">
+    <ol className="space-y-3 border-l border-annotation/30 pl-5 text-caption">
       {trace.map((step, index) => {
         switch (step.type) {
           case 'input':
@@ -26,7 +26,7 @@ export function TraceView({ trace, locale }: { trace: ComputationTrace; locale: 
             return (
               <Step key={index} kind={step.parameterId} label={step.label}>
                 <span className="figure">{step.value}</span>
-                <span className="mt-1 block text-xs text-annotation">
+                <span className="mt-1 block text-caption text-annotation">
                   {step.basis} ·{' '}
                   <a className="underline" href={step.sourceUrl} rel="noreferrer noopener">
                     {t.common.source}
@@ -37,7 +37,7 @@ export function TraceView({ trace, locale }: { trace: ComputationTrace; locale: 
           case 'formula':
             return (
               <Step key={index} kind="=" label={step.label}>
-                <span className="figure break-all text-print/80">{step.expression}</span>
+                <span className="figure break-all text-muted">{step.expression}</span>
                 <span className="figure mt-1 block">{step.exact.toFixed(4)}</span>
               </Step>
             )
@@ -58,7 +58,7 @@ export function TraceView({ trace, locale }: { trace: ComputationTrace; locale: 
           case 'conservation':
             return (
               <Step key={index} kind="✓" label={step.label}>
-                <ul className="space-y-0.5 text-xs text-print/75">
+                <ul className="space-y-0.5 text-caption text-muted">
                   {step.checks.map((check) => (
                     <li key={check}>{check}</li>
                   ))}
@@ -94,7 +94,7 @@ function Step({
         }`}
         aria-hidden
       />
-      <p className={`sheet-label text-xs ${amber ? 'text-unknown' : 'text-annotation'}`}>
+      <p className={`sheet-label text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
         {kind}
       </p>
       <p className={amber ? 'text-unknown' : 'text-print'}>{label}</p>

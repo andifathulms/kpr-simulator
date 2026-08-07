@@ -20,10 +20,10 @@ export function Panel({
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-        <h2 className="sheet-label text-sm text-annotation">{title}</h2>
+        <h2 className="sheet-label text-caption text-annotation">{title}</h2>
         {aside}
       </div>
-      {note && <p className="measure text-sm text-print/70">{note}</p>}
+      {note && <p className="measure text-caption text-muted">{note}</p>}
       {children}
     </section>
   )

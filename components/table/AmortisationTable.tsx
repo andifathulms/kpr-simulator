@@ -24,7 +24,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
   return (
     <div className="space-y-4">
       <div className="overflow-x-auto border border-annotation/25">
-        <table className="w-full min-w-[52rem] border-collapse text-sm">
+        <table className="w-full min-w-[52rem] border-collapse text-caption">
           <caption className="sr-only">
             {locale === 'id'
               ? 'Tabel angsuran: saldo, angsuran, bunga, dan pokok per bulan.'
@@ -58,7 +58,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
           </tbody>
           <tfoot>
             <tr className="border-t border-annotation/40 bg-recess">
-              <td className="px-3 py-2 sheet-label text-xs text-annotation" colSpan={4}>
+              <td className="px-3 py-2 sheet-label text-micro text-annotation" colSpan={4}>
                 {t.table.total}
               </td>
               <td className="figure px-3 py-2 text-right">
@@ -80,7 +80,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
         <button
           type="button"
           onClick={() => setShowAll(!showAll)}
-          className="sheet-label border border-annotation/40 px-4 py-2 text-xs text-annotation hover:text-print"
+          className="sheet-label border border-annotation/40 px-4 py-2 text-micro text-annotation hover:text-print"
         >
           {showAll
             ? locale === 'id'
@@ -99,7 +99,7 @@ function Th({ children, align }: { children: React.ReactNode; align: 'left' | 'r
   return (
     <th
       scope="col"
-      className={`sheet-label px-3 py-2 text-xs font-normal text-annotation ${
+      className={`sheet-label px-3 py-2 text-micro font-normal text-annotation ${
         align === 'right' ? 'text-right' : 'text-left'
       }`}
     >
@@ -143,16 +143,16 @@ function Row({
         <td className="figure px-3 py-1.5 text-right">
           {formatAmount(instalment.closingBalance, intl)}
         </td>
-        <td className="px-3 py-1.5 text-xs">
+        <td className="px-3 py-1.5 text-micro">
           {instalment.phase === 'tetap' ? t.table.tetap : t.table.mengambang}
           {assumed && <span className="ml-2 text-unknown">·{t.common.assumption}</span>}
         </td>
       </tr>
       {expanded && (
         <tr className="border-b border-annotation/15 bg-recess">
-          <td colSpan={8} className="px-3 py-3 text-xs">
+          <td colSpan={8} className="px-3 py-3 text-micro">
             <p className="sheet-label mb-2 text-annotation">{t.common.derivation}</p>
-            <ul className="figure space-y-1 text-print/85">
+            <ul className="figure space-y-1 text-muted">
               <li>
                 {t.table.bunga} = {formatAmount(instalment.openingBalance, intl)} ×{' '}
                 {formatRate(instalment.annualRate, intl)} ÷ 12 ={' '}

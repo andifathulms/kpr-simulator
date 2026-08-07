@@ -34,7 +34,7 @@ export function ShareBar({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={copy}
-          className="sheet-label border border-annotation/40 px-4 py-2 text-xs text-annotation hover:text-print"
+          className="sheet-label border border-annotation/40 px-4 py-2 text-caption text-annotation hover:text-print"
         >
           {copied
             ? id
@@ -47,12 +47,12 @@ export function ShareBar({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={() => window.print()}
-          className="sheet-label border border-annotation/40 px-4 py-2 text-xs text-annotation hover:text-print"
+          className="sheet-label border border-annotation/40 px-4 py-2 text-caption text-annotation hover:text-print"
         >
           {id ? 'Cetak' : 'Print'}
         </button>
       </div>
-      <p className="max-w-xl text-xs text-print/60">
+      <p className="max-w-xl text-caption text-muted">
         {id
           ? 'Tautan memuat seluruh angka yang Anda isikan, termasuk penghasilan, di bagian setelah tanda pagar. Bagian itu tidak pernah dikirim ke server mana pun — tetapi siapa pun yang menerima tautannya bisa membacanya.'
           : 'The link carries every figure you entered, income included, in the part after the hash. That part is never sent to any server — but anyone you hand the link to can read it.'}

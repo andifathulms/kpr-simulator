@@ -27,15 +27,15 @@ export function FieldGroup({
     >
       <legend className="sr-only">{title}</legend>
       <div aria-hidden className="flex items-baseline gap-2">
-        <span className={`figure text-xs ${amber ? 'text-unknown' : 'text-annotation'}`}>
+        <span className={`figure text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
           {step}
         </span>
-        <span className={`sheet-label text-xs ${amber ? 'text-unknown' : 'text-print'}`}>
+        <span className={`sheet-label text-caption ${amber ? 'text-unknown' : 'text-print'}`}>
           {title}
         </span>
       </div>
       {note && (
-        <p className={`mt-1 text-xs ${amber ? 'text-unknown/90' : 'text-print/60'}`}>{note}</p>
+        <p className={`mt-1 text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{note}</p>
       )}
       <div className="mt-4 space-y-4">{children}</div>
     </fieldset>

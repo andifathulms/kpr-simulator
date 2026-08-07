@@ -38,11 +38,11 @@ export default function ParameterPage({ params }: { params: { locale: string } }
 
         {PACKS.map((pack, packIndex) => (
           <section key={`${pack.pack}-${packIndex}`} className="space-y-4">
-            <h2 className="sheet-label text-sm text-annotation">
+            <h2 className="sheet-label text-caption text-annotation">
               {id ? pack.title.id : pack.title.en}
             </h2>
             <div className="overflow-x-auto border border-annotation/25">
-              <table className="w-full min-w-[48rem] border-collapse text-sm">
+              <table className="w-full min-w-[48rem] border-collapse text-caption">
                 <thead>
                   <tr className="border-b border-annotation/40 bg-recess">
                     <Th>{id ? 'Identifier' : 'Identifier'}</Th>
@@ -58,18 +58,18 @@ export default function ParameterPage({ params }: { params: { locale: string } }
                       key={`${parameter.id}-${parameter.effectiveFrom}-${index}`}
                       className="border-b border-annotation/15 align-top"
                     >
-                      <td className="figure px-3 py-2 text-xs">
+                      <td className="figure px-3 py-2 text-caption">
                         {parameter.id}
-                        <span className="mt-1 block font-sans text-print/70">
+                        <span className="mt-1 block font-sans text-muted">
                           {id ? parameter.label.id : parameter.label.en}
                         </span>
                       </td>
                       <td className="figure px-3 py-2 text-right">{renderValue(parameter.value)}</td>
-                      <td className="figure px-3 py-2 text-xs">
+                      <td className="figure px-3 py-2 text-caption">
                         {parameter.effectiveFrom} →{' '}
                         {parameter.effectiveTo ?? (id ? 'berlaku' : 'in force')}
                       </td>
-                      <td className="px-3 py-2 text-xs">
+                      <td className="px-3 py-2 text-caption">
                         {parameter.basis}
                         <a
                           className="mt-1 block text-annotation underline"
@@ -84,7 +84,7 @@ export default function ParameterPage({ params }: { params: { locale: string } }
                           </span>
                         )}
                       </td>
-                      <td className="figure px-3 py-2 text-xs">
+                      <td className="figure px-3 py-2 text-caption">
                         {parameter.verifiedAt}
                         {parameter.expectedReview && (
                           <span className="mt-1 block text-annotation">
@@ -101,18 +101,18 @@ export default function ParameterPage({ params }: { params: { locale: string } }
         ))}
 
         <section className="space-y-4">
-          <h2 className="sheet-label text-sm text-unknown">{t.common.gapsTitle}</h2>
-          <p className="max-w-3xl text-sm text-print/80">
+          <h2 className="sheet-label text-caption text-unknown">{t.common.gapsTitle}</h2>
+          <p className="max-w-3xl text-caption text-muted">
             {id
               ? 'Berikut nilai-nilai yang tidak dimuat karena tidak berhasil diverifikasi ke sumber yang sah. Untuk masing-masing, aplikasi menolak menghitung dan menyebut apa yang kurang, alih-alih mengisinya dengan angka yang masuk akal.'
               : 'These values are not carried because they could not be verified against a sound source. For each, the app refuses to compute and names what is missing rather than filling it with a plausible number.'}
           </p>
           <ul className="grid gap-3 md:grid-cols-2">
             {COVERAGE_GAPS.map((gap) => (
-              <li key={gap.reference} className="border-l-2 border-unknown bg-unknown/10 px-4 py-3">
-                <p className="sheet-label text-xs text-unknown">{id ? gap.title.id : gap.title.en}</p>
-                <p className="figure mt-0.5 text-xs text-unknown/80">{gap.reference}</p>
-                <p className="mt-1 text-sm text-print/85">{id ? gap.detail.id : gap.detail.en}</p>
+              <li key={gap.reference} className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-3">
+                <p className="sheet-label text-caption text-unknown">{id ? gap.title.id : gap.title.en}</p>
+                <p className="figure mt-0.5 text-caption text-unknown">{gap.reference}</p>
+                <p className="mt-1 text-caption text-muted">{id ? gap.detail.id : gap.detail.en}</p>
               </li>
             ))}
           </ul>
@@ -126,7 +126,7 @@ function Th({ children }: { children: React.ReactNode }) {
   return (
     <th
       scope="col"
-      className="sheet-label px-3 py-2 text-left text-xs font-normal text-annotation"
+      className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation"
     >
       {children}
     </th>

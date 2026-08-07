@@ -198,7 +198,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
         <div className="space-y-8">
           <ShareBar locale={locale} />
           <section className="space-y-3">
-            <h2 className="sheet-label text-sm text-annotation">
+            <h2 className="sheet-label text-caption text-annotation">
               {id ? 'Pemeriksaan kriteria' : 'Criteria check'}
             </h2>
 
@@ -212,20 +212,20 @@ export function SubsidiView({ locale }: { locale: Locale }) {
                     className={`border-l-2 px-4 py-3 ${
                       criterion.met
                         ? 'border-annotation/50 bg-recess'
-                        : 'border-threshold bg-threshold/10'
+                        : 'border-threshold bg-threshold/[0.08]'
                     }`}
                   >
-                    <p className="sheet-label text-xs text-annotation">
+                    <p className="sheet-label text-caption text-annotation">
                       {id ? criterion.label.id : criterion.label.en}
                     </p>
                     <p className="figure mt-1">
                       {criterion.stated}
-                      <span className={criterion.met ? 'text-print/60' : 'text-threshold'}>
+                      <span className={criterion.met ? 'text-muted' : 'text-threshold'}>
                         {' '}
                         {criterion.met ? '≤' : '>'} {criterion.ceiling}
                       </span>
                     </p>
-                    <p className="mt-1 text-xs text-annotation">
+                    <p className="mt-1 text-caption text-annotation">
                       {criterion.parameter.basis} ·{' '}
                       <a
                         className="underline"
@@ -249,7 +249,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
           </section>
 
           <section className="space-y-3">
-            <h2 className="sheet-label text-sm text-annotation">
+            <h2 className="sheet-label text-caption text-annotation">
               {id ? 'Jadwal angsuran' : 'Payment schedule'}
             </h2>
 
@@ -257,7 +257,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
               <RefusalNotice outcome={rate} locale={locale} />
             ) : (
               <>
-                <p className="text-sm text-print/80">
+                <p className="text-caption text-muted">
                   {id ? 'Suku bunga ' : 'Rate '}
                   <span className="figure">{formatRate(rate.value.value, intl)}</span>
                   {id ? ' efektif, tetap sampai akhir tenor. ' : ' effective, fixed to the end of the term. '}
@@ -273,7 +273,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
                   </span>
                 </p>
                 {rate.value.parameter.note && (
-                  <p className="text-xs text-unknown">
+                  <p className="text-caption text-unknown">
                     {id ? rate.value.parameter.note.id : rate.value.parameter.note.en}
                   </p>
                 )}

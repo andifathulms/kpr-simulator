@@ -14,9 +14,9 @@ export function UnknownNotice({
   children: React.ReactNode
 }) {
   return (
-    <aside className="border-l-2 border-unknown bg-unknown/10 px-4 py-3">
-      <p className="sheet-label text-xs text-unknown">{title}</p>
-      <div className="mt-1 text-sm text-print/90">{children}</div>
+    <aside className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-3">
+      <p className="sheet-label text-caption text-unknown">{title}</p>
+      <div className="mt-1 text-caption text-print">{children}</div>
     </aside>
   )
 }
@@ -29,9 +29,9 @@ export function ThresholdNotice({
   children: React.ReactNode
 }) {
   return (
-    <aside className="border-l-2 border-threshold bg-threshold/10 px-4 py-3">
-      <p className="sheet-label text-xs text-threshold">{title}</p>
-      <div className="mt-1 text-sm text-print/90">{children}</div>
+    <aside className="border-l-2 border-threshold bg-threshold/[0.08] px-4 py-3">
+      <p className="sheet-label text-caption text-threshold">{title}</p>
+      <div className="mt-1 text-caption text-print">{children}</div>
     </aside>
   )
 }
@@ -48,21 +48,21 @@ export function RefusalNotice({
   locale: Locale
 }) {
   return (
-    <aside className="border-l-2 border-unknown bg-unknown/10 px-4 py-3">
-      <p className="sheet-label text-xs text-unknown">
+    <aside className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-3">
+      <p className="sheet-label text-caption text-unknown">
         {locale === 'id' ? 'Tidak dapat dihitung' : 'Cannot be computed'}
       </p>
-      <p className="mt-1 text-sm text-print/90">
+      <p className="mt-1 text-caption text-print">
         {locale === 'id'
           ? 'Aplikasi menolak menghitung karena ada yang tidak diketahui. Nilai tidak diperkirakan dan tidak diambil dari periode terdekat.'
           : 'The app refuses to compute because something is missing. Nothing is estimated and nothing is taken from a nearby period.'}
       </p>
-      <ul className="mt-2 space-y-1 text-sm text-unknown">
+      <ul className="mt-2 space-y-1 text-caption text-unknown">
         {outcome.gaps.map((gap, index) => (
           <li key={`${gap.reference}-${index}`}>
             <span className="figure">{gap.reference}</span>
             {gap.period && <span className="figure"> · {gap.period}</span>}
-            <span className="block text-print/80">
+            <span className="block text-muted">
               {locale === 'id' ? gap.detail.id : gap.detail.en}
             </span>
           </li>

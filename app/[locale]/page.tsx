@@ -31,7 +31,7 @@ export default function Home({ params }: { params: { locale: string } }) {
               off — below that size the kink alone carries it (brand kit). */}
           <div className="flex items-center gap-4">
             <Mark size={56} />
-            <p className="sheet-label text-xs text-annotation">
+            <p className="sheet-label text-caption text-annotation">
               {id ? 'Simulator KPR · Proyek pribadi' : 'KPR simulator · A personal project'}
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function Home({ params }: { params: { locale: string } }) {
               ? 'Bunga yang dikutip bank hanya berlaku beberapa tahun. Sisanya, tidak ada yang tahu.'
               : 'The rate your bank quotes lasts a few years. Nobody knows the rest.'}
           </h1>
-          <p className="measure mt-6 text-lg text-print/85">
+          <p className="measure mt-6 text-lead text-muted">
             {id
               ? 'Kalkulator KPR lain memakai satu bunga untuk seluruh tenor. Untuk KPR komersial itu selalu keliru: bank mengunci bunga dua atau tiga tahun, lalu sisanya mengambang. Aplikasi ini menghitung kedua bagian itu terpisah, dan mengatakan dengan jelas bagian mana yang tidak diketahui siapa pun.'
               : 'Other KPR calculators apply one rate across the whole term. For a commercial KPR that is always wrong: the bank locks a rate for two or three years, then the loan floats. This tool computes the two parts separately, and says plainly which part nobody knows.'}
@@ -49,19 +49,19 @@ export default function Home({ params }: { params: { locale: string } }) {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href={`/${locale}/hitung`}
-              className="sheet-label bg-print px-6 py-3 text-sm text-blueprint transition-colors hover:bg-annotation"
+              className="sheet-label bg-print px-6 py-3 text-caption text-blueprint transition-colors hover:bg-annotation"
             >
               {id ? 'Hitung angsuran saya' : 'Work out my instalment'}
             </Link>
             <Link
               href={`/${locale}/ambang`}
-              className="sheet-label border border-annotation/60 px-6 py-3 text-sm text-annotation transition-colors hover:border-annotation hover:text-print"
+              className="sheet-label border border-annotation/60 px-6 py-3 text-caption text-annotation transition-colors hover:border-annotation hover:text-print"
             >
               {id ? 'Cari titik tak terjangkau' : 'Find where it stops being affordable'}
             </Link>
           </div>
 
-          <p className="measure mt-6 text-sm text-print/60">
+          <p className="measure mt-6 text-caption text-muted">
             {id
               ? 'Gratis, tanpa akun, tanpa iklan bank. Angka yang Anda ketik tidak dikirim ke mana pun — semuanya dihitung di peramban Anda sendiri.'
               : 'Free, no account, no bank advertising. What you type is sent nowhere — every figure is computed in your own browser.'}
@@ -73,16 +73,16 @@ export default function Home({ params }: { params: { locale: string } }) {
          * illustration in words, because the moment a number like this reads
          * as data the whole project has failed.
          */}
-        <section className="border-l-2 border-unknown bg-unknown/10 px-6 py-6">
-          <p className="sheet-label text-xs text-unknown">
+        <section className="border-l-2 border-unknown bg-unknown/[0.08] px-6 py-6">
+          <p className="sheet-label text-caption text-unknown">
             {id ? 'Contoh — angka karangan, bukan data' : 'An illustration — invented, not data'}
           </p>
-          <p className="measure mt-3 text-print/90">
+          <p className="measure mt-3 text-print">
             {id
               ? 'Sebuah keluarga menyusun anggaran di angsuran Rp3,2 juta sebulan, angka yang dikutip bank. Di tahun keempat, setelah masa bunga tetap habis, angsuran itu bisa menjadi Rp4,8 juta. Tidak ada yang berubah pada rumahnya, dan tidak ada yang salah pada perhitungan bank — bunga mengambang memang tidak diumumkan di muka.'
               : 'A family budgets around an instalment of Rp3,2 juta a month, the figure the bank quoted. In year four, once the fixed period ends, that instalment can become Rp4,8 juta. Nothing changed about the house, and nothing was wrong with the bank’s arithmetic — the floating rate is simply not announced in advance.'}
           </p>
-          <p className="measure mt-3 text-sm text-unknown">
+          <p className="measure mt-3 text-caption text-unknown">
             {id
               ? 'Aplikasi ini tidak pernah menebak angka itu untuk Anda. Anda yang mengisikan asumsinya, dan setiap angka yang bersandar padanya berwarna kuning seperti kotak ini.'
               : 'This tool never guesses that figure for you. You supply the assumption, and everything resting on it is amber, like this box.'}
@@ -222,7 +222,7 @@ export default function Home({ params }: { params: { locale: string } }) {
         </Panel>
 
         <Panel title={id ? 'Yang tidak dilakukan aplikasi ini' : 'What this tool does not do'}>
-          <ul className="grid gap-x-10 gap-y-3 text-sm text-print/80 sm:grid-cols-2">
+          <ul className="grid gap-x-10 gap-y-3 text-caption text-muted sm:grid-cols-2">
             {(id
               ? [
                   'Tidak menyarankan bank, produk, atau kapan membeli. Tidak ada peringkat, tidak ada tautan afiliasi.',
@@ -245,9 +245,9 @@ export default function Home({ params }: { params: { locale: string } }) {
           </ul>
         </Panel>
 
-        <section className="border-l-2 border-unknown bg-unknown/10 px-6 py-5">
-          <p className="sheet-label text-xs text-unknown">{t.floating.title}</p>
-          <p className="measure mt-2 text-sm text-print/90">{t.floating.body}</p>
+        <section className="border-l-2 border-unknown bg-unknown/[0.08] px-6 py-5">
+          <p className="sheet-label text-caption text-unknown">{t.floating.title}</p>
+          <p className="measure mt-2 text-caption text-print">{t.floating.body}</p>
         </section>
       </div>
     </Chrome>
@@ -257,9 +257,9 @@ export default function Home({ params }: { params: { locale: string } }) {
 function Step({ n, title, body }: { n: string; title: string; body: string }) {
   return (
     <li className="border-t border-annotation/30 pt-4">
-      <span className="figure text-2xl text-annotation">{n}</span>
-      <p className="sheet-label mt-2 text-sm text-print">{title}</p>
-      <p className="mt-1 text-sm text-print/70">{body}</p>
+      <span className="figure text-subhead text-annotation">{n}</span>
+      <p className="sheet-label mt-2 text-caption text-print">{title}</p>
+      <p className="mt-1 text-caption text-muted">{body}</p>
     </li>
   )
 }
@@ -277,9 +277,9 @@ function Card({
 }) {
   return (
     <Link href={href} className="sheet-panel sheet-panel-hover block px-5 py-4">
-      <p className="sheet-label text-xs text-annotation">{title}</p>
-      <p className="sheet-title mt-1 text-lg text-print">{question}</p>
-      <p className="mt-2 text-sm text-print/70">{body}</p>
+      <p className="sheet-label text-caption text-annotation">{title}</p>
+      <p className="sheet-title mt-1 text-lead text-print">{question}</p>
+      <p className="mt-2 text-caption text-muted">{body}</p>
     </Link>
   )
 }

@@ -34,10 +34,10 @@ export function Chrome({
             <Link href={`/${locale}`} className="flex shrink-0 items-center gap-3">
               <Mark size={34} />
               <span>
-                <span className="sheet-label block text-lg leading-none text-print">
+                <span className="sheet-label block text-lead leading-none text-print">
                   {t.common.appName}
                 </span>
-                <span className="mt-1 hidden text-xs text-annotation sm:block">
+                <span className="mt-1 hidden text-caption text-annotation sm:block">
                   {id
                     ? 'Setelah bunga tetap berakhir, berapa angsurannya?'
                     : 'After the fixed rate ends, what does the instalment become?'}
@@ -47,7 +47,7 @@ export function Chrome({
 
             <Link
               href={`/${other}`}
-              className="sheet-label ml-auto shrink-0 border border-annotation/40 px-3 py-1.5 text-xs text-annotation hover:border-annotation hover:text-print"
+              className="sheet-label ml-auto shrink-0 border border-annotation/40 px-3 py-1.5 text-caption text-annotation hover:border-annotation hover:text-print"
             >
               {t.common.switchLocale}
             </Link>
@@ -63,7 +63,7 @@ export function Chrome({
                   <Link
                     href={`/${locale}/${route}`}
                     aria-current={active === route ? 'page' : undefined}
-                    className={`sheet-label block whitespace-nowrap border-b-2 px-3 py-2 text-xs transition-colors ${
+                    className={`sheet-label block whitespace-nowrap border-b-2 px-3 py-2 text-caption transition-colors ${
                       active === route
                         ? 'border-annotation text-print'
                         : 'border-transparent text-annotation hover:border-annotation/40 hover:text-print'
@@ -108,15 +108,15 @@ export function Framing({ locale }: { locale: Locale }) {
          */}
         <div className="grid gap-x-10 gap-y-8 border-t border-annotation/15 pt-8 lg:grid-cols-[1fr_auto]">
           <div className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
-            <div className="space-y-1 text-sm text-print/85">
-              <p className="sheet-label text-xs text-annotation">{t.common.appName}</p>
+            <div className="space-y-1 text-caption text-muted">
+              <p className="sheet-label text-caption text-annotation">{t.common.appName}</p>
               <p>{t.common.personalProject}</p>
               <p>{t.common.notAdvice}</p>
             </div>
-            <div className="space-y-1 text-sm text-print/85">
+            <div className="space-y-1 text-caption text-muted">
               <p>{t.common.confirmWithBank}</p>
               <p>{t.common.approvalNotModelled}</p>
-              <p className="text-print/70">{t.floating.short}</p>
+              <p className="text-muted">{t.floating.short}</p>
             </div>
           </div>
 

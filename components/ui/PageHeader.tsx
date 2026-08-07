@@ -17,9 +17,9 @@ export function PageHeader({
 }) {
   return (
     <header className="border-b border-annotation/25 pb-6">
-      <p className="sheet-label text-xs text-annotation">{eyebrow}</p>
+      <p className="sheet-label text-caption text-annotation">{eyebrow}</p>
       <h1 className="sheet-title mt-2 max-w-3xl text-title">{title}</h1>
-      <p className="measure mt-3 text-print/80">{lede}</p>
+      <p className="measure mt-3 text-muted">{lede}</p>
       {children}
     </header>
   )

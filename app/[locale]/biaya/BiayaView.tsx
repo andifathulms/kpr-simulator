@@ -86,7 +86,7 @@ export function BiayaView({ locale }: { locale: Locale }) {
             }
           />
 
-          <p className="sheet-label pt-2 text-xs text-unknown">
+          <p className="sheet-label pt-2 text-caption text-unknown">
             {id ? 'Biaya bank — angka Anda' : 'Bank fees — your figures'}
           </p>
           <MoneyField label="Provisi" value={provisi} onChange={setProvisi} amber />
@@ -130,16 +130,16 @@ export function BiayaView({ locale }: { locale: Locale }) {
           ) : (
             <>
               <section className="overflow-x-auto border border-annotation/25">
-                <table className="w-full min-w-[36rem] border-collapse text-sm">
+                <table className="w-full min-w-[36rem] border-collapse text-caption">
                   <thead>
                     <tr className="border-b border-annotation/40 bg-recess">
-                      <th className="sheet-label px-3 py-2 text-left text-xs font-normal text-annotation">
+                      <th className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
                         {id ? 'Pos' : 'Item'}
                       </th>
-                      <th className="sheet-label px-3 py-2 text-left text-xs font-normal text-annotation">
+                      <th className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
                         {id ? 'Sifat' : 'Nature'}
                       </th>
-                      <th className="sheet-label px-3 py-2 text-right text-xs font-normal text-annotation">
+                      <th className="sheet-label px-3 py-2 text-right text-caption font-normal text-annotation">
                         {id ? 'Jumlah' : 'Amount'}
                       </th>
                     </tr>
@@ -155,7 +155,7 @@ export function BiayaView({ locale }: { locale: Locale }) {
                         <td className="px-3 py-2">
                           {id ? line.label.id : line.label.en}
                           {line.parameter && (
-                            <span className="mt-0.5 block text-xs text-annotation">
+                            <span className="mt-0.5 block text-caption text-annotation">
                               {line.parameter.basis} ·{' '}
                               <a
                                 className="underline"
@@ -167,12 +167,12 @@ export function BiayaView({ locale }: { locale: Locale }) {
                             </span>
                           )}
                           {line.derivation && (
-                            <span className="figure mt-0.5 block text-xs text-print/60">
+                            <span className="figure mt-0.5 block text-caption text-muted">
                               {line.derivation}
                             </span>
                           )}
                         </td>
-                        <td className="px-3 py-2 text-xs">
+                        <td className="px-3 py-2 text-caption">
                           {line.kind === 'diatur'
                             ? id
                               ? 'Diatur'
@@ -189,10 +189,10 @@ export function BiayaView({ locale }: { locale: Locale }) {
                   </tbody>
                   <tfoot>
                     <tr className="border-t border-annotation/40 bg-recess">
-                      <td className="sheet-label px-3 py-2 text-xs text-annotation" colSpan={2}>
+                      <td className="sheet-label px-3 py-2 text-caption text-annotation" colSpan={2}>
                         {id ? 'Total' : 'Total'}
                       </td>
-                      <td className="figure px-3 py-2 text-right text-lg">
+                      <td className="figure px-3 py-2 text-right text-lead">
                         {formatRupiah(report.value.total, intl)}
                       </td>
                     </tr>
@@ -202,18 +202,18 @@ export function BiayaView({ locale }: { locale: Locale }) {
 
               <section className="grid gap-4 sm:grid-cols-2">
                 <div className="border border-annotation/25 bg-recess px-4 py-3">
-                  <p className="sheet-label text-xs text-annotation">
+                  <p className="sheet-label text-caption text-annotation">
                     {id ? 'Diatur peraturan' : 'Set by regulation'}
                   </p>
-                  <p className="figure mt-1 text-xl">
+                  <p className="figure mt-1 text-subhead">
                     {formatRupiah(report.value.regulatedTotal, intl)}
                   </p>
                 </div>
-                <div className="border border-unknown/60 bg-unknown/10 px-4 py-3">
-                  <p className="sheet-label text-xs text-unknown">
+                <div className="border border-unknown/60 bg-unknown/[0.08] px-4 py-3">
+                  <p className="sheet-label text-caption text-unknown">
                     {id ? 'Kebijakan bank atau notaris' : 'Bank or notary discretion'}
                   </p>
-                  <p className="figure mt-1 text-xl text-unknown">
+                  <p className="figure mt-1 text-subhead text-unknown">
                     {formatRupiah(report.value.discretionaryTotal, intl)}
                   </p>
                 </div>

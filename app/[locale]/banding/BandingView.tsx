@@ -191,7 +191,7 @@ export function BandingView({ locale }: { locale: Locale }) {
             onChange={setWilayah}
           />
 
-          <p className="sheet-label pt-2 text-xs text-annotation">
+          <p className="sheet-label pt-2 text-caption text-annotation">
             {id ? 'Sisi komersial' : 'The commercial side'}
           </p>
           <RateField label={t.form.bungaTetap} value={bungaTetap} onChange={setBungaTetap} />
@@ -240,25 +240,25 @@ export function BandingView({ locale }: { locale: Locale }) {
             <RefusalNotice outcome={eligibility} locale={locale} />
           ) : (
             <section className="space-y-2">
-              <h2 className="sheet-label text-sm text-annotation">
+              <h2 className="sheet-label text-caption text-annotation">
                 {id ? 'Kelayakan jalur subsidi' : 'Eligibility for the subsidised path'}
               </h2>
               <ul className="grid gap-2 sm:grid-cols-3">
                 {eligibility.value.criteria.map((criterion) => (
                   <li
                     key={criterion.key}
-                    className={`border-l-2 px-3 py-2 text-sm ${
+                    className={`border-l-2 px-3 py-2 text-caption ${
                       criterion.met
                         ? 'border-annotation/50 bg-recess'
-                        : 'border-threshold bg-threshold/10'
+                        : 'border-threshold bg-threshold/[0.08]'
                     }`}
                   >
-                    <p className="sheet-label text-xs text-annotation">
+                    <p className="sheet-label text-caption text-annotation">
                       {id ? criterion.label.id : criterion.label.en}
                     </p>
                     <p className="figure mt-0.5">
                       {criterion.stated}{' '}
-                      <span className={criterion.met ? 'text-print/60' : 'text-threshold'}>
+                      <span className={criterion.met ? 'text-muted' : 'text-threshold'}>
                         {criterion.met ? '≤' : '>'} {criterion.ceiling}
                       </span>
                     </p>
@@ -266,7 +266,7 @@ export function BandingView({ locale }: { locale: Locale }) {
                 ))}
               </ul>
               {!eligibility.value.allMet && (
-                <p className="text-sm text-print/80">
+                <p className="text-caption text-muted">
                   {id
                     ? 'Sekurang-kurangnya satu kriteria tidak terpenuhi, sehingga kolom subsidi di bawah bersifat hipotetis: angkanya benar secara aritmetika, tetapi jalur itu belum tentu terbuka untuk profil ini. Aplikasi ini tidak menyimpulkan apa yang sebaiknya Anda lakukan.'
                     : 'At least one criterion is not met, so the subsidised column below is hypothetical: its arithmetic is right, but that path may not be open to this profile. The app draws no conclusion about what to do.'}
@@ -318,14 +318,14 @@ export function BandingView({ locale }: { locale: Locale }) {
                 />
               </section>
 
-              <section className="border-l-2 border-unknown bg-unknown/10 px-4 py-4">
-                <p className="sheet-label text-xs text-unknown">
+              <section className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-4">
+                <p className="sheet-label text-caption text-unknown">
                   {id ? 'Selisih total dibayar' : 'Difference in total paid'}
                 </p>
-                <p className="figure mt-1 text-2xl text-unknown">
+                <p className="figure mt-1 text-subhead text-unknown">
                   {formatRupiah(result.comparison.totalPaidDifference, intl)}
                 </p>
-                <p className="mt-2 max-w-2xl text-sm text-print/90">
+                <p className="mt-2 max-w-2xl text-caption text-print">
                   {id
                     ? `Komersial dikurangi subsidi, dihitung dengan asumsi bunga mengambang ${formatRate(bungaMengambang, intl)} yang Anda isikan. Ubah asumsi itu dan selisih ini ikut berubah — pada asumsi yang cukup rendah, tandanya berbalik. Angka ini aritmetika atas satu asumsi, bukan ramalan dan bukan anjuran.`
                     : `Commercial minus subsidised, computed on the ${formatRate(bungaMengambang, intl)} floating rate you entered. Change that assumption and this figure changes with it — low enough, and it changes sign. It is arithmetic on one assumption, not a forecast and not a recommendation.`}
@@ -333,11 +333,11 @@ export function BandingView({ locale }: { locale: Locale }) {
               </section>
 
               <section className="space-y-3">
-                <h3 className="sheet-label text-sm text-annotation">
+                <h3 className="sheet-label text-caption text-annotation">
                   {id ? 'Subsidi — seluruh tenor pada satu bunga' : 'Subsidised — one rate, whole term'}
                 </h3>
                 <ScheduleElevation schedule={result.comparison.subsidi.schedule} locale={locale} />
-                <h3 className="sheet-label text-sm text-annotation">
+                <h3 className="sheet-label text-caption text-annotation">
                   {id ? 'Komersial — dengan batas masa tetap' : 'Commercial — with the fixed-period boundary'}
                 </h3>
                 <ScheduleElevation
@@ -375,11 +375,11 @@ function Column({
   return (
     <div
       className={`border px-5 py-4 ${
-        amber ? 'border-unknown/60 bg-unknown/10' : 'border-annotation/40 bg-recess'
+        amber ? 'border-unknown/60 bg-unknown/[0.08]' : 'border-annotation/40 bg-recess'
       }`}
     >
-      <p className={`sheet-label text-sm ${amber ? 'text-unknown' : 'text-print'}`}>{title}</p>
-      <p className="figure mt-1 text-xs text-print/70">{rateLabel}</p>
+      <p className={`sheet-label text-caption ${amber ? 'text-unknown' : 'text-print'}`}>{title}</p>
+      <p className="figure mt-1 text-caption text-muted">{rateLabel}</p>
 
       <dl className="mt-4 space-y-3">
         <Row label={t.table.angsuran} value={formatRupiah(side.firstPayment, intl)} />
@@ -394,7 +394,7 @@ function Column({
         <Row label={t.table.totalDibayar} value={formatRupiah(side.totalPaid, intl)} amber={amber} />
       </dl>
 
-      <p className={`mt-4 text-xs ${amber ? 'text-unknown' : 'text-print/70'}`}>{certaintyNote}</p>
+      <p className={`mt-4 text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{certaintyNote}</p>
     </div>
   )
 }
@@ -402,7 +402,7 @@ function Column({
 function Row({ label, value, amber }: { label: string; value: string; amber?: boolean }) {
   return (
     <div className="flex items-baseline justify-between gap-4">
-      <dt className={`text-sm ${amber ? 'text-unknown' : 'text-print/75'}`}>{label}</dt>
+      <dt className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{label}</dt>
       <dd className={`figure text-right ${amber ? 'text-unknown' : 'text-print'}`}>{value}</dd>
     </div>
   )
