@@ -1,0 +1,44 @@
+{
+  "name": "KPR Simulator",
+  "short_name": "KPR Simulator",
+  "description": "Simulasi KPR yang menampilkan apa yang terjadi setelah masa bunga tetap berakhir. Bukan nasihat keuangan.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "/kpr-simulator/id/",
+  "scope": "/kpr-simulator/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1B3A5C",
+  "theme_color": "#1B3A5C",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "/kpr-simulator/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/kpr-simulator/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/kpr-simulator/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Hitung angsuran",
+      "url": "/kpr-simulator/id/hitung/"
+    },
+    {
+      "name": "Cari ambang",
+      "url": "/kpr-simulator/id/ambang/"
+    }
+  ]
+}

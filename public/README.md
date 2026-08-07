@@ -12,7 +12,12 @@ directory is the subset the site actually serves, so a clone builds without it.
 | `icon-192.png`, `icon-512.png` | Android and the web app manifest. |
 | `icon-maskable-512.png` | Android adaptive icon — safe-zone padded, so the launcher may crop it to any shape without clipping the mark. |
 | `og.png` | Link preview when the site is shared. |
+| `manifest.webmanifest` | Installable web app: name, icons, start URL, theme colour. |
 | `brand/` | Lockups and the large icon, for the README. Not referenced by the app. |
+
+The manifest is static JSON, so it cannot read `NEXT_PUBLIC_BASE_PATH` the way
+`lib/site.ts` does — its `start_url`, `scope`, and icon paths spell out
+`/kpr-simulator/`. Change the basePath and this file has to change with it.
 
 The mark itself is drawn in code, not loaded from here — see
 `components/ui/Mark.tsx`. Inlining it keeps the header free of a network
