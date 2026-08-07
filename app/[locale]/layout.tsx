@@ -29,7 +29,10 @@ const sheet = Barlow_Condensed({
 
 const prose = Barlow({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  // 400 only. Nothing in the app renders prose at 500 — no font-medium
+  // anywhere, and the two authored font-weight rules are both on the
+  // condensed face — so a 500 was being preloaded on every page for nothing.
+  weight: ['400'],
   variable: '--font-prose',
   display: 'swap',
 })
@@ -37,7 +40,10 @@ const prose = Barlow({
 /** Tabular figures for every rupiah amount, rate, and period. */
 const figure = Roboto_Mono({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  // 400 only, and this one was the expensive mistake: the mono 500 was the
+  // single largest preloaded font on every page at 32 KB, requested by
+  // nothing. `.figure` sets a family and never a weight.
+  weight: ['400'],
   variable: '--font-figure',
   display: 'swap',
 })
