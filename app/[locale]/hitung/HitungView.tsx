@@ -28,6 +28,7 @@ import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
+import { labelReviews, reviewCount } from '@/lib/scenario/repricing'
 
 /**
  * The container calls the engine and hands results down. The components it
@@ -56,6 +57,8 @@ interface State {
   mulaiTahun: number
   mulaiBulan: number
   rounding: RoundingConvention
+  /** How often the contract reprices the floating rate, in months. 0 = unstated. */
+  tinjauanBulan: number
   /** Set only by the worked-example button. Never defaults on. */
   contoh: boolean
 }
@@ -73,6 +76,7 @@ const INITIAL: State = {
   mulaiTahun: 2026,
   mulaiBulan: 9,
   rounding: 'pembulatan-terdekat',
+  tinjauanBulan: 0,
   contoh: false,
 }
 
@@ -98,6 +102,7 @@ export function HitungView({ locale }: { locale: Locale }) {
       mulaiTahun: readNumber(hash, 'my', current.mulaiTahun),
       mulaiBulan: readNumber(hash, 'mm', current.mulaiBulan),
       rounding: readString(hash, 'r', ROUNDINGS, current.rounding),
+      tinjauanBulan: readNumber(hash, 'tb', current.tinjauanBulan),
       contoh: readNumber(hash, 'ex', current.contoh ? 1 : 0) === 1,
     }))
   }, [])
@@ -115,6 +120,7 @@ export function HitungView({ locale }: { locale: Locale }) {
       my: state.mulaiTahun,
       mm: state.mulaiBulan,
       r: state.rounding,
+      tb: state.tinjauanBulan,
       ex: state.contoh ? 1 : 0,
     })
     window.history.replaceState(null, '', `#${encoded}`)
@@ -162,7 +168,10 @@ export function HitungView({ locale }: { locale: Locale }) {
         start,
         termMonths,
         rounding: state.rounding,
-        segments,
+        // Labelling only. The cadence never splits the segment: measured, that
+        // re-rounds the annuity and moves the user's figures by a few rupiah
+        // for a presentational reason. See lib/scenario/repricing.ts.
+        segments: labelReviews(segments, state.tinjauanBulan),
       })
 
       const band =
@@ -329,6 +338,7 @@ export function HitungView({ locale }: { locale: Locale }) {
         samePoints: hasFloating
           ? { floating: nudge({ floating: 0.02 }), fixed: nudge({ rate: 0.02 }) }
           : undefined,
+        reviews: reviewCount(fixedMonths, termMonths, state.tinjauanBulan),
         singleRate,
         // What the single-rate assumption leaves out of the total.
         hidden: singleRate ? subtract(schedule.totalPaid, singleRate.totalPaid) : undefined,
@@ -461,6 +471,22 @@ export function HitungView({ locale }: { locale: Locale }) {
                 max={10}
               />
             </div>
+            <SelectField
+              label={id ? 'Bunga ditinjau ulang tiap' : 'The rate is reviewed every'}
+              value={String(state.tinjauanBulan)}
+              onChange={(value) => setState({ ...state, tinjauanBulan: Number(value) })}
+              options={[
+                { value: '0', label: id ? 'Tidak saya ketahui' : 'I do not know' },
+                { value: '3', label: id ? '3 bulan' : '3 months' },
+                { value: '6', label: id ? '6 bulan' : '6 months' },
+                { value: '12', label: id ? '12 bulan' : '12 months' },
+              ]}
+              hint={
+                id
+                  ? 'Ada di perjanjian kredit Anda. Kalau belum tahu, ini salah satu pertanyaan untuk bank di bawah.'
+                  : 'It is in your credit agreement. If you do not know it yet, it is one of the questions for the bank below.'
+              }
+            />
             <p className="text-caption text-unknown">
               {id
                 ? 'Kedua angka itu melebarkan pita kemungkinan pada grafik — bukan ramalan, melainkan rentang yang Anda ingin lihat.'
@@ -618,6 +644,20 @@ export function HitungView({ locale }: { locale: Locale }) {
                   />
                 </div>
               </section>
+
+              {result.reviews > 0 && (
+                <UnknownNotice
+                  title={
+                    id
+                      ? `Bunga Anda dapat berubah ${result.reviews} kali, bukan sekali`
+                      : `Your rate can change ${result.reviews} times, not once`
+                  }
+                >
+                  {id
+                    ? `Grafik dan tabel di halaman ini memakai satu angka untuk seluruh masa mengambang, karena satu angka itulah yang Anda isikan. Kenyataannya perjanjian Anda meninjau ulang bunga tiap ${state.tinjauanBulan} bulan — jadi antara bulan ${fixedMonths + 1} dan bulan ${termMonths} ada ${result.reviews} kesempatan bagi angsuran Anda untuk berubah, masing-masing dengan angka yang belum ada hari ini. Yang tidak diketahui bukan satu angka, melainkan sederet angka.`
+                    : `The chart and table on this page use one figure for the whole floating period, because one figure is what you entered. In reality your agreement reviews the rate every ${state.tinjauanBulan} months — so between month ${fixedMonths + 1} and month ${termMonths} there are ${result.reviews} occasions for your instalment to change, each with a number that does not exist yet. What is unknown is not one number but a sequence of them.`}
+                </UnknownNotice>
+              )}
 
               {result.singleRate && result.hidden && (
                 <Panel
