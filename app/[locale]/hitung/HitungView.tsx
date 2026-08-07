@@ -23,6 +23,7 @@ import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
 import { LiveRegion } from '@/components/ui/LiveRegion'
+import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
 
@@ -53,6 +54,8 @@ interface State {
   mulaiTahun: number
   mulaiBulan: number
   rounding: RoundingConvention
+  /** Set only by the worked-example button. Never defaults on. */
+  contoh: boolean
 }
 
 const INITIAL: State = {
@@ -68,6 +71,7 @@ const INITIAL: State = {
   mulaiTahun: 2026,
   mulaiBulan: 9,
   rounding: 'pembulatan-terdekat',
+  contoh: false,
 }
 
 export function HitungView({ locale }: { locale: Locale }) {
@@ -92,6 +96,7 @@ export function HitungView({ locale }: { locale: Locale }) {
       mulaiTahun: readNumber(hash, 'my', current.mulaiTahun),
       mulaiBulan: readNumber(hash, 'mm', current.mulaiBulan),
       rounding: readString(hash, 'r', ROUNDINGS, current.rounding),
+      contoh: readNumber(hash, 'ex', current.contoh ? 1 : 0) === 1,
     }))
   }, [])
 
@@ -108,6 +113,7 @@ export function HitungView({ locale }: { locale: Locale }) {
       my: state.mulaiTahun,
       mm: state.mulaiBulan,
       r: state.rounding,
+      ex: state.contoh ? 1 : 0,
     })
     window.history.replaceState(null, '', `#${encoded}`)
   }, [state])
@@ -402,6 +408,13 @@ export function HitungView({ locale }: { locale: Locale }) {
               : ''}
           </LiveRegion>
 
+          {state.contoh && (
+            <ExampleBanner
+              locale={locale}
+              onClear={() => setState({ ...INITIAL, contoh: false })}
+            />
+          )}
+
           {!ready && (
             <section className="border border-annotation/25 bg-recess px-6 py-6">
               <p className="sheet-label text-caption text-annotation">
@@ -417,6 +430,18 @@ export function HitungView({ locale }: { locale: Locale }) {
                 <Need done={plafon > 0} label={t.form.plafon} locale={locale} />
                 <Need done={state.bungaTetap > 0} label={t.form.bungaTetap} locale={locale} />
               </ul>
+
+              <p className="measure mt-6 text-caption text-muted">
+                {id
+                  ? 'Belum punya penawaran dari bank? Isi dengan contoh untuk melihat cara kerjanya lebih dulu — angkanya dibuat-buat dan ditandai kuning.'
+                  : 'No offer from a bank yet? Fill in a worked example to see how it behaves first — the figures are invented and marked amber.'}
+              </p>
+              <div className="mt-3">
+                <ExampleButton
+                  locale={locale}
+                  onLoad={() => setState({ ...state, ...EXAMPLE_HITUNG, contoh: true })}
+                />
+              </div>
             </section>
           )}
 

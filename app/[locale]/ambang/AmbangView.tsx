@@ -18,6 +18,7 @@ import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
 import { LiveRegion } from '@/components/ui/LiveRegion'
+import { EXAMPLE_AMBANG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 
 /**
  * The threshold view. One figure, stated plainly, with the instalment it
@@ -34,6 +35,8 @@ interface State {
   porsi: number
   mulaiTahun: number
   mulaiBulan: number
+  /** Set only by the worked-example button. Never defaults on. */
+  contoh: boolean
 }
 
 const INITIAL: State = {
@@ -45,6 +48,7 @@ const INITIAL: State = {
   porsi: 0.3,
   mulaiTahun: 2026,
   mulaiBulan: 9,
+  contoh: false,
 }
 
 export function AmbangView({ locale }: { locale: Locale }) {
@@ -65,6 +69,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
       porsi: readNumber(hash, 'ps', current.porsi),
       mulaiTahun: readNumber(hash, 'my', current.mulaiTahun),
       mulaiBulan: readNumber(hash, 'mm', current.mulaiBulan),
+      contoh: readNumber(hash, 'ex', current.contoh ? 1 : 0) === 1,
     }))
   }, [])
 
@@ -81,6 +86,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
         ps: state.porsi,
         my: state.mulaiTahun,
         mm: state.mulaiBulan,
+        ex: state.contoh ? 1 : 0,
       })}`,
     )
   }, [state])
@@ -261,6 +267,13 @@ export function AmbangView({ locale }: { locale: Locale }) {
               : ''}
           </LiveRegion>
 
+          {state.contoh && (
+            <ExampleBanner
+              locale={locale}
+              onClear={() => setState({ ...INITIAL, contoh: false })}
+            />
+          )}
+
           {!ready && (
             <section className="border border-annotation/25 bg-recess px-6 py-6">
               <p className="sheet-label text-caption text-annotation">
@@ -271,6 +284,17 @@ export function AmbangView({ locale }: { locale: Locale }) {
                   ? 'Isi plafon, bunga tetap yang dikutip, masa tetapnya, dan penghasilan per bulan. Angka ambang muncul di sini.'
                   : 'Enter the amount financed, the fixed rate you were quoted, its length, and your monthly income. The threshold figure appears here.'}
               </p>
+              <p className="measure mt-4 text-caption text-muted">
+                {id
+                  ? 'Atau lihat contohnya lebih dulu — angkanya dibuat-buat dan ditandai kuning.'
+                  : 'Or see it worked through first — the figures are invented and marked amber.'}
+              </p>
+              <div className="mt-3">
+                <ExampleButton
+                  locale={locale}
+                  onLoad={() => setState({ ...state, ...EXAMPLE_AMBANG, contoh: true })}
+                />
+              </div>
             </section>
           )}
 
