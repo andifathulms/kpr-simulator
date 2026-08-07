@@ -7,6 +7,13 @@ import { useId } from 'react'
  * engine and hands the result down.
  */
 
+/**
+ * The hint is where this app does its most important work — "Asumsi Anda,
+ * bukan data", "tidak dikirim ke mana pun", "diserahkan BI kepada kebijakan
+ * bank". Rendering it as a loose paragraph next to the input meant a screen
+ * reader never read it out with the field it qualifies. aria-describedby is
+ * the native association for exactly this (WCAG 1.3.1).
+ */
 export function MoneyField({
   label,
   value,
@@ -21,6 +28,7 @@ export function MoneyField({
   amber?: boolean
 }) {
   const id = useId()
+  const hintId = `${id}-hint`
   return (
     <div className="space-y-1">
       <label htmlFor={id} className={`sheet-label block text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
@@ -30,6 +38,7 @@ export function MoneyField({
         <span className="figure px-3 py-2 text-muted">Rp</span>
         <input
           id={id}
+          aria-describedby={hint ? hintId : undefined}
           inputMode="numeric"
           value={value === 0 ? '' : new Intl.NumberFormat('id-ID').format(value)}
           onChange={(event) => {
@@ -41,7 +50,11 @@ export function MoneyField({
           }`}
         />
       </div>
-      {hint && <p className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{hint}</p>}
+      {hint && (
+        <p id={hintId} className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>
+          {hint}
+        </p>
+      )}
     </div>
   )
 }
@@ -65,6 +78,7 @@ export function RateField({
   max?: number
 }) {
   const id = useId()
+  const hintId = `${id}-hint`
   const percent = Number((value * 100).toFixed(4))
   return (
     <div className="space-y-1">
@@ -74,6 +88,7 @@ export function RateField({
       <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
         <input
           id={id}
+          aria-describedby={hint ? hintId : undefined}
           type="number"
           inputMode="decimal"
           step={step}
@@ -90,7 +105,11 @@ export function RateField({
         />
         <span className="figure px-3 py-2 text-muted">%</span>
       </div>
-      {hint && <p className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>{hint}</p>}
+      {hint && (
+        <p id={hintId} className={`text-caption ${amber ? 'text-unknown' : 'text-muted'}`}>
+          {hint}
+        </p>
+      )}
     </div>
   )
 }
@@ -113,6 +132,7 @@ export function NumberField({
   hint?: string
 }) {
   const id = useId()
+  const hintId = `${id}-hint`
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="sheet-label block text-caption text-annotation">
@@ -121,6 +141,7 @@ export function NumberField({
       <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
         <input
           id={id}
+          aria-describedby={hint ? hintId : undefined}
           type="number"
           min={min}
           max={max}
@@ -130,7 +151,11 @@ export function NumberField({
         />
         {suffix && <span className="figure px-3 py-2 text-muted">{suffix}</span>}
       </div>
-      {hint && <p className="text-caption text-muted">{hint}</p>}
+      {hint && (
+        <p id={hintId} className="text-caption text-muted">
+          {hint}
+        </p>
+      )}
     </div>
   )
 }
@@ -149,6 +174,7 @@ export function SelectField<T extends string>({
   hint?: string
 }) {
   const id = useId()
+  const hintId = `${id}-hint`
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="sheet-label block text-caption text-annotation">
@@ -156,6 +182,7 @@ export function SelectField<T extends string>({
       </label>
       <select
         id={id}
+        aria-describedby={hint ? hintId : undefined}
         value={value}
         onChange={(event) => onChange(event.target.value as T)}
         className="w-full border border-annotation/40 bg-recess px-3 py-2 text-print outline-none focus:border-annotation"
@@ -166,7 +193,11 @@ export function SelectField<T extends string>({
           </option>
         ))}
       </select>
-      {hint && <p className="text-caption text-muted">{hint}</p>}
+      {hint && (
+        <p id={hintId} className="text-caption text-muted">
+          {hint}
+        </p>
+      )}
     </div>
   )
 }
