@@ -23,6 +23,7 @@ import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
 import { Glossary } from '@/components/ui/Glossary'
+import { BankQuestions } from '@/components/ui/BankQuestions'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 import type { RateSegment } from '@/lib/amortise/types'
@@ -737,6 +738,25 @@ export function HitungView({ locale }: { locale: Locale }) {
                 }
               >
                 <TraceView trace={result.schedule.trace} locale={locale} />
+              </Panel>
+
+              <Panel
+                title={id ? 'Yang perlu Anda tanyakan ke bank' : 'What to ask the bank'}
+                note={
+                  id
+                    ? 'Daftar ini disusun dari apa yang tadi harus Anda andaikan. Setiap pertanyaan bisa dijawab di loket, dan jawabannya menggantikan satu angka kuning di halaman ini dengan angka yang benar-benar berlaku untuk Anda.'
+                    : 'This list is built from what you had to assume. Every question can be answered at a counter, and each answer replaces one amber figure on this page with one that actually applies to you.'
+                }
+              >
+                <BankQuestions
+                  locale={locale}
+                  context={{
+                    hasFloatingAssumption: result.hasFloating,
+                    hasFixedPeriod: fixedMonths > 0,
+                    modelledPrepayment: true,
+                    enteredBankFees: false,
+                  }}
+                />
               </Panel>
 
               <Panel
