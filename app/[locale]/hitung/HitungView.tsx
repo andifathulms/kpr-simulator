@@ -258,6 +258,10 @@ export function HitungView({ locale }: { locale: Locale }) {
             })
             .filter((row): row is NonNullable<typeof row> => row !== undefined)
         })(),
+        firstInterest: schedule.instalments[0]?.interest ?? rupiah(0),
+        firstPrincipal: schedule.instalments[0]?.principal ?? rupiah(0),
+        firstPrincipalShare:
+          firstPayment === 0 ? 0 : (schedule.instalments[0]?.principal ?? 0) / firstPayment,
         singleRate,
         // What the single-rate assumption leaves out of the total.
         hidden: singleRate ? subtract(schedule.totalPaid, singleRate.totalPaid) : undefined,
@@ -616,6 +620,18 @@ export function HitungView({ locale }: { locale: Locale }) {
                   locale={locale}
                   boundaryMonth={result.hasFloating ? fixedMonths : undefined}
                 />
+
+                {/*
+                 * PRD §5.1 names two things this drawing should make visible.
+                 * The step is unmissable. The other one — how little of an
+                 * early payment is actually yours — is invisible unless it is
+                 * said, with the reader's own figures.
+                 */}
+                <p className="measure text-caption text-muted">
+                  {id
+                    ? `Di bulan pertama, ${formatRupiah(result.firstInterest, intl)} dari angsuran ${formatRupiah(result.firstPayment, intl)} adalah bunga. Utang pokok Anda berkurang ${formatRupiah(result.firstPrincipal, intl)} — sekitar ${formatRate(result.firstPrincipalShare, intl)} dari yang Anda bayar. Itu sebabnya sisa utang hampir tidak bergerak di tahun-tahun awal.`
+                    : `In the first month, ${formatRupiah(result.firstInterest, intl)} of the ${formatRupiah(result.firstPayment, intl)} instalment is interest. What you owe falls by ${formatRupiah(result.firstPrincipal, intl)} — about ${formatRate(result.firstPrincipalShare, intl)} of what you paid. That is why the balance barely moves in the early years.`}
+                </p>
               </Panel>
 
               <Panel
