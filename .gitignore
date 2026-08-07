@@ -1,6 +1,11 @@
 node_modules/
 .next/
 out/
+
+# The full brand kit — every size, every colour variant, lockups, wordmarks.
+# Only the handful of files the site actually serves is tracked, under public/;
+# the rest is design source and does not belong in a repository this small.
+exports/
 *.tsbuildinfo
 next-env.d.ts
 .DS_Store
