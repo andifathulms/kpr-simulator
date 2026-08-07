@@ -22,6 +22,7 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
+import { Glossary } from '@/components/ui/Glossary'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 import type { RateSegment } from '@/lib/amortise/types'
@@ -744,6 +745,20 @@ export function HitungView({ locale }: { locale: Locale }) {
                 }
               >
                 <TraceView trace={result.schedule.trace} locale={locale} />
+              </Panel>
+
+              <Panel
+                title={id ? 'Istilah di halaman ini' : 'Words on this page'}
+                note={
+                  id
+                    ? 'Dipakai persis seperti bank memakainya, supaya cocok dengan surat penawaran Anda.'
+                    : 'Used exactly as banks use them, so they match the letter you were given.'
+                }
+              >
+                <Glossary
+                  locale={locale}
+                  only={['plafon', 'angsuran', 'tenor', 'bungaTetap', 'bungaMengambang', 'flatEfektif']}
+                />
               </Panel>
 
               <PrepayPanel

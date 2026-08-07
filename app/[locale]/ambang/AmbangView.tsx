@@ -17,6 +17,7 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { Panel } from '@/components/ui/Panel'
 import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
+import { Glossary } from '@/components/ui/Glossary'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_AMBANG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 
@@ -489,6 +490,10 @@ export function AmbangView({ locale }: { locale: Locale }) {
                   </p>
                 </Panel>
               )}
+
+              <Panel title={id ? 'Istilah di halaman ini' : 'Words on this page'}>
+                <Glossary locale={locale} only={['plafon', 'angsuran', 'tenor', 'bungaMengambang']} />
+              </Panel>
 
               {result.schedule && (
                 <Panel
