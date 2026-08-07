@@ -140,7 +140,47 @@ export function AmbangView({ locale }: { locale: Locale }) {
             })
           : undefined
 
-      return { kind: 'ok' as const, outcome, schedule }
+      /*
+       * Neighbours of the answer. A single root is a fact to accept; the rates
+       * either side of it are a fact to reason with — and the natural next
+       * question ("what about 12%? 15%?") should not require retyping.
+       *
+       * Each row is the engine run again at that rate, not an interpolation.
+       */
+      const gradient =
+        outcome.kind === 'found'
+          ? [-0.02, -0.01, 0, 0.01, 0.02]
+              .map((offset) => {
+                const annualRate = outcome.annualRate + offset
+                if (annualRate <= 0) return undefined
+                const built = buildSchedule({
+                  principal: rupiah(state.plafon),
+                  start: period(state.mulaiTahun, state.mulaiBulan),
+                  termMonths,
+                  rounding: 'pembulatan-terdekat',
+                  segments: [
+                    {
+                      months: fixedMonths,
+                      annualRate: state.bungaTetap,
+                      phase: 'tetap',
+                      assumed: false,
+                    },
+                    {
+                      months: termMonths - fixedMonths,
+                      annualRate,
+                      phase: 'mengambang',
+                      assumed: true,
+                    },
+                  ],
+                })
+                const payment = built.instalments[fixedMonths]?.payment
+                if (!payment) return undefined
+                return { annualRate, payment, isThreshold: offset === 0 }
+              })
+              .filter((row): row is NonNullable<typeof row> => row !== undefined)
+          : []
+
+      return { kind: 'ok' as const, outcome, schedule, gradient }
     } catch (error) {
       return {
         kind: 'error' as const,
@@ -391,6 +431,64 @@ export function AmbangView({ locale }: { locale: Locale }) {
               <ShareBar locale={locale} />
 
               <UnknownNotice title={t.floating.title}>{t.floating.body}</UnknownNotice>
+
+              {result.gradient.length > 0 && (
+                <Panel
+                  title={id ? 'Di sekitar angka itu' : 'Around that figure'}
+                  note={
+                    id
+                      ? 'Ambang bukan tebing — angsuran naik terus seiring bunga. Baris bertanda adalah titik saat angsuran tepat menyentuh batas Anda; baris di atasnya masih di bawah batas, di bawahnya sudah lewat. Tiap baris dihitung ulang lewat mesin yang sama, bukan ditaksir.'
+                      : 'The threshold is not a cliff — the instalment climbs steadily with the rate. The marked row is where it exactly meets your limit; above it you are still under, below it you are past. Every row is the engine run again at that rate, not an interpolation.'
+                  }
+                >
+                  <div className="overflow-x-auto border border-annotation/25">
+                    <table className="w-full min-w-[24rem] border-collapse text-caption">
+                      <caption className="sr-only">
+                        {id
+                          ? 'Angsuran setelah masa tetap pada beberapa bunga mengambang di sekitar ambang.'
+                          : 'The instalment after the fixed period at several floating rates around the threshold.'}
+                      </caption>
+                      <thead>
+                        <tr className="border-b border-annotation/40 bg-recess">
+                          <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-normal text-annotation">
+                            {id ? 'Bunga mengambang' : 'Floating rate'}
+                          </th>
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                            {id ? 'Angsuran setelah masa tetap' : 'Instalment after the fixed period'}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {result.gradient.map((row) => (
+                          <tr
+                            key={row.annualRate}
+                            className={`border-b border-annotation/15 ${
+                              row.isThreshold ? 'bg-threshold/[0.08] text-threshold' : 'text-unknown'
+                            }`}
+                          >
+                            <td className="figure px-3 py-2">
+                              {formatRate(row.annualRate, intl)}
+                              {row.isThreshold && (
+                                <span className="sheet-label ml-3 text-micro">
+                                  {id ? 'batas Anda' : 'your limit'}
+                                </span>
+                              )}
+                            </td>
+                            <td className="figure px-3 py-2 text-right">
+                              {formatRupiah(row.payment, intl)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="measure text-caption text-unknown">
+                    {id
+                      ? 'Seluruh baris berwarna kuning: tidak satu pun bunga di kolom itu diketahui akan terjadi. Yang dihitung adalah akibatnya bila terjadi.'
+                      : 'Every row is amber: not one of those rates is known to be what will happen. What is computed is the consequence if it does.'}
+                  </p>
+                </Panel>
+              )}
 
               {result.schedule && (
                 <Panel
