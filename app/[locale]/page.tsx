@@ -149,7 +149,13 @@ export default function Home({ params }: { params: { locale: string } }) {
               : 'Each answers one question. Start anywhere.'
           }
         >
-          <nav className="grid gap-3 sm:grid-cols-2">
+          {/*
+           * A list, not a landmark. The page already has one navigation
+           * landmark in the header, and these six links sit inside a titled
+           * panel that says what they are — a second landmark would give a
+           * screen reader "navigation" with nothing to tell it from the first.
+           */}
+          <ul className="grid gap-3 sm:grid-cols-2">
             <Card
               href={`/${locale}/hitung`}
               title={t.nav.hitung}
@@ -220,7 +226,7 @@ export default function Home({ params }: { params: { locale: string } }) {
                   : 'Every parameter with its legal basis, source, and verification date.'
               }
             />
-          </nav>
+          </ul>
         </Panel>
 
         <Panel
@@ -289,10 +295,12 @@ function Card({
   body: string
 }) {
   return (
-    <Link href={href} className="sheet-panel sheet-panel-hover block px-5 py-4">
-      <p className="sheet-label text-caption text-annotation">{title}</p>
-      <p className="sheet-title mt-1 text-lead text-print">{question}</p>
-      <p className="mt-2 text-caption text-muted">{body}</p>
-    </Link>
+    <li>
+      <Link href={href} className="sheet-panel sheet-panel-hover block h-full px-5 py-4">
+        <p className="sheet-label text-caption text-annotation">{title}</p>
+        <p className="sheet-title mt-1 text-lead text-print">{question}</p>
+        <p className="mt-2 text-caption text-muted">{body}</p>
+      </Link>
+    </li>
   )
 }
