@@ -9,24 +9,92 @@
  * the injected font styles.
  */
 
+/*
+ * Design tokens. One place where a size, a space, or a colour is decided.
+ *
+ * Colours are stored as channel triplets so Tailwind's opacity modifiers keep
+ * working (`bg-unknown/10`), and every ratio below is computed against the
+ * ground it is actually used on — alpha-composited, not guessed. AA normal
+ * text is 4.5:1; large text and UI components are 3:1.
+ *
+ * The palette is not a rebrand. Two values moved, both to clear contrast:
+ *   threshold  #C9584A → #F59485   was 2.76:1 on the ground and 2.59:1 inside
+ *                                  its own panel — the ambang figure, the most
+ *                                  important number in the app, failed even
+ *                                  the 3:1 large-text floor. Same hue (7°),
+ *                                  lightened until it passes everywhere.
+ *   raised     #22486F → #1F4266   annotation text on the card hover surface
+ *                                  measured 4.11:1. Darkened until it clears.
+ */
+:root {
+  /* Surfaces */
+  --c-blueprint: 27 58 92; /* the ground */
+  --c-recess: 20 43 68; /* panels sunk into it */
+  --c-raised: 31 66 102; /* a card lifted off it, on hover */
+
+  /* Ink. print on blueprint 9.87:1 · on recess 12.22:1 */
+  --c-print: 232 237 242;
+  /* annotation on blueprint 5.06:1 · recess 6.27:1 · raised 4.51:1 */
+  --c-annotation: 127 178 204;
+  /* unknown on blueprint 5.17:1 · recess 6.40:1 · own 8% panel 4.61:1 */
+  --c-unknown: 217 164 65;
+  /* threshold on blueprint 5.24:1 · recess 6.48:1 · own 8% panel 4.66:1 */
+  --c-threshold: 245 148 133;
+
+  /*
+   * Muted body text. One value, not a judgement call per component: at 70%
+   * it measures 5.70:1 on blueprint, 6.76:1 on recess, 4.83:1 on raised.
+   * Below this, muted text stops meeting AA — which is what happened when
+   * eight components each picked their own opacity.
+   */
+  --ink-muted: rgb(var(--c-print) / 0.7);
+
+  /*
+   * Type. One scale. Nothing sets a size outside it.
+   * Body is 17px; the smallest step is 13px and is for table column labels
+   * only, where the word repeats down a column of figures.
+   */
+  --text-micro: 0.8125rem; /* 13px */
+  --text-caption: 0.875rem; /* 14px */
+  --text-body: 1.0625rem; /* 17px */
+  --text-lead: 1.1875rem; /* 19px */
+  --text-subhead: 1.375rem; /* 22px */
+  --text-title: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+  --text-headline: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  --text-display: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.35;
+  --leading-body: 1.6;
+
+  /* Space. Vertical rhythm between the parts of a sheet. */
+  --space-tight: 0.5rem;
+  --space-block: 1.5rem; /* within a section */
+  --space-group: 2.5rem; /* between grouped sections */
+  --space-section: 5rem; /* between major sections of a page */
+
+  /* One measure for prose: ~68 characters of Barlow. */
+  --measure: 38rem;
+}
+
 html {
-  background-color: theme('colors.blueprint');
-  color: theme('colors.print');
+  background-color: rgb(var(--c-blueprint));
+  color: rgb(var(--c-print));
   /* The header is sticky, so an in-page anchor must not land under it. */
   scroll-padding-top: 8rem;
 }
 
 body {
   font-family: var(--font-prose);
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: theme('colors.annotation');
-  color: theme('colors.recess');
+  background: rgb(var(--c-annotation));
+  color: rgb(var(--c-recess));
 }
 
 /* Every rupiah amount, rate, and period. Without exception (CLAUDE.md). */
@@ -59,19 +127,19 @@ body {
 
 /* Prose is limited to a comfortable measure wherever it appears. */
 .measure {
-  max-width: theme('maxWidth.measure');
+  max-width: var(--measure);
 }
 
 *:focus-visible {
-  outline: 2px solid theme('colors.annotation');
+  outline: 2px solid rgb(var(--c-annotation));
   outline-offset: 2px;
   border-radius: 1px;
 }
 
 /* Hairlines in the register of a drawing sheet: one weight, one colour. */
 .sheet-panel {
-  border: 1px solid rgb(127 178 204 / 0.25);
-  background-color: theme('colors.recess');
+  border: 1px solid rgb(var(--c-annotation) / 0.25);
+  background-color: rgb(var(--c-recess));
 }
 
 .sheet-panel-hover {
@@ -83,8 +151,8 @@ body {
 
 @media (hover: hover) {
   .sheet-panel-hover:hover {
-    border-color: rgb(127 178 204 / 0.75);
-    background-color: theme('colors.raised');
+    border-color: rgb(var(--c-annotation) / 0.75);
+    background-color: rgb(var(--c-raised));
   }
 }
 
