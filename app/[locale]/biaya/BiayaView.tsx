@@ -131,15 +131,20 @@ export function BiayaView({ locale }: { locale: Locale }) {
             <>
               <section className="overflow-x-auto border border-annotation/25">
                 <table className="w-full min-w-[36rem] border-collapse text-caption">
+                  <caption className="sr-only">
+                    {id
+                      ? 'Biaya di luar pinjaman: pos, sifatnya (diatur peraturan atau ditetapkan bank), dan jumlahnya.'
+                      : 'Costs beyond the loan: the item, whether it is regulated or set by a bank, and the amount.'}
+                  </caption>
                   <thead>
                     <tr className="border-b border-annotation/40 bg-recess">
-                      <th className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
+                      <th scope="col" className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
                         {id ? 'Pos' : 'Item'}
                       </th>
-                      <th className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
+                      <th scope="col" className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
                         {id ? 'Sifat' : 'Nature'}
                       </th>
-                      <th className="sheet-label px-3 py-2 text-right text-caption font-normal text-annotation">
+                      <th scope="col" className="sheet-label px-3 py-2 text-right text-caption font-normal text-annotation">
                         {id ? 'Jumlah' : 'Amount'}
                       </th>
                     </tr>

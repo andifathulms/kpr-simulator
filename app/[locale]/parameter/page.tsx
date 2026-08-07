@@ -43,6 +43,11 @@ export default function ParameterPage({ params }: { params: { locale: string } }
             </h2>
             <div className="overflow-x-auto border border-annotation/25">
               <table className="w-full min-w-[48rem] border-collapse text-caption">
+                <caption className="sr-only">
+                  {id
+                    ? `Parameter ${pack.title.id}: nilai, periode berlaku, dasar hukum, dan tanggal verifikasi.`
+                    : `${pack.title.en} parameters: value, effective period, legal basis, and verification date.`}
+                </caption>
                 <thead>
                   <tr className="border-b border-annotation/40 bg-recess">
                     <Th>{id ? 'Identifier' : 'Identifier'}</Th>
