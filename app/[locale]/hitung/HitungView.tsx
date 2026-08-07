@@ -24,6 +24,7 @@ import { StatCard } from '@/components/ui/StatCard'
 import { FieldGroup } from '@/components/ui/FieldGroup'
 import { Glossary } from '@/components/ui/Glossary'
 import { BankQuestions } from '@/components/ui/BankQuestions'
+import { RateAnchor } from '@/components/ui/RateAnchor'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 import type { RateSegment } from '@/lib/amortise/types'
@@ -471,6 +472,7 @@ export function HitungView({ locale }: { locale: Locale }) {
                 max={10}
               />
             </div>
+            <RateAnchor locale={locale} assumedRate={state.bungaMengambang} />
             <SelectField
               label={id ? 'Bunga ditinjau ulang tiap' : 'The rate is reviewed every'}
               value={String(state.tinjauanBulan)}
