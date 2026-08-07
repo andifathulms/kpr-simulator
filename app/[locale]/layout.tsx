@@ -110,7 +110,6 @@ export default function LocaleLayout({
   params: { locale: string }
 }) {
   if (!isLocale(params.locale)) notFound()
-  const t = dictionary(params.locale)
 
   return (
     <html lang={params.locale} className={`${sheet.variable} ${prose.variable} ${figure.variable}`}>
@@ -122,7 +121,6 @@ export default function LocaleLayout({
           {params.locale === 'id' ? 'Lewati ke isi' : 'Skip to content'}
         </a>
         <div className="min-h-screen bg-blueprint">{children}</div>
-        <span className="sr-only">{t.common.notAdvice}</span>
       </body>
     </html>
   )
