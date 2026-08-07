@@ -54,8 +54,17 @@ for await (const path of walk(OUT)) {
     htmlChecked += 1
     // Strip anchors before looking for fetching attributes: a citation link
     // is the one external URL this project exists to show.
-    const withoutAnchors = contents.replace(/<a\b[^>]*>/gi, '<a>')
-    for (const match of withoutAnchors.matchAll(FETCHING_ATTRIBUTES)) {
+    //
+    // Canonical and alternate links go the same way, and for the same reason:
+    // they state where this page lives and where its translation lives. No
+    // browser ever requests them — they are read by crawlers, out of band.
+    // This is narrowed deliberately to those two rel values. A stylesheet, a
+    // preload, a script, an icon, a manifest and any other rel are still
+    // checked, because those the browser does fetch on its own.
+    const withoutDeclarations = contents
+      .replace(/<a\b[^>]*>/gi, '<a>')
+      .replace(/<link\b[^>]*\brel="(?:canonical|alternate)"[^>]*>/gi, '<link>')
+    for (const match of withoutDeclarations.matchAll(FETCHING_ATTRIBUTES)) {
       const url = match[1]
       if (url === undefined) continue
       // Namespaces are declarations, not requests.
