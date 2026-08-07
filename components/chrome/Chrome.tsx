@@ -45,8 +45,12 @@ export function Chrome({
               </span>
             </Link>
 
+            {/* The label is written in the language it switches to, so it is
+                marked as such — otherwise an Indonesian synthesiser reads
+                "English" with Indonesian phonetics (WCAG 3.1.2). */}
             <Link
               href={`/${other}`}
+              lang={other}
               className="sheet-label ml-auto shrink-0 border border-annotation/40 px-3 py-1.5 text-caption text-annotation hover:border-annotation hover:text-print"
             >
               {t.common.switchLocale}
