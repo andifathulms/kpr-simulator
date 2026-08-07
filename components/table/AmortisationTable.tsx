@@ -132,7 +132,32 @@ function Row({
           assumed ? 'text-unknown' : ''
         }`}
       >
-        <td className="figure px-3 py-1.5">{instalment.index}</td>
+        {/*
+         * The row stays clickable for a mouse, but the month number is a real
+         * button so the derivation can be reached by keyboard at all. The
+         * button stops the click propagating, or the row handler behind it
+         * would toggle a second time and cancel it out.
+         *
+         * aria-expanded is the one thing with no native equivalent for a
+         * disclosure; aria-controls is deliberately omitted, because the panel
+         * it would point at does not exist while the row is collapsed.
+         */}
+        <td className="px-0 py-0">
+          <button
+            type="button"
+            aria-expanded={expanded}
+            onClick={(event) => {
+              event.stopPropagation()
+              onToggle()
+            }}
+            className="figure w-full px-3 py-1.5 text-left underline decoration-annotation/40 underline-offset-4 hover:decoration-annotation"
+          >
+            {instalment.index}
+            <span className="sr-only">
+              {` — ${t.common.derivation}${expanded ? '' : '…'}`}
+            </span>
+          </button>
+        </td>
         <td className="figure px-3 py-1.5">{formatPeriod(instalment.period)}</td>
         <td className="figure px-3 py-1.5 text-right">
           {formatAmount(instalment.openingBalance, intl)}
