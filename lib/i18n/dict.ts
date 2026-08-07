@@ -6,6 +6,11 @@ import type { Locale } from './locales'
  * stated in the same plain voice as everything else.
  */
 export interface Dictionary {
+  /**
+   * Nav labels, not route names. The routes stay `hitung`, `ambang`, and so
+   * on; the labels say what the page is for, because a stranger cannot read
+   * "Ambang" cold — the PRD itself has to gloss it.
+   */
   readonly nav: Record<'hitung' | 'ambang' | 'subsidi' | 'banding' | 'biaya' | 'parameter', string>
   readonly common: Record<
     | 'appName'
@@ -67,12 +72,12 @@ export interface Dictionary {
 
 const id: Dictionary = {
   nav: {
-    hitung: 'Hitung',
-    ambang: 'Ambang',
-    subsidi: 'Subsidi',
-    banding: 'Banding',
-    biaya: 'Biaya',
-    parameter: 'Parameter',
+    hitung: 'Hitung angsuran',
+    ambang: 'Batas Anda',
+    subsidi: 'KPR subsidi',
+    banding: 'Bandingkan',
+    biaya: 'Biaya awal',
+    parameter: 'Sumber angka',
   },
   common: {
     appName: 'KPR Simulator',
@@ -136,12 +141,12 @@ const id: Dictionary = {
 
 const en: Dictionary = {
   nav: {
-    hitung: 'Calculate',
-    ambang: 'Threshold',
-    subsidi: 'Subsidised',
-    banding: 'Side by side',
-    biaya: 'Costs',
-    parameter: 'Parameters',
+    hitung: 'Instalment',
+    ambang: 'Your limit',
+    subsidi: 'Subsidised KPR',
+    banding: 'Compare',
+    biaya: 'Upfront costs',
+    parameter: 'Sources',
   },
   common: {
     appName: 'KPR Simulator',
