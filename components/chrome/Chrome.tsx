@@ -30,10 +30,18 @@ export function Chrome({
     <div className="flex min-h-screen flex-col bg-blueprint text-print">
       <header className="print-hidden sticky top-0 z-40 border-b border-annotation/25 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
         <div className="mx-auto max-w-6xl px-6 pt-4">
-          <div className="flex items-center gap-6">
-            <Link href={`/${locale}`} className="flex shrink-0 items-center gap-3">
+          {/*
+           * Wraps rather than overflows. Both children were shrink-0, so at a
+           * 320px viewport the wordmark and the locale button could together
+           * exceed the line and push the page into horizontal scroll — WCAG
+           * 1.4.10 Reflow. The brand may now shrink and the row may wrap, so
+           * the button drops to its own line instead of widening the page.
+           * Above ~360px nothing moves.
+           */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href={`/${locale}`} className="flex min-w-0 items-center gap-3">
               <Mark size={34} />
-              <span>
+              <span className="min-w-0">
                 <span className="sheet-label block text-lead leading-none text-print">
                   {t.common.appName}
                 </span>
