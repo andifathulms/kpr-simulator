@@ -356,6 +356,12 @@ body {
     display: none !important;
   }
 
+  /* Chart lettering is knocked out of the line behind it with a stroke in
+     the card's colour. On paper the card is white, so the knockout is too. */
+  .stroke-surface {
+    stroke: #fff !important;
+  }
+
   .hatch-unknown {
     background-image: repeating-linear-gradient(
       135deg,
