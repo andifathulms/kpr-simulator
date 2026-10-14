@@ -78,7 +78,7 @@ export function BiayaView({ locale }: { locale: Locale }) {
             }
           />
 
-          <p className="sheet-label pt-2 text-caption text-unknown">
+          <p className="sheet-title pt-2 text-lead text-unknown">
             {id ? 'Biaya bank — angka Anda' : 'Bank fees — your figures'}
           </p>
           <MoneyField label="Provisi" value={provisi} onChange={setProvisi} amber />
@@ -129,14 +129,14 @@ export function BiayaView({ locale }: { locale: Locale }) {
                       : 'Costs beyond the loan: the item, whether it is regulated or set by a bank, and the amount.'}
                   </caption>
                   <thead>
-                    <tr className="border-b border-annotation/40 bg-recess">
-                      <th scope="col" className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
+                    <tr className="border-b border-annotation/40 bg-surface">
+                      <th scope="col" className="sheet-label px-3 py-2 text-left text-caption font-medium text-annotation">
                         {id ? 'Pos' : 'Item'}
                       </th>
-                      <th scope="col" className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation">
+                      <th scope="col" className="sheet-label px-3 py-2 text-left text-caption font-medium text-annotation">
                         {id ? 'Sifat' : 'Nature'}
                       </th>
-                      <th scope="col" className="sheet-label px-3 py-2 text-right text-caption font-normal text-annotation">
+                      <th scope="col" className="sheet-label px-3 py-2 text-right text-caption font-medium text-annotation">
                         {id ? 'Jumlah' : 'Amount'}
                       </th>
                     </tr>
@@ -185,7 +185,7 @@ export function BiayaView({ locale }: { locale: Locale }) {
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="border-t border-annotation/40 bg-recess">
+                    <tr className="border-t border-annotation/40 bg-surface">
                       <td className="sheet-label px-3 py-2 text-caption text-annotation" colSpan={2}>
                         {id ? 'Total' : 'Total'}
                       </td>
@@ -198,8 +198,8 @@ export function BiayaView({ locale }: { locale: Locale }) {
               </section>
 
               <section className="grid gap-4 sm:grid-cols-2">
-                <div className="border border-annotation/25 bg-recess px-4 py-3">
-                  <p className="sheet-label text-caption text-annotation">
+                <div className="rounded-lg border border-annotation/25 bg-surface px-4 py-3">
+                  <p className="field-label text-annotation">
                     {id ? 'Diatur peraturan' : 'Set by regulation'}
                   </p>
                   <p className="figure mt-1 text-subhead">
@@ -207,7 +207,7 @@ export function BiayaView({ locale }: { locale: Locale }) {
                   </p>
                 </div>
                 <div className="border border-unknown/60 bg-unknown/[0.08] px-4 py-3">
-                  <p className="sheet-label text-caption text-unknown">
+                  <p className="field-label text-unknown">
                     {id ? 'Kebijakan bank atau notaris' : 'Bank or notary discretion'}
                   </p>
                   <p className="figure mt-1 text-subhead text-unknown">

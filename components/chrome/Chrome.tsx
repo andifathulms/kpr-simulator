@@ -27,7 +27,7 @@ export function Chrome({
   const id = locale === 'id'
 
   return (
-    <div className="flex min-h-screen flex-col bg-blueprint text-print">
+    <div className="flex min-h-screen flex-col text-print">
       <header className="print-hidden sticky top-0 z-40 border-b border-annotation/25 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
         <div className="mx-auto max-w-6xl px-6 pt-4">
           {/*

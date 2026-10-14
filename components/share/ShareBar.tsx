@@ -35,7 +35,7 @@ export function ShareBar({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={copy}
-          className="sheet-label border border-annotation/40 px-4 py-2 text-caption text-annotation hover:text-print"
+          className="btn-secondary"
         >
           {copied
             ? id
@@ -48,7 +48,7 @@ export function ShareBar({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={() => window.print()}
-          className="sheet-label border border-annotation/40 px-4 py-2 text-caption text-annotation hover:text-print"
+          className="btn-secondary"
         >
           {id ? 'Cetak' : 'Print'}
         </button>

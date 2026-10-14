@@ -270,7 +270,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
           </FieldGroup>
 
           <details className="border-t border-annotation/25 pt-4">
-            <summary className="sheet-label cursor-pointer text-caption text-annotation">
+            <summary className="field-label cursor-pointer text-annotation hover:text-print">
               {id ? 'Rincian teknis' : 'Technical details'}
             </summary>
             <div className="mt-4 grid grid-cols-2 gap-3">
@@ -309,7 +309,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
           )}
 
           {!ready && (
-            <section className="border border-annotation/25 bg-recess px-6 py-6">
+            <section className="rounded-lg border border-annotation/25 bg-surface px-6 py-6">
               <p className="sheet-label text-caption text-annotation">
                 {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
               </p>
@@ -443,11 +443,11 @@ export function AmbangView({ locale }: { locale: Locale }) {
                           : 'The instalment after the fixed period at several floating rates around the threshold.'}
                       </caption>
                       <thead>
-                        <tr className="border-b border-annotation/40 bg-recess">
-                          <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-normal text-annotation">
+                        <tr className="border-b border-annotation/40 bg-surface">
+                          <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-medium text-annotation">
                             {id ? 'Bunga mengambang' : 'Floating rate'}
                           </th>
-                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-medium text-annotation">
                             {id ? 'Angsuran setelah masa tetap' : 'Instalment after the fixed period'}
                           </th>
                         </tr>

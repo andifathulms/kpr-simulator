@@ -19,7 +19,7 @@ export const SITE_URL = `${SITE_ORIGIN}${BASE_PATH}/`
  * read a Tailwind token, so this is the one place the ground colour is written
  * as a literal. `public/manifest.webmanifest` carries the same value.
  */
-export const THEME_COLOR = '#1B3A5C'
+export const THEME_COLOR = '#0E2540'
 
 /** `asset('/og.png')` → `/kpr-simulator/og.png` */
 export function asset(path: string): string {

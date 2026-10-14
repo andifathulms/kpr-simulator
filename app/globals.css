@@ -17,37 +17,47 @@
  * ground it is actually used on — alpha-composited, not guessed. AA normal
  * text is 4.5:1; large text and UI components are 3:1.
  *
- * The palette is not a rebrand. Two values moved, both to clear contrast:
- *   threshold  #C9584A → #F59485   was 2.76:1 on the ground and 2.59:1 inside
- *                                  its own panel — the ambang figure, the most
- *                                  important number in the app, failed even
- *                                  the 3:1 large-text floor. Same hue (7°),
- *                                  lightened until it passes everywhere.
- *   raised     #22486F → #1F4266   annotation text on the card hover surface
- *                                  measured 4.11:1. Darkened until it clears.
+ * The 2026-10 refinement kept every hue and moved every value. The ground went
+ * deeper and more saturated so that cards could sit visibly *above* it, which
+ * gives four lightness steps instead of one flat plane:
+ *
+ *   recess     #0A1D33   sunk below the ground — input wells, the footer
+ *   blueprint  #0E2540   the ground
+ *   surface    #132F4E   a card or panel lifted off it
+ *   raised     #1A3B5F   hover, the active tab, a selected segment
+ *
+ * Measured ratios, ink on surface:
+ *
+ *              recess   blueprint  surface  raised   8% amber/red panel on surface
+ *   print      15.21    13.86      12.18    10.25    10.59 / 10.68
+ *   annotation  9.16     8.34       7.33     6.17
+ *   muted       8.52     7.76       6.82     5.74     5.93 / 5.98
+ *   unknown     8.69     7.91       6.96     5.86     6.05 (in its own panel)
+ *   threshold   8.05     7.33       6.44     5.42     5.65 (in its own panel)
+ *
+ * The amber hatch (.hatch-unknown) drops amber text to 3.52:1 where a stripe
+ * crosses it, so the hatch marks areas — a chart band, a swatch — and never
+ * sits behind text.
  */
 :root {
-  /* Surfaces */
-  --c-blueprint: 27 58 92; /* the ground */
-  --c-recess: 20 43 68; /* panels sunk into it */
-  --c-raised: 31 66 102; /* a card lifted off it, on hover */
+  /* Surfaces, darkest to lightest */
+  --c-recess: 10 29 51;
+  --c-blueprint: 14 37 64;
+  --c-surface: 19 47 78;
+  --c-raised: 26 59 95;
 
-  /* Ink. print on blueprint 9.87:1 · on recess 12.22:1 */
-  --c-print: 232 237 242;
-  /* annotation on blueprint 5.06:1 · recess 6.27:1 · raised 4.51:1 */
-  --c-annotation: 127 178 204;
-  /* unknown on blueprint 5.17:1 · recess 6.40:1 · own 8% panel 4.61:1 */
-  --c-unknown: 217 164 65;
-  /* threshold on blueprint 5.24:1 · recess 6.48:1 · own 8% panel 4.66:1 */
-  --c-threshold: 245 148 133;
+  /* Ink */
+  --c-print: 238 243 248;
+  --c-annotation: 143 198 224;
+  --c-unknown: 232 176 75;
+  --c-threshold: 247 154 139;
 
   /*
-   * Muted body text. One value, not a judgement call per component: at 70%
-   * it measures 5.70:1 on blueprint, 6.76:1 on recess, 4.83:1 on raised.
-   * Below this, muted text stops meeting AA — which is what happened when
-   * eight components each picked their own opacity.
+   * Muted body text. One solid value, not a judgement call per component:
+   * 5.74:1 on raised, the lightest surface it can land on. Use `text-muted`;
+   * never pick an opacity by eye.
    */
-  --ink-muted: rgb(var(--c-print) / 0.7);
+  --ink-muted: rgb(167 186 203);
 
   /*
    * Type. One scale. Nothing sets a size outside it.
@@ -79,6 +89,13 @@
 
 html {
   background-color: rgb(var(--c-blueprint));
+  /* The drafting grid: one 32px module, faint enough to be texture rather
+     than structure. The print stylesheet removes it with every other
+     background image. */
+  background-image:
+    linear-gradient(rgb(var(--c-annotation) / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--c-annotation) / 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
   color: rgb(var(--c-print));
   /* The header is sticky, so an in-page anchor must not land under it. */
   scroll-padding-top: 8rem;
@@ -97,15 +114,31 @@ body {
   color: rgb(var(--c-recess));
 }
 
-/* Every rupiah amount, rate, and period. Without exception (CLAUDE.md). */
+/* Every rupiah amount, rate, and period in a column or a derivation. Without
+   exception (CLAUDE.md). The slashed zero keeps 0 and O apart when someone
+   reads a figure against a printed offer letter. */
 .figure {
   font-family: var(--font-figure);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums slashed-zero;
+  font-feature-settings: 'tnum' 1, 'zero' 1;
   letter-spacing: -0.01em;
 }
 
-/* Drawing-sheet lettering for headings and labels. */
+/* The two or three headline figures on a page. Condensed and heavy so a
+   twelve-digit rupiah amount can be large without taking the whole row;
+   still tabular, so a figure that updates as someone types does not jitter. */
+.figure-display {
+  font-family: var(--font-sheet);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+/* Drawing-sheet lettering, for the small eyebrow above a title and for table
+   column heads — a word repeating down a column. Nowhere else: a page where
+   every label is tracked capitals has no place for the eye to land. */
 .sheet-label {
   font-family: var(--font-sheet);
   text-transform: uppercase;
@@ -125,6 +158,15 @@ body {
   text-wrap: balance;
 }
 
+/* Form labels, step titles, and anything else a visitor reads as a phrase:
+   sentence case, in the prose face, carried by weight rather than tracking. */
+.field-label {
+  font-family: var(--font-prose);
+  font-weight: 500;
+  font-size: var(--text-caption);
+  line-height: var(--leading-snug);
+}
+
 /* Prose is limited to a comfortable measure wherever it appears. */
 .measure {
   max-width: var(--measure);
@@ -133,27 +175,85 @@ body {
 *:focus-visible {
   outline: 2px solid rgb(var(--c-annotation));
   outline-offset: 2px;
-  border-radius: 1px;
+  border-radius: 2px;
 }
 
-/* Hairlines in the register of a drawing sheet: one weight, one colour. */
+/* A card lifted off the ground. One weight of hairline, one radius. */
 .sheet-panel {
-  border: 1px solid rgb(var(--c-annotation) / 0.25);
-  background-color: rgb(var(--c-recess));
+  border: 1px solid rgb(var(--c-annotation) / 0.22);
+  background-color: rgb(var(--c-surface));
+  border-radius: 0.5rem;
 }
 
 .sheet-panel-hover {
   transition:
     border-color 150ms ease,
-    background-color 150ms ease,
-    transform 150ms ease;
+    background-color 150ms ease;
 }
 
 @media (hover: hover) {
   .sheet-panel-hover:hover {
-    border-color: rgb(var(--c-annotation) / 0.75);
+    border-color: rgb(var(--c-annotation) / 0.6);
     background-color: rgb(var(--c-raised));
   }
+}
+
+/* In the components layer so a utility on the element (a reserved tone, a
+   shrink-0) wins over the base button style. */
+@layer components {
+  /* Buttons. Sentence case, carried by weight; the primary is print-white on the
+     ground and is used once per view at most. */
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.125rem;
+    font-family: var(--font-prose);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1.2;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .btn-primary {
+    background-color: rgb(var(--c-print));
+    color: rgb(var(--c-blueprint));
+  }
+
+  .btn-primary:hover {
+    background-color: rgb(var(--c-annotation));
+  }
+
+  .btn-secondary {
+    border: 1px solid rgb(var(--c-annotation) / 0.45);
+    color: rgb(var(--c-print));
+  }
+
+  .btn-secondary:hover {
+    border-color: rgb(var(--c-annotation));
+    background-color: rgb(var(--c-raised));
+  }
+}
+
+/*
+ * The draughtsman's mark for "not determined": a 45° hatch in the unknown
+ * colour. It carries the amber meaning without relying on hue, so it survives
+ * greyscale, colour-blindness, and a black-and-white printer. Areas only —
+ * never behind text (see the ratio note at the top of this file).
+ */
+.hatch-unknown {
+  background-color: rgb(var(--c-unknown) / 0.08);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(var(--c-unknown) / 0.34) 0 2px,
+    transparent 2px 7px
+  );
 }
 
 /*
@@ -202,6 +302,16 @@ body {
 
   .print-hidden {
     display: none !important;
+  }
+
+  .hatch-unknown {
+    background-image: repeating-linear-gradient(
+      135deg,
+      #7a5410 0 1px,
+      transparent 1px 6px
+    ) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   /*

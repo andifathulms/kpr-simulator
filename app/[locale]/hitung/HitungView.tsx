@@ -400,8 +400,8 @@ export function HitungView({ locale }: { locale: Locale }) {
                   : 'Your figure. BI has released the first-home LTV maximum to bank discretion.'
               }
             />
-            <div className="border border-annotation/25 bg-recess px-3 py-2">
-              <p className="sheet-label text-caption text-annotation">{t.form.plafon}</p>
+            <div className="rounded-lg border border-annotation/25 bg-surface px-3 py-2">
+              <p className="field-label text-annotation">{t.form.plafon}</p>
               <p className="figure text-lead">{formatRupiah(rupiah(plafon), intl)}</p>
             </div>
           </FieldGroup>
@@ -497,7 +497,7 @@ export function HitungView({ locale }: { locale: Locale }) {
           </FieldGroup>
 
           <details className="border-t border-annotation/25 pt-4">
-            <summary className="sheet-label cursor-pointer text-caption text-annotation">
+            <summary className="field-label cursor-pointer text-annotation hover:text-print">
               {id ? 'Rincian teknis' : 'Technical details'}
             </summary>
             <div className="mt-4 space-y-4">
@@ -556,7 +556,7 @@ export function HitungView({ locale }: { locale: Locale }) {
           )}
 
           {!ready && (
-            <section className="border border-annotation/25 bg-recess px-6 py-6">
+            <section className="rounded-lg border border-annotation/25 bg-surface px-6 py-6">
               <p className="sheet-label text-caption text-annotation">
                 {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
               </p>
@@ -744,7 +744,7 @@ export function HitungView({ locale }: { locale: Locale }) {
                 }
               >
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="border border-annotation/25 bg-recess px-4 py-3">
+                  <div className="rounded-lg border border-annotation/25 bg-surface px-4 py-3">
                     <p className="sheet-label text-caption text-annotation">
                       {t.form.efektif} {formatRate(state.bungaTetap, intl)}
                     </p>
@@ -758,7 +758,7 @@ export function HitungView({ locale }: { locale: Locale }) {
                       <span className="figure">{formatRate(result.irr.annualRate, intl)}</span>
                     </p>
                   </div>
-                  <div className="border border-annotation/25 bg-recess px-4 py-3">
+                  <div className="rounded-lg border border-annotation/25 bg-surface px-4 py-3">
                     <p className="sheet-label text-caption text-annotation">
                       {t.form.flat} {formatRate(state.bungaTetap, intl)}
                     </p>
@@ -783,17 +783,17 @@ export function HitungView({ locale }: { locale: Locale }) {
                           : 'Interest charged in two months, under the effective and flat conventions, at the same nominal rate.'}
                       </caption>
                       <thead>
-                        <tr className="border-b border-annotation/40 bg-recess">
-                          <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-normal text-annotation">
+                        <tr className="border-b border-annotation/40 bg-surface">
+                          <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-medium text-annotation">
                             {t.table.bulan}
                           </th>
-                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-medium text-annotation">
                             {id ? 'Sisa utang (efektif)' : 'Still owed (effective)'}
                           </th>
-                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-medium text-annotation">
                             {id ? 'Bunga — efektif' : 'Interest — effective'}
                           </th>
-                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                          <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-medium text-annotation">
                             {id ? 'Bunga — flat' : 'Interest — flat'}
                           </th>
                         </tr>
@@ -863,11 +863,11 @@ export function HitungView({ locale }: { locale: Locale }) {
                         : 'Change in total paid when one input is moved.'}
                     </caption>
                     <thead>
-                      <tr className="border-b border-annotation/40 bg-recess">
-                        <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-normal text-annotation">
+                      <tr className="border-b border-annotation/40 bg-surface">
+                        <th scope="col" className="sheet-label px-3 py-2 text-left text-micro font-medium text-annotation">
                           {id ? 'Bila ini bergeser' : 'Move this'}
                         </th>
-                        <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-normal text-annotation">
+                        <th scope="col" className="sheet-label px-3 py-2 text-right text-micro font-medium text-annotation">
                           {id ? 'Total dibayar berubah' : 'Total paid changes by'}
                         </th>
                       </tr>

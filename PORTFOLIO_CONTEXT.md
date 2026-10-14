@@ -75,7 +75,7 @@ Verified against `package.json`.
 - pnpm 9.15.9
 - GitHub Actions (verify + deploy to Pages)
 
-**Deliberately absent:** any finance, currency, date, or charting library. Amortisation and IRR are hand-written; `{ year, month }` integers replace a date library; `Intl.NumberFormat` covers display; the schedule elevation is hand-built SVG. Fonts (Barlow, Barlow Condensed, Roboto Mono) are self-hosted as woff2 rather than fetched from a CDN, so the site is genuinely offline after first load.
+**Deliberately absent:** any finance, currency, date, or charting library. Amortisation and IRR are hand-written; `{ year, month }` integers replace a date library; `Intl.NumberFormat` covers display; the schedule elevation is hand-built SVG. Fonts (Barlow, Barlow Condensed, IBM Plex Mono) are self-hosted as woff2 rather than fetched from a CDN, so the site is genuinely offline after first load.
 
 ---
 

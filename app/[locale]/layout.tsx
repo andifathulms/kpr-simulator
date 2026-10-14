@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { SITE_ORIGIN, SITE_URL, THEME_COLOR, asset } from '@/lib/site'
 import { notFound } from 'next/navigation'
-import { Barlow, Barlow_Condensed, Roboto_Mono } from 'next/font/google'
+import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from 'next/font/google'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n/locales'
 import { dictionary } from '@/lib/i18n/dict'
 import '../globals.css'
@@ -22,27 +22,30 @@ import '../globals.css'
  */
 const sheet = Barlow_Condensed({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  // 600 for titles and headline figures, 700 for the home-page display line.
+  // 400 was preloaded and used by nothing: `.sheet-label` is 500, `.sheet-title`
+  // and `.figure-display` are 600.
+  weight: ['500', '600', '700'],
   variable: '--font-sheet',
   display: 'swap',
 })
 
 const prose = Barlow({
   subsets: ['latin'],
-  // 400 only. Nothing in the app renders prose at 500 — no font-medium
-  // anywhere, and the two authored font-weight rules are both on the
-  // condensed face — so a 500 was being preloaded on every page for nothing.
-  weight: ['400'],
+  // 400 for prose; 500 for `.field-label` and the buttons, which carry by
+  // weight what tracked capitals used to.
+  weight: ['400', '500'],
   variable: '--font-prose',
   display: 'swap',
 })
 
-/** Tabular figures for every rupiah amount, rate, and period. */
-const figure = Roboto_Mono({
+/**
+ * Tabular figures for every rupiah amount, rate, and period in a column or a
+ * derivation. Plex Mono over Roboto Mono for its draughtsman's hand and its
+ * slashed zero. 400 only: `.figure` sets a family and never a weight.
+ */
+const figure = IBM_Plex_Mono({
   subsets: ['latin'],
-  // 400 only, and this one was the expensive mistake: the mono 500 was the
-  // single largest preloaded font on every page at 32 KB, requested by
-  // nothing. `.figure` sets a family and never a weight.
   weight: ['400'],
   variable: '--font-figure',
   display: 'swap',
@@ -126,7 +129,7 @@ export default function LocaleLayout({
         >
           {params.locale === 'id' ? 'Lewati ke isi' : 'Skip to content'}
         </a>
-        <div className="min-h-screen bg-blueprint">{children}</div>
+        <div className="min-h-screen">{children}</div>
       </body>
     </html>
   )

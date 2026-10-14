@@ -72,7 +72,7 @@ export function Glossary({ locale, only }: { locale: Locale; only?: readonly Ter
     <dl className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
       {entries.map((entry) => (
         <div key={entry.term}>
-          <dt className="sheet-label text-caption text-annotation">{entry.term}</dt>
+          <dt className="sheet-title text-lead text-annotation">{entry.term}</dt>
           <dd className="mt-1 text-caption text-muted">
             {locale === 'id' ? entry.id : entry.en}
           </dd>

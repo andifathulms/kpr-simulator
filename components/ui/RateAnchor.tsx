@@ -58,8 +58,8 @@ export function RateAnchor({
       : false
 
   return (
-    <div className="border border-annotation/25 bg-recess px-4 py-3">
-      <p className="sheet-label text-caption text-annotation">
+    <div className="rounded-lg border border-annotation/25 bg-surface px-4 py-3">
+      <p className="field-label text-annotation">
         {id ? anchor.label.id : anchor.label.en}
       </p>
       <p className="figure mt-1 text-subhead">{formatRate(snapshot.value, intl)}</p>

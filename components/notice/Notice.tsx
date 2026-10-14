@@ -15,7 +15,7 @@ export function UnknownNotice({
 }) {
   return (
     <aside className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-3">
-      <p className="sheet-label text-caption text-unknown">{title}</p>
+      <p className="field-label text-unknown">{title}</p>
       <div className="mt-1 text-caption text-print">{children}</div>
     </aside>
   )
@@ -30,7 +30,7 @@ export function ThresholdNotice({
 }) {
   return (
     <aside className="border-l-2 border-threshold bg-threshold/[0.08] px-4 py-3">
-      <p className="sheet-label text-caption text-threshold">{title}</p>
+      <p className="field-label text-threshold">{title}</p>
       <div className="mt-1 text-caption text-print">{children}</div>
     </aside>
   )
@@ -49,7 +49,7 @@ export function RefusalNotice({
 }) {
   return (
     <aside className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-3">
-      <p className="sheet-label text-caption text-unknown">
+      <p className="field-label text-unknown">
         {locale === 'id' ? 'Tidak dapat dihitung' : 'Cannot be computed'}
       </p>
       <p className="mt-1 text-caption text-print">

@@ -190,7 +190,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
         <div className="space-y-8">
           <ShareBar locale={locale} />
           <section className="space-y-3">
-            <h2 className="sheet-label text-caption text-annotation">
+            <h2 className="sheet-title text-subhead text-print">
               {id ? 'Pemeriksaan kriteria' : 'Criteria check'}
             </h2>
 
@@ -203,11 +203,11 @@ export function SubsidiView({ locale }: { locale: Locale }) {
                     key={criterion.key}
                     className={`border-l-2 px-4 py-3 ${
                       criterion.met
-                        ? 'border-annotation/50 bg-recess'
+                        ? 'border-annotation/50 bg-surface'
                         : 'border-threshold bg-threshold/[0.08]'
                     }`}
                   >
-                    <p className="sheet-label text-caption text-annotation">
+                    <p className="field-label text-annotation">
                       {id ? criterion.label.id : criterion.label.en}
                     </p>
                     <p className="figure mt-1">
@@ -241,7 +241,7 @@ export function SubsidiView({ locale }: { locale: Locale }) {
           </section>
 
           <section className="space-y-3">
-            <h2 className="sheet-label text-caption text-annotation">
+            <h2 className="sheet-title text-subhead text-print">
               {id ? 'Jadwal angsuran' : 'Payment schedule'}
             </h2>
 

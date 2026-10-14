@@ -183,7 +183,7 @@ export function BandingView({ locale }: { locale: Locale }) {
             onChange={setWilayah}
           />
 
-          <p className="sheet-label pt-2 text-caption text-annotation">
+          <p className="sheet-title pt-2 text-lead text-print">
             {id ? 'Sisi komersial' : 'The commercial side'}
           </p>
           <RateField label={t.form.bungaTetap} value={bungaTetap} onChange={setBungaTetap} />
@@ -232,7 +232,7 @@ export function BandingView({ locale }: { locale: Locale }) {
             <RefusalNotice outcome={eligibility} locale={locale} />
           ) : (
             <section className="space-y-2">
-              <h2 className="sheet-label text-caption text-annotation">
+              <h2 className="sheet-title text-subhead text-print">
                 {id ? 'Kelayakan jalur subsidi' : 'Eligibility for the subsidised path'}
               </h2>
               <ul className="grid gap-2 sm:grid-cols-3">
@@ -241,11 +241,11 @@ export function BandingView({ locale }: { locale: Locale }) {
                     key={criterion.key}
                     className={`border-l-2 px-3 py-2 text-caption ${
                       criterion.met
-                        ? 'border-annotation/50 bg-recess'
+                        ? 'border-annotation/50 bg-surface'
                         : 'border-threshold bg-threshold/[0.08]'
                     }`}
                   >
-                    <p className="sheet-label text-caption text-annotation">
+                    <p className="field-label text-annotation">
                       {id ? criterion.label.id : criterion.label.en}
                     </p>
                     <p className="figure mt-0.5">
@@ -311,7 +311,7 @@ export function BandingView({ locale }: { locale: Locale }) {
               </section>
 
               <section className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-4">
-                <p className="sheet-label text-caption text-unknown">
+                <p className="field-label text-unknown">
                   {id ? 'Selisih total dibayar' : 'Difference in total paid'}
                 </p>
                 <p className="figure mt-1 text-subhead text-unknown">
@@ -325,11 +325,11 @@ export function BandingView({ locale }: { locale: Locale }) {
               </section>
 
               <section className="space-y-3">
-                <h3 className="sheet-label text-caption text-annotation">
+                <h3 className="sheet-title text-lead text-print">
                   {id ? 'Subsidi — seluruh tenor pada satu bunga' : 'Subsidised — one rate, whole term'}
                 </h3>
                 <ScheduleElevation schedule={result.comparison.subsidi.schedule} locale={locale} />
-                <h3 className="sheet-label text-caption text-annotation">
+                <h3 className="sheet-title text-lead text-print">
                   {id ? 'Komersial — dengan batas masa tetap' : 'Commercial — with the fixed-period boundary'}
                 </h3>
                 <ScheduleElevation
@@ -367,10 +367,10 @@ function Column({
   return (
     <div
       className={`border px-5 py-4 ${
-        amber ? 'border-unknown/60 bg-unknown/[0.08]' : 'border-annotation/40 bg-recess'
+        amber ? 'border-unknown/60 bg-unknown/[0.08]' : 'border-annotation/40 bg-surface'
       }`}
     >
-      <p className={`sheet-label text-caption ${amber ? 'text-unknown' : 'text-print'}`}>{title}</p>
+      <p className={`field-label ${amber ? 'text-unknown' : 'text-print'}`}>{title}</p>
       <p className="figure mt-1 text-caption text-muted">{rateLabel}</p>
 
       <dl className="mt-4 space-y-3">

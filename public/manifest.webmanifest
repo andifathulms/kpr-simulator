@@ -8,8 +8,8 @@
   "scope": "/kpr-simulator/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#1B3A5C",
-  "theme_color": "#1B3A5C",
+  "background_color": "#0E2540",
+  "theme_color": "#0E2540",
   "categories": ["finance", "utilities"],
   "icons": [
     {

@@ -61,7 +61,7 @@ export function PrepayPanel({
 
   return (
     <section className="space-y-4">
-      <h2 className="sheet-label text-caption text-annotation">
+      <h2 className="sheet-title text-subhead text-print">
         {id ? 'Pelunasan sebagian' : 'Extra payment'}
       </h2>
 
@@ -178,10 +178,10 @@ function Cell({
           ? 'border-threshold/60 bg-threshold/[0.08]'
           : amber
             ? 'border-unknown/60 bg-unknown/[0.08]'
-            : 'border-annotation/25 bg-recess'
+            : 'border-annotation/25 bg-surface'
       }`}
     >
-      <p className={`sheet-label text-caption ${label_tone}`}>{label}</p>
+      <p className={`field-label ${label_tone}`}>{label}</p>
       <p
         className={`figure mt-1 text-lead ${
           negative ? 'text-threshold' : amber ? 'text-unknown' : 'text-print'

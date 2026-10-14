@@ -32,7 +32,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
               : 'Amortisation table: balance, instalment, interest, and principal by month.'}
           </caption>
           <thead>
-            <tr className="border-b border-annotation/40 bg-recess">
+            <tr className="border-b border-annotation/40 bg-surface">
               <Th align="left">{t.table.bulan}</Th>
               <Th align="left">{t.table.periode}</Th>
               <Th align="right">{t.table.saldoAwal}</Th>
@@ -58,7 +58,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
             ))}
           </tbody>
           <tfoot>
-            <tr className="border-t border-annotation/40 bg-recess">
+            <tr className="border-t border-annotation/40 bg-surface">
               <td className="px-3 py-2 sheet-label text-micro text-annotation" colSpan={4}>
                 {t.table.total}
               </td>
@@ -87,7 +87,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
         <button
           type="button"
           onClick={() => setShowAll(!showAll)}
-          className="sheet-label border border-annotation/40 px-4 py-2 text-micro text-annotation hover:text-print"
+          className="btn-secondary"
         >
           {showAll
             ? locale === 'id'
@@ -106,7 +106,7 @@ function Th({ children, align }: { children: React.ReactNode; align: 'left' | 'r
   return (
     <th
       scope="col"
-      className={`sheet-label px-3 py-2 text-micro font-normal text-annotation ${
+      className={`sheet-label px-3 py-2 text-micro font-medium text-annotation ${
         align === 'right' ? 'text-right' : 'text-left'
       }`}
     >
@@ -135,7 +135,7 @@ function Row({
     <>
       <tr
         onClick={onToggle}
-        className={`cursor-pointer border-b border-annotation/15 hover:bg-recess/60 ${
+        className={`cursor-pointer border-b border-annotation/15 hover:bg-surface ${
           assumed ? 'text-unknown' : ''
         }`}
       >
@@ -181,7 +181,7 @@ function Row({
         </td>
       </tr>
       {expanded && (
-        <tr className="border-b border-annotation/15 bg-recess">
+        <tr className="border-b border-annotation/15 bg-surface">
           <td colSpan={8} className="px-3 py-3 text-micro">
             <p className="sheet-label mb-2 text-annotation">{t.common.derivation}</p>
             <ul className="figure space-y-1 text-muted">

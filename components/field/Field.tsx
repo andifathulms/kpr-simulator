@@ -31,10 +31,10 @@ export function MoneyField({
   const hintId = `${id}-hint`
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className={`sheet-label block text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
+      <label htmlFor={id} className={`field-label block ${amber ? 'text-unknown' : 'text-annotation'}`}>
         {label}
       </label>
-      <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
+      <div className="flex items-center rounded-md border border-annotation/40 bg-recess transition-colors focus-within:border-annotation hover:border-annotation/70">
         <span className="figure px-3 py-2 text-muted">Rp</span>
         <input
           id={id}
@@ -82,10 +82,10 @@ export function RateField({
   const percent = Number((value * 100).toFixed(4))
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className={`sheet-label block text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
+      <label htmlFor={id} className={`field-label block ${amber ? 'text-unknown' : 'text-annotation'}`}>
         {label}
       </label>
-      <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
+      <div className="flex items-center rounded-md border border-annotation/40 bg-recess transition-colors focus-within:border-annotation hover:border-annotation/70">
         <input
           id={id}
           aria-describedby={hint ? hintId : undefined}
@@ -135,10 +135,10 @@ export function NumberField({
   const hintId = `${id}-hint`
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="sheet-label block text-caption text-annotation">
+      <label htmlFor={id} className="field-label block text-annotation">
         {label}
       </label>
-      <div className="flex items-center border border-annotation/40 bg-recess focus-within:border-annotation">
+      <div className="flex items-center rounded-md border border-annotation/40 bg-recess transition-colors focus-within:border-annotation hover:border-annotation/70">
         <input
           id={id}
           aria-describedby={hint ? hintId : undefined}
@@ -177,7 +177,7 @@ export function SelectField<T extends string>({
   const hintId = `${id}-hint`
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="sheet-label block text-caption text-annotation">
+      <label htmlFor={id} className="field-label block text-annotation">
         {label}
       </label>
       <select
@@ -185,7 +185,7 @@ export function SelectField<T extends string>({
         aria-describedby={hint ? hintId : undefined}
         value={value}
         onChange={(event) => onChange(event.target.value as T)}
-        className="w-full border border-annotation/40 bg-recess px-3 py-2 text-print outline-none focus:border-annotation"
+        className="w-full rounded-md border border-annotation/40 bg-recess px-3 py-2 text-print outline-none transition-colors hover:border-annotation/70 focus:border-annotation"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value} className="bg-recess">

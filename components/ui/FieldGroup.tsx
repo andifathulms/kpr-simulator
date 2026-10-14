@@ -30,7 +30,7 @@ export function FieldGroup({
         <span className={`figure text-caption ${amber ? 'text-unknown' : 'text-annotation'}`}>
           {step}
         </span>
-        <span className={`sheet-label text-caption ${amber ? 'text-unknown' : 'text-print'}`}>
+        <span className={`sheet-title text-lead ${amber ? 'text-unknown' : 'text-print'}`}>
           {title}
         </span>
       </div>

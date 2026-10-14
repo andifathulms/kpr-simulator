@@ -49,13 +49,13 @@ export default function Home({ params }: { params: { locale: string } }) {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href={`/${locale}/hitung`}
-                className="sheet-label bg-print px-6 py-3 text-caption text-blueprint transition-colors hover:bg-annotation"
+                className="btn-primary"
               >
                 {id ? 'Hitung angsuran saya' : 'Work out my instalment'}
               </Link>
               <Link
                 href={`/${locale}/ambang`}
-                className="sheet-label border border-annotation/60 px-6 py-3 text-caption text-annotation transition-colors hover:border-annotation hover:text-print"
+                className="btn-secondary"
               >
                 {id ? 'Cari titik tak terjangkau' : 'Find where it stops being affordable'}
               </Link>

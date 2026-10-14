@@ -19,8 +19,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        blueprint: 'rgb(var(--c-blueprint) / <alpha-value>)',
+        /* Surfaces, darkest to lightest: recess < blueprint < surface < raised. */
         recess: 'rgb(var(--c-recess) / <alpha-value>)',
+        blueprint: 'rgb(var(--c-blueprint) / <alpha-value>)',
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
         raised: 'rgb(var(--c-raised) / <alpha-value>)',
         print: 'rgb(var(--c-print) / <alpha-value>)',
         annotation: 'rgb(var(--c-annotation) / <alpha-value>)',

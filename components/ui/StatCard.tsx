@@ -15,7 +15,7 @@ export type Tone = 'computed' | 'unknown' | 'threshold'
 const TONES: Record<Tone, { readonly box: string; readonly label: string; readonly value: string }> =
   {
     computed: {
-      box: 'border-annotation/25 bg-recess',
+      box: 'border-annotation/25 bg-surface',
       label: 'text-annotation',
       value: 'text-print',
     },
@@ -49,19 +49,36 @@ export function StatCard({
 }) {
   const palette = TONES[tone]
   return (
-    <div className={`flex flex-col justify-between border px-4 py-3 ${palette.box}`}>
-      <p className={`sheet-label text-caption ${palette.label}`}>{label}</p>
+    <div className={`flex flex-col justify-between rounded-lg border px-4 py-3 ${palette.box}`}>
+      <p className={`field-label ${palette.label}`}>{label}</p>
       <p
-        className={`figure mt-2 ${size === 'lg' ? 'text-title' : 'text-subhead'} ${palette.value}`}
+        className={`figure-display mt-1.5 ${size === 'lg' ? 'text-headline' : 'text-title'} ${palette.value}`}
       >
         {value}
       </p>
       {(note || tag) && (
         <p className={`mt-2 text-caption ${tone === 'computed' ? 'text-muted' : palette.label}`}>
-          {tag && <span className="sheet-label mr-2">{tag}</span>}
+          {tag && <Tag tone={tone}>{tag}</Tag>}
           {note}
         </p>
       )}
     </div>
+  )
+}
+
+/**
+ * The word that says what a figure is, as a small outlined pill. It sits
+ * before the note so it is read first, and it is the reason a toned card
+ * still means something in greyscale.
+ */
+export function Tag({ tone, children }: { tone: Tone; children: React.ReactNode }) {
+  return (
+    <span
+      className={`sheet-label mr-2 inline-block rounded-full border px-2 py-px text-micro leading-tight ${
+        tone === 'computed' ? 'border-print/40 text-print' : 'border-current'
+      }`}
+    >
+      {children}
+    </span>
   )
 }

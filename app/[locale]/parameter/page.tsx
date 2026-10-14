@@ -40,7 +40,7 @@ export default function ParameterPage({ params }: { params: { locale: string } }
 
         {PACKS.map((pack, packIndex) => (
           <section key={`${pack.pack}-${packIndex}`} className="space-y-4">
-            <h2 className="sheet-label text-caption text-annotation">
+            <h2 className="sheet-title text-subhead text-print">
               {id ? pack.title.id : pack.title.en}
             </h2>
             <div className="overflow-x-auto border border-annotation/25">
@@ -51,7 +51,7 @@ export default function ParameterPage({ params }: { params: { locale: string } }
                     : `${pack.title.en} parameters: value, effective period, legal basis, and verification date.`}
                 </caption>
                 <thead>
-                  <tr className="border-b border-annotation/40 bg-recess">
+                  <tr className="border-b border-annotation/40 bg-surface">
                     <Th>{id ? 'Identifier' : 'Identifier'}</Th>
                     <Th>{id ? 'Nilai' : 'Value'}</Th>
                     <Th>{t.common.inForce}</Th>
@@ -108,7 +108,7 @@ export default function ParameterPage({ params }: { params: { locale: string } }
         ))}
 
         <section className="space-y-4">
-          <h2 className="sheet-label text-caption text-unknown">{t.common.gapsTitle}</h2>
+          <h2 className="sheet-title text-subhead text-unknown">{t.common.gapsTitle}</h2>
           <p className="max-w-3xl text-caption text-muted">
             {id
               ? 'Berikut nilai-nilai yang tidak dimuat karena tidak berhasil diverifikasi ke sumber yang sah. Untuk masing-masing, aplikasi menolak menghitung dan menyebut apa yang kurang, alih-alih mengisinya dengan angka yang masuk akal.'
@@ -117,7 +117,7 @@ export default function ParameterPage({ params }: { params: { locale: string } }
           <ul className="grid gap-3 md:grid-cols-2">
             {COVERAGE_GAPS.map((gap) => (
               <li key={gap.reference} className="border-l-2 border-unknown bg-unknown/[0.08] px-4 py-3">
-                <p className="sheet-label text-caption text-unknown">{id ? gap.title.id : gap.title.en}</p>
+                <p className="field-label text-unknown">{id ? gap.title.id : gap.title.en}</p>
                 <p className="figure mt-0.5 text-caption text-unknown">{gap.reference}</p>
                 <p className="mt-1 text-caption text-muted">{id ? gap.detail.id : gap.detail.en}</p>
               </li>
@@ -133,7 +133,7 @@ function Th({ children }: { children: React.ReactNode }) {
   return (
     <th
       scope="col"
-      className="sheet-label px-3 py-2 text-left text-caption font-normal text-annotation"
+      className="sheet-label px-3 py-2 text-left text-caption font-medium text-annotation"
     >
       {children}
     </th>

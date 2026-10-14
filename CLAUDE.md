@@ -141,7 +141,7 @@ tests/
 - Comments cite the article they implement — `// Kepmen PUPR 689/KPTS/M/2023` above the ceiling lookup.
 - Indonesian banking vocabulary in identifiers and UI: `bungaTetap`, `bungaMengambang`, `provisi`, `penaltiPelunasan`, `angsuran`, `plafon`. Do not substitute English approximations.
 - Tabular numerals on every rupiah column, right-aligned on the decimal. Without exception.
-- Tailwind utilities inline; semantic tokens in `tailwind.config.ts` — `blueprint`, `recess`, `print`, `annotation`, `unknown`, `threshold`. Never raw hex in components.
+- Tailwind utilities inline; semantic tokens in `tailwind.config.ts` — surfaces `recess` < `blueprint` < `surface` < `raised`, inks `print`, `annotation`, `unknown`, `threshold`. Never raw hex in components.
 
 ## Testing rules
 

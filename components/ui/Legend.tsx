@@ -35,7 +35,7 @@ function Entry({ swatch, term, detail }: { swatch: string; term: string; detail:
     <div className="flex gap-3">
       <span className={`mt-1.5 h-2.5 w-6 shrink-0 ${swatch}`} aria-hidden />
       <div>
-        <dt className="sheet-label text-caption text-print">{term}</dt>
+        <dt className="field-label text-print">{term}</dt>
         <dd className="text-caption text-muted">{detail}</dd>
       </div>
     </div>

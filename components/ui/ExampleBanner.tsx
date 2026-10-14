@@ -51,7 +51,7 @@ export function ExampleBanner({ locale, onClear }: { locale: Locale; onClear: ()
       <button
         type="button"
         onClick={onClear}
-        className="sheet-label shrink-0 border border-unknown/60 px-4 py-2 text-caption text-unknown hover:border-unknown hover:text-print"
+        className="btn-secondary shrink-0 border-unknown/60 text-unknown hover:border-unknown hover:bg-unknown/10"
       >
         {id ? 'Kosongkan' : 'Clear'}
       </button>
@@ -66,7 +66,7 @@ export function ExampleButton({ locale, onLoad }: { locale: Locale; onLoad: () =
     <button
       type="button"
       onClick={onLoad}
-      className="sheet-label border border-annotation/60 px-4 py-2 text-caption text-annotation hover:border-annotation hover:text-print"
+      className="btn-secondary"
     >
       {id ? 'Isi dengan contoh' : 'Fill in a worked example'}
     </button>
