@@ -20,7 +20,7 @@ export function Legend({ locale, className = '' }: { locale: Locale; className?:
             : 'Arithmetic, or a rule cited to its source.'
         }
       />
-      <Entry swatch="bg-unknown" term={t.common.assumption} detail={t.common.unknownLegend} />
+      <Entry swatch="hatch-unknown border border-unknown" term={t.common.assumption} detail={t.common.unknownLegend} />
       <Entry
         swatch="bg-threshold"
         term={id ? 'Batas' : 'Limit'}
@@ -33,7 +33,7 @@ export function Legend({ locale, className = '' }: { locale: Locale; className?:
 function Entry({ swatch, term, detail }: { swatch: string; term: string; detail: string }) {
   return (
     <div className="flex gap-3">
-      <span className={`mt-1.5 h-2.5 w-6 shrink-0 ${swatch}`} aria-hidden />
+      <span className={`mt-1 h-3 w-6 shrink-0 rounded-sm ${swatch}`} aria-hidden />
       <div>
         <dt className="field-label text-print">{term}</dt>
         <dd className="text-caption text-muted">{detail}</dd>

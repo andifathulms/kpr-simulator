@@ -5,7 +5,24 @@ import { Legend } from '@/components/ui/Legend'
 import { MakerSignature } from '@/components/ui/MakerSignature'
 import { Mark } from '@/components/ui/Mark'
 
-const ROUTES = ['hitung', 'ambang', 'subsidi', 'banding', 'biaya', 'parameter'] as const
+export const ROUTES = ['hitung', 'ambang', 'subsidi', 'banding', 'biaya', 'parameter'] as const
+export type Route = (typeof ROUTES)[number]
+
+/**
+ * The pages grouped by what the visitor is doing, in the order a buyer usually
+ * works: calculate, choose a path, prepare. The numbers state that order; they
+ * are not a ranking, and every page still opens on its own from a shared link.
+ * `parameter` sits outside the groups — it is reference, not a step.
+ */
+export const GROUPS: readonly {
+  readonly key: string
+  readonly label: { readonly id: string; readonly en: string }
+  readonly routes: readonly Route[]
+}[] = [
+  { key: 'hitung', label: { id: 'Hitung', en: 'Calculate' }, routes: ['hitung', 'ambang'] },
+  { key: 'jalur', label: { id: 'Pilih jalur', en: 'Choose a path' }, routes: ['subsidi', 'banding'] },
+  { key: 'siapkan', label: { id: 'Siapkan', en: 'Prepare' }, routes: ['biaya'] },
+]
 
 /**
  * The header states what the app is on every page, not only on the home page.
@@ -19,7 +36,7 @@ export function Chrome({
   children,
 }: {
   locale: Locale
-  active?: (typeof ROUTES)[number]
+  active?: Route
   children: React.ReactNode
 }) {
   const t = dictionary(locale)
@@ -28,21 +45,18 @@ export function Chrome({
 
   return (
     <div className="flex min-h-screen flex-col text-print">
-      <header className="print-hidden sticky top-0 z-40 border-b border-annotation/25 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
-        <div className="mx-auto max-w-6xl px-6 pt-4">
+      <header className="print-hidden sticky top-0 z-40 border-b border-annotation/20 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           {/*
-           * Wraps rather than overflows. Both children were shrink-0, so at a
-           * 320px viewport the wordmark and the locale button could together
-           * exceed the line and push the page into horizontal scroll — WCAG
-           * 1.4.10 Reflow. The brand may now shrink and the row may wrap, so
-           * the button drops to its own line instead of widening the page.
-           * Above ~360px nothing moves.
+           * Wraps rather than overflows (WCAG 1.4.10 Reflow): the brand may
+           * shrink and the row may wrap, so at 320px the utilities drop to
+           * their own line instead of widening the page.
            */}
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-3">
             <Link href={`/${locale}`} className="flex min-w-0 items-center gap-3">
-              <Mark size={34} />
+              <Mark size={32} />
               <span className="min-w-0">
-                <span className="sheet-label block text-lead leading-none text-print">
+                <span className="sheet-label block text-body leading-none text-print">
                   {t.common.appName}
                 </span>
                 <span className="mt-1 hidden text-caption text-annotation sm:block">
@@ -53,49 +67,103 @@ export function Chrome({
               </span>
             </Link>
 
-            {/* The label is written in the language it switches to, so it is
-                marked as such — otherwise an Indonesian synthesiser reads
-                "English" with Indonesian phonetics (WCAG 3.1.2). */}
-            <Link
-              href={`/${other}`}
-              lang={other}
-              className="sheet-label ml-auto shrink-0 border border-annotation/40 px-3 py-1.5 text-caption text-annotation hover:border-annotation hover:text-print"
-            >
-              {t.common.switchLocale}
-            </Link>
+            <div className="ml-auto flex shrink-0 items-center gap-2">
+              <Link
+                href={`/${locale}/parameter`}
+                aria-current={active === 'parameter' ? 'page' : undefined}
+                className={`hidden rounded-md px-3 py-1.5 text-caption transition-colors md:block ${
+                  active === 'parameter'
+                    ? 'bg-raised text-print'
+                    : 'text-muted hover:bg-surface hover:text-print'
+                }`}
+              >
+                {t.nav.parameter}
+              </Link>
+              {/* The label is written in the language it switches to, so it is
+                  marked as such — otherwise an Indonesian synthesiser reads
+                  "English" with Indonesian phonetics (WCAG 3.1.2). */}
+              <Link
+                href={`/${other}`}
+                lang={other}
+                className="rounded-full border border-annotation/40 px-3 py-1 text-caption text-annotation transition-colors hover:border-annotation hover:text-print"
+              >
+                {t.common.switchLocale}
+              </Link>
+            </div>
           </div>
 
-          <nav
-            aria-label={id ? 'Halaman' : 'Pages'}
-            className="-mx-6 mt-2 overflow-x-auto px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            <ul className="flex items-center gap-x-1">
+          <nav aria-label={id ? 'Halaman' : 'Pages'} className="pb-2 pt-3">
+            {/* Phones: every page visible at once, in a grid. A sideways
+                scroll hid half the pages off the edge of a 390px screen. */}
+            <ul className="grid grid-cols-3 gap-1 md:hidden">
               {ROUTES.map((route) => (
                 <li key={route}>
-                  <Link
-                    href={`/${locale}/${route}`}
-                    aria-current={active === route ? 'page' : undefined}
-                    className={`sheet-label block whitespace-nowrap border-b-2 px-3 py-2 text-caption transition-colors ${
-                      active === route
-                        ? 'border-annotation text-print'
-                        : 'border-transparent text-annotation hover:border-annotation/40 hover:text-print'
-                    }`}
-                  >
-                    {t.nav[route]}
-                  </Link>
+                  <NavLink locale={locale} route={route} active={active} label={t.nav[route]} block />
                 </li>
               ))}
             </ul>
+
+            {/* Wider: the same pages in their three groups. */}
+            <ol className="hidden items-stretch md:flex">
+              {GROUPS.map((group, index) => (
+                <li
+                  key={group.key}
+                  className={`flex flex-col gap-0.5 pr-4 ${index > 0 ? 'border-l border-annotation/20 pl-4' : ''}`}
+                >
+                  <span className="figure px-3 text-micro text-muted">
+                    {index + 1} · {id ? group.label.id : group.label.en}
+                  </span>
+                  <ul className="flex gap-1">
+                    {group.routes.map((route) => (
+                      <li key={route}>
+                        <NavLink locale={locale} route={route} active={active} label={t.nav[route]} />
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
           </nav>
         </div>
       </header>
 
-      <main id="isi" className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 sm:py-12">
+      <main id="isi" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6 sm:py-12">
         {children}
       </main>
 
       <Framing locale={locale} />
     </div>
+  )
+}
+
+function NavLink({
+  locale,
+  route,
+  active,
+  label,
+  block = false,
+}: {
+  locale: Locale
+  route: Route
+  active?: Route
+  label: string
+  block?: boolean
+}) {
+  const current = active === route
+  return (
+    <Link
+      href={`/${locale}/${route}`}
+      aria-current={current ? 'page' : undefined}
+      className={`block whitespace-nowrap rounded-md px-3 py-1.5 text-caption font-medium transition-colors ${
+        block ? 'text-center' : ''
+      } ${
+        current
+          ? 'bg-raised text-print shadow-[inset_0_-2px_0_rgb(var(--c-annotation))]'
+          : 'text-muted hover:bg-surface hover:text-print'
+      }`}
+    >
+      {label}
+    </Link>
   )
 }
 
@@ -109,7 +177,7 @@ export function Framing({ locale }: { locale: Locale }) {
   const t = dictionary(locale)
   return (
     <footer className="mt-20 border-t border-annotation/25 bg-recess print:mt-8 print:border-t print:pt-4">
-      <div className="mx-auto max-w-6xl space-y-8 px-6 py-10">
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6">
         <Legend locale={locale} />
 
         {/*

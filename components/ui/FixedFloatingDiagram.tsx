@@ -16,7 +16,7 @@ export function FixedFloatingDiagram({ locale }: { locale: Locale }) {
   const id = locale === 'id'
 
   return (
-    <figure className="sheet-panel px-5 py-4">
+    <figure className="sheet-panel rounded-xl px-6 py-5 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.6)]">
       <svg
         viewBox="0 0 400 210"
         className="h-auto w-full"
@@ -33,9 +33,23 @@ export function FixedFloatingDiagram({ locale }: { locale: Locale }) {
         ))}
         <line x1="24" x2="392" y1="176" y2="176" className="stroke-print/50" />
 
-        {/* The fan of outcomes, shaded rather than drawn as three curves:
-            three crisp lines would claim to know three specific futures. */}
-        <path d="M186 140 L392 44 L392 150 Z" className="fill-unknown/20" />
+        {/* The fan of outcomes, hatched rather than drawn as three curves:
+            three crisp lines would claim to know three specific futures. The
+            hatch is the same mark for "not determined" used on every amber
+            area, so it reads in greyscale too. */}
+        <defs>
+          <pattern
+            id="ffd-hatch"
+            width="7"
+            height="7"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)"
+          >
+            <rect width="7" height="7" className="fill-unknown/10" />
+            <line x1="0" y1="0" x2="0" y2="7" className="stroke-unknown/50" strokeWidth="2" />
+          </pattern>
+        </defs>
+        <path d="M186 140 L392 44 L392 150 Z" fill="url(#ffd-hatch)" />
         <path
           d="M186 140 L392 44"
           className="stroke-unknown"
@@ -79,13 +93,13 @@ export function FixedFloatingDiagram({ locale }: { locale: Locale }) {
           strokeDasharray="3 7"
         />
 
-        <text x="24" y="164" className="fill-annotation font-sheet text-[13px] uppercase tracking-[0.14em]">
+        <text x="24" y="164" className="fill-annotation font-sheet text-[13px] font-medium uppercase tracking-[0.14em]">
           {id ? 'Bunga tetap' : 'Fixed rate'}
         </text>
         <text x="24" y="130" className="fill-print font-prose text-[13px]">
           {id ? '2–3 tahun' : '2–3 years'}
         </text>
-        <text x="200" y="34" className="fill-unknown font-sheet text-[13px] uppercase tracking-[0.14em]">
+        <text x="200" y="34" className="fill-unknown font-sheet text-[13px] font-medium uppercase tracking-[0.14em]">
           {id ? 'Setelah itu — ?' : 'After that — ?'}
         </text>
       </svg>

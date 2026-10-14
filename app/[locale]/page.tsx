@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Chrome } from '@/components/chrome/Chrome'
 import { Glossary } from '@/components/ui/Glossary'
 import { Panel } from '@/components/ui/Panel'
-import { Mark } from '@/components/ui/Mark'
+import { Journey } from '@/components/ui/Journey'
 import { FixedFloatingDiagram } from '@/components/ui/FixedFloatingDiagram'
 import { dictionary } from '@/lib/i18n/dict'
 import { pageMetadata } from '@/lib/metadata'
@@ -33,30 +33,19 @@ export default function Home({ params }: { params: { locale: string } }) {
          * three years out of twenty. That sentence has to arrive first, before
          * any vocabulary, any form, or any figure.
          */}
-        <section className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
+        <section className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           <div>
-            {/* The mark stays under 96px, so the dashed boundary marker is left
-                off — below that size the kink alone carries it (brand kit). */}
-            <div className="flex items-center gap-3">
-              <Mark size={40} />
-              <p className="sheet-label text-caption text-annotation">
-                {id ? 'Kalkulator KPR' : 'KPR calculator'}
-              </p>
-            </div>
-            <h1 className="sheet-title mt-4 text-display">{t.pages.home.title}</h1>
+            <p className="sheet-label text-caption text-annotation">
+              {id ? 'Kalkulator KPR' : 'KPR calculator'}
+            </p>
+            <h1 className="sheet-title mt-4 text-display font-bold">{t.pages.home.title}</h1>
             <p className="measure mt-5 text-lead text-muted">{t.pages.home.lede}</p>
 
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href={`/${locale}/hitung`}
-                className="btn-primary"
-              >
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href={`/${locale}/hitung`} className="btn-primary px-6 py-3 text-body">
                 {id ? 'Hitung angsuran saya' : 'Work out my instalment'}
               </Link>
-              <Link
-                href={`/${locale}/ambang`}
-                className="btn-secondary"
-              >
+              <Link href={`/${locale}/ambang`} className="btn-secondary px-6 py-3 text-body">
                 {id ? 'Cari titik tak terjangkau' : 'Find where it stops being affordable'}
               </Link>
             </div>
@@ -73,31 +62,57 @@ export default function Home({ params }: { params: { locale: string } }) {
           <FixedFloatingDiagram locale={locale} />
         </section>
 
-        <p className="measure text-muted">
-          {id
-            ? 'Kalkulator KPR lain memakai satu bunga untuk seluruh tenor. Untuk KPR komersial itu selalu keliru: bank mengunci bunga dua atau tiga tahun, lalu sisanya mengambang. Aplikasi ini menghitung kedua bagian itu terpisah, dan mengatakan dengan jelas bagian mana yang tidak diketahui siapa pun.'
-            : 'Other KPR calculators apply one rate across the whole term. For a commercial KPR that is always wrong: the bank locks a rate for two or three years, then the loan floats. This tool computes the two parts separately, and says plainly which part nobody knows.'}
-        </p>
+        <Panel
+          title={id ? 'Empat pertanyaan, berurutan' : 'Four questions, in order'}
+          note={
+            id
+              ? 'Urutan yang biasa dilalui pembeli rumah. Mulai dari mana saja — setiap halaman juga bisa dibuka sendiri.'
+              : 'The order a buyer usually works through. Start anywhere — every page also stands on its own.'
+          }
+          aside={
+            <Link
+              href={`/${locale}/parameter`}
+              className="text-caption text-annotation underline decoration-annotation/40 underline-offset-4 hover:text-print"
+            >
+              {id ? 'Dari mana angka-angka ini? → Sumber angka' : 'Where do these numbers come from? → Sources'}
+            </Link>
+          }
+        >
+          <Journey locale={locale} />
+        </Panel>
 
-        {/*
-         * The concrete illustration. Amber throughout and labelled as an
-         * illustration in words, because the moment a number like this reads
-         * as data the whole project has failed.
-         */}
-        <section className="border-l-2 border-unknown bg-unknown/[0.08] px-6 py-6">
-          <p className="sheet-label text-caption text-unknown">
-            {id ? 'Contoh — angka karangan, bukan data' : 'An illustration — invented, not data'}
-          </p>
-          <p className="measure mt-3 text-print">
-            {id
-              ? 'Sebuah keluarga menyusun anggaran di angsuran Rp3,2 juta sebulan, angka yang dikutip bank. Di tahun keempat, setelah masa bunga tetap habis, angsuran itu bisa menjadi Rp4,8 juta. Tidak ada yang berubah pada rumahnya, dan tidak ada yang salah pada perhitungan bank — bunga mengambang memang tidak diumumkan di muka.'
-              : 'A family budgets around an instalment of Rp3,2 juta a month, the figure the bank quoted. In year four, once the fixed period ends, that instalment can become Rp4,8 juta. Nothing changed about the house, and nothing was wrong with the bank’s arithmetic — the floating rate is simply not announced in advance.'}
-          </p>
-          <p className="measure mt-3 text-caption text-unknown">
-            {id
-              ? 'Aplikasi ini tidak pernah menebak angka itu untuk Anda. Anda yang mengisikan asumsinya, dan setiap angka yang bersandar padanya berwarna kuning seperti kotak ini.'
-              : 'This tool never guesses that figure for you. You supply the assumption, and everything resting on it is amber, like this box.'}
-          </p>
+        <section className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+          <div className="space-y-6">
+            <h2 className="sheet-title text-title">
+              {id ? 'Satu bunga untuk seluruh tenor selalu keliru' : 'One rate for the whole term is always wrong'}
+            </h2>
+            <p className="measure text-muted">
+              {id
+                ? 'Kalkulator KPR lain memakai satu bunga untuk seluruh tenor. Untuk KPR komersial itu selalu keliru: bank mengunci bunga dua atau tiga tahun, lalu sisanya mengambang. Aplikasi ini menghitung kedua bagian itu terpisah, dan mengatakan dengan jelas bagian mana yang tidak diketahui siapa pun.'
+                : 'Other KPR calculators apply one rate across the whole term. For a commercial KPR that is always wrong: the bank locks a rate for two or three years, then the loan floats. This tool computes the two parts separately, and says plainly which part nobody knows.'}
+            </p>
+          </div>
+
+          {/*
+           * The concrete illustration. Amber throughout and labelled as an
+           * illustration in words, because the moment a number like this reads
+           * as data the whole project has failed.
+           */}
+          <section className="rounded-r-lg border-l-2 border-unknown bg-unknown/[0.08] px-6 py-6">
+            <p className="sheet-label text-caption text-unknown">
+              {id ? 'Contoh — angka karangan, bukan data' : 'An illustration — invented, not data'}
+            </p>
+            <p className="measure mt-3 text-print">
+              {id
+                ? 'Sebuah keluarga menyusun anggaran di angsuran Rp3,2 juta sebulan, angka yang dikutip bank. Di tahun keempat, setelah masa bunga tetap habis, angsuran itu bisa menjadi Rp4,8 juta. Tidak ada yang berubah pada rumahnya, dan tidak ada yang salah pada perhitungan bank — bunga mengambang memang tidak diumumkan di muka.'
+                : 'A family budgets around an instalment of Rp3,2 juta a month, the figure the bank quoted. In year four, once the fixed period ends, that instalment can become Rp4,8 juta. Nothing changed about the house, and nothing was wrong with the bank’s arithmetic — the floating rate is simply not announced in advance.'}
+            </p>
+            <p className="measure mt-3 text-caption text-unknown">
+              {id
+                ? 'Aplikasi ini tidak pernah menebak angka itu untuk Anda. Anda yang mengisikan asumsinya, dan setiap angka yang bersandar padanya berwarna kuning seperti kotak ini.'
+                : 'This tool never guesses that figure for you. You supply the assumption, and everything resting on it is amber, like this box.'}
+            </p>
+          </section>
         </section>
 
         <Panel
@@ -140,94 +155,6 @@ export default function Home({ params }: { params: { locale: string } }) {
         </Panel>
 
         <Panel
-          title={id ? 'Halaman' : 'The pages'}
-          note={
-            id
-              ? 'Masing-masing menjawab satu pertanyaan. Mulai dari mana saja.'
-              : 'Each answers one question. Start anywhere.'
-          }
-        >
-          {/*
-           * A list, not a landmark. The page already has one navigation
-           * landmark in the header, and these six links sit inside a titled
-           * panel that says what they are — a second landmark would give a
-           * screen reader "navigation" with nothing to tell it from the first.
-           */}
-          <ul className="grid gap-3 sm:grid-cols-2">
-            <Card
-              href={`/${locale}/hitung`}
-              title={t.nav.hitung}
-              question={
-                id ? 'Berapa angsuran saya tiap bulan?' : 'What is my instalment each month?'
-              }
-              body={
-                id
-                  ? 'Jadwal angsuran penuh, masa tetap dan mengambang terpisah, dengan penurunannya.'
-                  : 'The full schedule, fixed and floating shown apart, with its derivation.'
-              }
-            />
-            <Card
-              href={`/${locale}/ambang`}
-              title={t.nav.ambang}
-              question={
-                id
-                  ? 'Sampai bunga berapa saya masih sanggup?'
-                  : 'How high can the rate go before I cannot pay?'
-              }
-              body={
-                id
-                  ? 'Satu angka untuk dibawa dan ditanyakan langsung ke bank.'
-                  : 'One figure to carry into a bank meeting and ask about directly.'
-              }
-            />
-            <Card
-              href={`/${locale}/subsidi`}
-              title={t.nav.subsidi}
-              question={id ? 'Apakah saya bisa ikut FLPP?' : 'Do I qualify for FLPP?'}
-              body={
-                id
-                  ? '5% tetap sampai akhir tenor, dengan pemeriksaan kriteria tersitasi.'
-                  : '5% fixed to the end of the term, with cited eligibility criteria.'
-              }
-            />
-            <Card
-              href={`/${locale}/banding`}
-              title={t.nav.banding}
-              question={
-                id ? 'Subsidi atau komersial, apa bedanya?' : 'Subsidised or commercial — what differs?'
-              }
-              body={
-                id
-                  ? 'Satu profil, kedua jalur berdampingan — dan seberapa pasti masing-masing angka.'
-                  : 'One profile, both paths side by side — and how certain each figure actually is.'
-              }
-            />
-            <Card
-              href={`/${locale}/biaya`}
-              title={t.nav.biaya}
-              question={
-                id ? 'Berapa yang harus saya siapkan di awal?' : 'What do I need up front?'
-              }
-              body={
-                id
-                  ? 'BPHTB, PPh, notaris, dan biaya bank — yang diatur dikutip, yang tidak ditandai.'
-                  : 'BPHTB, income tax, notary, and bank fees — regulated items cited, the rest marked.'
-              }
-            />
-            <Card
-              href={`/${locale}/parameter`}
-              title={t.nav.parameter}
-              question={id ? 'Dari mana angka-angka ini?' : 'Where do these numbers come from?'}
-              body={
-                id
-                  ? 'Setiap parameter dengan dasar hukum, sumber, dan tanggal verifikasinya.'
-                  : 'Every parameter with its legal basis, source, and verification date.'
-              }
-            />
-          </ul>
-        </Panel>
-
-        <Panel
           title={id ? 'Istilah yang akan Anda temui' : 'Words you will meet'}
           note={
             id
@@ -238,34 +165,35 @@ export default function Home({ params }: { params: { locale: string } }) {
           <Glossary locale={locale} />
         </Panel>
 
-        <Panel title={id ? 'Yang tidak dilakukan aplikasi ini' : 'What this tool does not do'}>
-          <ul className="grid gap-x-10 gap-y-3 text-caption text-muted sm:grid-cols-2">
-            {(id
-              ? [
-                  'Tidak menyarankan bank, produk, atau kapan membeli. Tidak ada peringkat, tidak ada tautan afiliasi.',
-                  'Tidak menebak bunga. Tidak ada satu pun suku bunga yang diisikan aplikasi ini sebagai bawaan.',
-                  'Tidak memodelkan persetujuan kredit. SLIK dan penilaian bank tidak bisa ditiru di sini.',
-                  'Tidak menyimpan apa pun. Tanpa akun, tanpa server, tanpa pelacakan angka yang Anda ketik.',
-                ]
-              : [
-                  'It recommends no bank, no product, and no moment to buy. No rankings, no affiliate links.',
-                  'It never guesses a rate. Not one interest rate on this site is pre-filled by the app.',
-                  'It does not model approval. SLIK and a bank’s underwriting cannot be reproduced here.',
-                  'It stores nothing. No account, no server, no tracking of the figures you type.',
-                ]
-            ).map((line) => (
-              <li key={line} className="flex gap-3">
-                <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-annotation" />
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-        </Panel>
-
-        <section className="border-l-2 border-unknown bg-unknown/[0.08] px-6 py-5">
-          <p className="sheet-label text-caption text-unknown">{t.floating.title}</p>
-          <p className="measure mt-2 text-caption text-print">{t.floating.body}</p>
-        </section>
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <Panel title={id ? 'Yang tidak dilakukan aplikasi ini' : 'What this tool does not do'}>
+            <ul className="grid gap-y-3 text-caption text-muted">
+              {(id
+                ? [
+                    'Tidak menyarankan bank, produk, atau kapan membeli. Tidak ada peringkat, tidak ada tautan afiliasi.',
+                    'Tidak menebak bunga. Tidak ada satu pun suku bunga yang diisikan aplikasi ini sebagai bawaan.',
+                    'Tidak memodelkan persetujuan kredit. SLIK dan penilaian bank tidak bisa ditiru di sini.',
+                    'Tidak menyimpan apa pun. Tanpa akun, tanpa server, tanpa pelacakan angka yang Anda ketik.',
+                  ]
+                : [
+                    'It recommends no bank, no product, and no moment to buy. No rankings, no affiliate links.',
+                    'It never guesses a rate. Not one interest rate on this site is pre-filled by the app.',
+                    'It does not model approval. SLIK and a bank’s underwriting cannot be reproduced here.',
+                    'It stores nothing. No account, no server, no tracking of the figures you type.',
+                  ]
+              ).map((line) => (
+                <li key={line} className="flex gap-3">
+                  <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-annotation" />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+          <section className="self-start rounded-r-lg border-l-2 border-unknown bg-unknown/[0.08] px-6 py-5">
+            <p className="sheet-label text-caption text-unknown">{t.floating.title}</p>
+            <p className="measure mt-2 text-caption text-print">{t.floating.body}</p>
+          </section>
+        </div>
       </div>
     </Chrome>
   )
@@ -274,31 +202,9 @@ export default function Home({ params }: { params: { locale: string } }) {
 function Step({ n, title, body }: { n: string; title: string; body: string }) {
   return (
     <li className="border-t border-annotation/30 pt-4">
-      <span className="figure text-subhead text-annotation">{n}</span>
-      <p className="sheet-label mt-2 text-caption text-print">{title}</p>
+      <span className="figure-display text-title text-annotation">{n}</span>
+      <p className="sheet-title mt-2 text-lead text-print">{title}</p>
       <p className="mt-1 text-caption text-muted">{body}</p>
-    </li>
-  )
-}
-
-function Card({
-  href,
-  title,
-  question,
-  body,
-}: {
-  href: string
-  title: string
-  question: string
-  body: string
-}) {
-  return (
-    <li>
-      <Link href={href} className="sheet-panel sheet-panel-hover block h-full px-5 py-4">
-        <p className="sheet-label text-caption text-annotation">{title}</p>
-        <p className="sheet-title mt-1 text-lead text-print">{question}</p>
-        <p className="mt-2 text-caption text-muted">{body}</p>
-      </Link>
     </li>
   )
 }

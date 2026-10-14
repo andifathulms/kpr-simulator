@@ -27,6 +27,7 @@ import { BankQuestions } from '@/components/ui/BankQuestions'
 import { RateAnchor } from '@/components/ui/RateAnchor'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
+import { NextStep } from '@/components/ui/Journey'
 import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
 import { labelReviews, reviewCount } from '@/lib/scenario/repricing'
@@ -956,6 +957,27 @@ export function HitungView({ locale }: { locale: Locale }) {
           )}
         </div>
       </div>
+
+      {/* The figures `ambang` can use travel with the link, so the next
+          question starts from this loan rather than from an empty form. The
+          example flag travels too: invented figures stay marked as invented. */}
+      <NextStep
+        locale={locale}
+        to="ambang"
+        hash={
+          plafon > 0
+            ? encodeHash({
+                p: plafon,
+                tn: state.tenorTahun,
+                mt: state.masaTetapTahun,
+                bt: state.bungaTetap,
+                my: state.mulaiTahun,
+                mm: state.mulaiBulan,
+                ex: state.contoh ? 1 : 0,
+              })
+            : undefined
+        }
+      />
     </div>
   )
 }
