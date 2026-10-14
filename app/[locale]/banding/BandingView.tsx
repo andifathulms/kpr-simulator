@@ -11,6 +11,7 @@ import { resolveRate } from '@/lib/rules/resolver'
 import { checkEligibility, type HargaWilayah, type Status, type Zona } from '@/lib/rules/flpp'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { FieldGroup } from '@/components/ui/FieldGroup'
 import type { Locale } from '@/lib/i18n/locales'
 import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField, RateField, SelectField } from '@/components/field/Field'
@@ -136,92 +137,121 @@ export function BandingView({ locale }: { locale: Locale }) {
         lede={t.pages.banding.lede}
       />
 
-      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)]">
         <form
-          className="print-hidden space-y-4 lg:sticky lg:top-36 lg:self-start"
+          className="print-hidden space-y-5 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:pb-4 lg:pr-2 lg:[scrollbar-width:thin]"
           onSubmit={(event) => event.preventDefault()}
         >
-          <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
-          <MoneyField label={t.form.uangMuka} value={uangMuka} onChange={setUangMuka} />
-          <MoneyField label={t.form.penghasilan} value={penghasilan} onChange={setPenghasilan} />
-          <NumberField
-            label={id ? 'Luas lantai' : 'Floor area'}
-            value={luas}
-            onChange={setLuas}
-            min={1}
-            max={200}
-            suffix="m²"
-          />
-          <NumberField
-            label={t.form.tenorTahun}
-            value={tenorTahun}
-            onChange={setTenorTahun}
-            min={2}
-            max={40}
-            suffix={id ? 'thn' : 'yr'}
-          />
-          <SelectField
-            label={id ? 'Zona penghasilan' : 'Income zone'}
-            value={zona}
-            options={ZONA}
-            onChange={setZona}
-          />
-          <SelectField
-            label={id ? 'Status' : 'Status'}
-            value={status}
-            options={[
-              { value: 'tidak.kawin' as Status, label: id ? 'Tidak kawin' : 'Unmarried' },
-              { value: 'kawin' as Status, label: id ? 'Kawin' : 'Married' },
-              { value: 'tapera' as Status, label: id ? 'Peserta Tapera' : 'Tapera participant' },
-            ]}
-            onChange={setStatus}
-          />
-          <SelectField
-            label={id ? 'Wilayah harga' : 'Price region'}
-            value={wilayah}
-            options={WILAYAH}
-            onChange={setWilayah}
-          />
-
-          <p className="sheet-title pt-2 text-lead text-print">
-            {id ? 'Sisi komersial' : 'The commercial side'}
-          </p>
-          <RateField label={t.form.bungaTetap} value={bungaTetap} onChange={setBungaTetap} />
-          <NumberField
-            label={t.form.masaTetapTahun}
-            value={masaTetapTahun}
-            onChange={setMasaTetapTahun}
-            min={1}
-            max={Math.max(tenorTahun - 1, 1)}
-            suffix={id ? 'thn' : 'yr'}
-          />
-          <RateField
-            label={t.form.bungaMengambang}
-            value={bungaMengambang}
-            onChange={setBungaMengambang}
-            amber
-            hint={t.floating.short}
-          />
-
-          <div className="grid grid-cols-2 gap-3">
+          <FieldGroup
+            step={1}
+            done={harga > 0 && penghasilan > 0}
+            title={id ? 'Profil Anda' : 'Your profile'}
+          >
+            <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
+            <MoneyField label={t.form.uangMuka} value={uangMuka} onChange={setUangMuka} />
+            <MoneyField label={t.form.penghasilan} value={penghasilan} onChange={setPenghasilan} />
             <NumberField
-              label={id ? 'Tahun' : 'Year'}
-              value={tahun}
-              onChange={setTahun}
-              min={2000}
-              max={2100}
-            />
-            <NumberField
-              label={id ? 'Bulan' : 'Month'}
-              value={bulan}
-              onChange={setBulan}
+              label={id ? 'Luas lantai' : 'Floor area'}
+              value={luas}
+              onChange={setLuas}
               min={1}
-              max={12}
+              max={200}
+              suffix="m²"
             />
-          </div>
+            <NumberField
+              label={t.form.tenorTahun}
+              value={tenorTahun}
+              onChange={setTenorTahun}
+              min={2}
+              max={40}
+              suffix={id ? 'thn' : 'yr'}
+              presets={[10, 15, 20, 25]}
+            />
+            <SelectField
+              label={id ? 'Zona penghasilan' : 'Income zone'}
+              value={zona}
+              options={ZONA}
+              onChange={setZona}
+            />
+            <SelectField
+              label={id ? 'Status' : 'Status'}
+              value={status}
+              options={[
+                { value: 'tidak.kawin' as Status, label: id ? 'Tidak kawin' : 'Unmarried' },
+                { value: 'kawin' as Status, label: id ? 'Kawin' : 'Married' },
+                { value: 'tapera' as Status, label: id ? 'Peserta Tapera' : 'Tapera participant' },
+              ]}
+              onChange={setStatus}
+            />
+            <SelectField
+              label={id ? 'Wilayah harga' : 'Price region'}
+              value={wilayah}
+              options={WILAYAH}
+              onChange={setWilayah}
+            />
+          </FieldGroup>
+
+          <FieldGroup
+            step={2}
+            done={bungaTetap > 0}
+            title={id ? 'Sisi komersial — yang dikutip bank' : 'Commercial side — what the bank quoted'}
+          >
+            <RateField label={t.form.bungaTetap} value={bungaTetap} onChange={setBungaTetap} />
+            <NumberField
+              label={t.form.masaTetapTahun}
+              value={masaTetapTahun}
+              onChange={setMasaTetapTahun}
+              min={1}
+              max={Math.max(tenorTahun - 1, 1)}
+              suffix={id ? 'thn' : 'yr'}
+              presets={[1, 2, 3, 5]}
+            />
+          </FieldGroup>
+
+          <FieldGroup
+            step={3}
+            tone="unknown"
+            tag={t.common.assumption}
+            title={id ? 'Setelah masa tetap habis' : 'Once the fixed period ends'}
+          >
+            <RateField
+              label={t.form.bungaMengambang}
+              value={bungaMengambang}
+              onChange={setBungaMengambang}
+              amber
+              hint={t.floating.short}
+            />
+          </FieldGroup>
+
+          <FieldGroup
+            step={4}
+            title={id ? 'Periode aturan' : 'Rules in force at'}
+            note={
+              id
+                ? 'Aturan yang dipakai bergantung pada periode ini. Di luar periode yang dimuat, aplikasi menolak menghitung.'
+                : 'The rules applied depend on this period. Outside the periods it carries, the app refuses to compute.'
+            }
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <NumberField
+                label={id ? 'Tahun' : 'Year'}
+                value={tahun}
+                onChange={setTahun}
+                min={2000}
+                max={2100}
+              />
+              <NumberField
+                label={id ? 'Bulan' : 'Month'}
+                value={bulan}
+                onChange={setBulan}
+                min={1}
+                max={12}
+              />
+            </div>
+          </FieldGroup>
         </form>
 
-        <div className="space-y-8">
+        <div className="min-w-0 space-y-8">
           <ShareBar locale={locale} />
 
           {flppRate.type === 'unsupported' && (

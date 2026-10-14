@@ -15,7 +15,13 @@ import { ShareBar } from '@/components/share/ShareBar'
 import { ScheduleElevation } from '@/components/elevation/ScheduleElevation'
 import { AmortisationTable } from '@/components/table/AmortisationTable'
 import { TraceView } from '@/components/trace/TraceView'
-import { MoneyField, NumberField, RateField, SelectField } from '@/components/field/Field'
+import {
+  MoneyField,
+  NumberField,
+  RateBandSlider,
+  RateField,
+  SelectField,
+} from '@/components/field/Field'
 import { UnknownNotice } from '@/components/notice/Notice'
 import { PrepayPanel } from '@/components/prepay/PrepayPanel'
 import { PageHeader } from '@/components/ui/PageHeader'
@@ -28,6 +34,9 @@ import { RateAnchor } from '@/components/ui/RateAnchor'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EXAMPLE_HITUNG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 import { NextStep } from '@/components/ui/Journey'
+import { EmptySheet } from '@/components/ui/EmptySheet'
+import { SectionIndex } from '@/components/ui/SectionIndex'
+import { SummaryStrip } from '@/components/ui/SummaryStrip'
 import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
 import { labelReviews, reviewCount } from '@/lib/scenario/repricing'
@@ -283,6 +292,13 @@ export function HitungView({ locale }: { locale: Locale }) {
         // The step at the boundary, which is the whole subject of this app.
         // Money arithmetic, in the money type, on the container side.
         step: floatingPayment ? subtract(floatingPayment, firstPayment) : undefined,
+        // The same step as a ratio, for the summary strip. A float, crossing the
+        // money boundary in the allowed direction; display only.
+        stepShare:
+          floatingPayment && firstPayment > 0 ? floatingPayment / firstPayment - 1 : undefined,
+        // The band's two edges in the first floating month, read off the band
+        // the engine already built — the range the strip quotes in words.
+        bandAtStep: band?.rows[fixedMonths],
         /*
          * Two months, read off both schedules: where the conventions agree and
          * where they have come apart. Reading only, nothing computed here.
@@ -372,13 +388,19 @@ export function HitungView({ locale }: { locale: Locale }) {
         lede={t.pages.hitung.lede}
       />
 
-      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)]">
+        {/*
+         * Sticky on wide screens, and scrolling inside itself when it is taller
+         * than the window — otherwise the bottom of step 3 could not be reached
+         * until the results had been scrolled to their end.
+         */}
         <form
-          className="print-hidden space-y-8 lg:sticky lg:top-36 lg:self-start"
+          className="print-hidden space-y-5 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:pb-4 lg:pr-2 lg:[scrollbar-width:thin]"
           onSubmit={(event) => event.preventDefault()}
         >
           <FieldGroup
             step={1}
+            done={plafon > 0}
             title={id ? 'Rumah dan uang muka' : 'The house and your deposit'}
             note={
               id
@@ -409,6 +431,7 @@ export function HitungView({ locale }: { locale: Locale }) {
 
           <FieldGroup
             step={2}
+            done={state.bungaTetap > 0 && termMonths > 0}
             title={id ? 'Yang dikutip bank' : 'What the bank quoted'}
             note={
               id
@@ -423,6 +446,7 @@ export function HitungView({ locale }: { locale: Locale }) {
               min={1}
               max={40}
               suffix={id ? 'thn' : 'yr'}
+              presets={[10, 15, 20, 25]}
             />
             <RateField
               label={t.form.bungaTetap}
@@ -437,12 +461,14 @@ export function HitungView({ locale }: { locale: Locale }) {
               min={0}
               max={Math.max(state.tenorTahun - 1, 0)}
               suffix={id ? 'thn' : 'yr'}
+              presets={[1, 2, 3, 5]}
             />
           </FieldGroup>
 
           <FieldGroup
             step={3}
             tone="unknown"
+            tag={t.common.assumption}
             title={id ? 'Setelah masa tetap habis' : 'Once the fixed period ends'}
             note={
               id
@@ -456,6 +482,13 @@ export function HitungView({ locale }: { locale: Locale }) {
               onChange={(bungaMengambang) => setState({ ...state, bungaMengambang })}
               amber
               hint={t.floating.short}
+            />
+            <RateBandSlider
+              label={id ? 'Geser bunga mengambang' : 'Slide the floating rate'}
+              value={state.bungaMengambang}
+              lower={state.marginBawah}
+              upper={state.marginAtas}
+              onChange={(bungaMengambang) => setState({ ...state, bungaMengambang })}
             />
             <div className="grid grid-cols-2 gap-3">
               <RateField
@@ -533,7 +566,7 @@ export function HitungView({ locale }: { locale: Locale }) {
           </details>
         </form>
 
-        <div className="space-y-10">
+        <div className="min-w-0 space-y-10 [&>[role=status]+*]:!mt-0">
           {/* The headline only — this is read out on every keystroke. */}
           <LiveRegion>
             {result?.kind === 'ok'
@@ -557,33 +590,43 @@ export function HitungView({ locale }: { locale: Locale }) {
           )}
 
           {!ready && (
-            <section className="rounded-lg border border-annotation/25 bg-surface px-6 py-6">
-              <p className="sheet-label text-caption text-annotation">
-                {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
-              </p>
-              <p className="measure mt-2 text-muted">
-                {id
-                  ? 'Isi tiga hal di sebelah kiri dan jadwalnya muncul di sini.'
-                  : 'Fill in three things on the left and the schedule appears here.'}
-              </p>
-              <ul className="mt-4 space-y-2 text-caption">
-                <Need done={state.harga > 0} label={t.form.harga} locale={locale} />
-                <Need done={plafon > 0} label={t.form.plafon} locale={locale} />
-                <Need done={state.bungaTetap > 0} label={t.form.bungaTetap} locale={locale} />
-              </ul>
-
-              <p className="measure mt-6 text-caption text-muted">
-                {id
-                  ? 'Belum punya penawaran dari bank? Isi dengan contoh untuk melihat cara kerjanya lebih dulu — angkanya dibuat-buat dan ditandai kuning.'
-                  : 'No offer from a bank yet? Fill in a worked example to see how it behaves first — the figures are invented and marked amber.'}
-              </p>
-              <div className="mt-3">
+            <EmptySheet
+              title={id ? 'Jadwal Anda akan tergambar di sini' : 'Your schedule will be drawn here'}
+              note={
+                id
+                  ? 'Isi tiga hal di sebelah kiri. Kolom bunga sengaja kosong, karena angka yang sudah terisi akan terbaca seperti data.'
+                  : 'Fill in three things on the left. The rate fields start empty on purpose: a pre-filled figure would read as data.'
+              }
+              outline={{
+                known: id ? 'masa tetap' : 'fixed period',
+                unknown: id ? 'setelahnya — asumsi Anda' : 'after it — your assumption',
+              }}
+              progressLabel={
+                id
+                  ? `${[state.harga > 0, plafon > 0, state.bungaTetap > 0].filter(Boolean).length} dari 3 sudah diisi`
+                  : `${[state.harga > 0, plafon > 0, state.bungaTetap > 0].filter(Boolean).length} of 3 entered`
+              }
+              needs={[
+                { label: t.form.harga, done: state.harga > 0 },
+                {
+                  label: id ? `${t.form.uangMuka} (plafon dihitung)` : `${t.form.uangMuka} (plafon is computed)`,
+                  done: plafon > 0,
+                },
+                { label: t.form.bungaTetap, done: state.bungaTetap > 0 },
+              ]}
+            >
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-annotation/20 pt-5">
                 <ExampleButton
                   locale={locale}
                   onLoad={() => setState({ ...state, ...EXAMPLE_HITUNG, contoh: true })}
                 />
+                <p className="min-w-0 flex-1 text-caption text-muted">
+                  {id
+                    ? 'Belum punya penawaran dari bank? Lihat cara kerjanya dengan contoh — angkanya dibuat-buat dan ditandai kuning.'
+                    : 'No offer from a bank yet? See how it behaves with a worked example — the figures are invented and marked amber.'}
+                </p>
               </div>
-            </section>
+            </EmptySheet>
           )}
 
           {result?.kind === 'error' && (
@@ -594,59 +637,87 @@ export function HitungView({ locale }: { locale: Locale }) {
 
           {result?.kind === 'ok' && (
             <>
-              <section className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <StatCard
-                    size="lg"
-                    label={
-                      id
-                        ? `Angsuran, ${state.masaTetapTahun} tahun pertama`
-                        : `Instalment, first ${state.masaTetapTahun} years`
-                    }
-                    value={formatRupiah(result.firstPayment, intl)}
-                    tag={t.common.computed}
-                    note={
-                      id
-                        ? 'Dari bunga tetap yang Anda isikan.'
-                        : 'From the fixed rate you entered.'
-                    }
-                  />
-                  <StatCard
-                    size="lg"
-                    tone={result.hasFloating ? 'unknown' : 'computed'}
-                    label={id ? 'Angsuran setelah itu' : 'Instalment after that'}
-                    value={
-                      result.floatingPayment ? formatRupiah(result.floatingPayment, intl) : '—'
-                    }
-                    tag={result.hasFloating ? t.common.assumption : undefined}
-                    note={
-                      result.step
-                        ? id
-                          ? `Naik ${formatRupiah(result.step, intl)} sebulan pada bunga yang Anda asumsikan.`
-                          : `Up ${formatRupiah(result.step, intl)} a month at the rate you assumed.`
-                        : id
-                          ? 'Isi bunga mengambang untuk melihat angka ini.'
-                          : 'Enter a floating rate to see this figure.'
-                    }
-                  />
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <StatCard
-                    label={id ? 'Total dibayar sampai lunas' : 'Total paid over the term'}
-                    value={formatRupiah(result.schedule.totalPaid, intl)}
-                    note={`${t.table.totalBunga}: ${formatRupiah(result.schedule.totalInterest, intl)}`}
-                  />
-                  <StatCard
-                    label={id ? 'Bunga sebagai bagian dari total' : 'Interest as a share of the total'}
-                    value={formatRate(result.interestShare, intl)}
-                    note={
-                      id
+              <div id="ringkasan" className="space-y-4">
+                <SummaryStrip
+                  before={{
+                    label: id
+                      ? `Angsuran ${state.masaTetapTahun} tahun pertama`
+                      : `Instalment, first ${state.masaTetapTahun} years`,
+                    value: formatRupiah(result.firstPayment, intl),
+                    tag: t.common.computed,
+                    note: id ? 'Dari bunga tetap yang Anda isikan.' : 'From the fixed rate you entered.',
+                  }}
+                  after={
+                    result.hasFloating && result.floatingPayment
+                      ? {
+                          label: id ? 'Setelah masa tetap, sampai lunas' : 'After the fixed period, to the end',
+                          value: formatRupiah(result.floatingPayment, intl),
+                          tone: 'unknown',
+                          tag: `${t.common.assumption} ${formatRate(state.bungaMengambang, intl)}`,
+                          note: result.bandAtStep
+                            ? id
+                              ? `${formatRupiah(result.bandAtStep.low, intl)} – ${formatRupiah(result.bandAtStep.high, intl)} pada rentang yang Anda pilih.`
+                              : `${formatRupiah(result.bandAtStep.low, intl)} – ${formatRupiah(result.bandAtStep.high, intl)} across the range you chose.`
+                            : result.step
+                              ? id
+                                ? `Naik ${formatRupiah(result.step, intl)} sebulan pada bunga yang Anda asumsikan.`
+                                : `Up ${formatRupiah(result.step, intl)} a month at the rate you assumed.`
+                              : undefined,
+                        }
+                      : undefined
+                  }
+                  step={
+                    result.stepShare !== undefined
+                      ? `${result.stepShare >= 0 ? '+' : ''}${formatRate(result.stepShare, intl)}`
+                      : undefined
+                  }
+                  details={[
+                    {
+                      label: id ? 'Total dibayar sampai lunas' : 'Total paid over the term',
+                      value: formatRupiah(result.schedule.totalPaid, intl),
+                      tone: result.hasFloating ? 'unknown' : 'computed',
+                    },
+                    {
+                      label: t.table.totalBunga,
+                      value: formatRupiah(result.schedule.totalInterest, intl),
+                      tone: result.hasFloating ? 'unknown' : 'computed',
+                    },
+                    {
+                      label: id ? 'Bunga sebagai bagian dari total' : 'Interest as a share of the total',
+                      value: formatRate(result.interestShare, intl),
+                      note: id
                         ? 'Bagian dari uang Anda yang tidak menjadi rumah.'
-                        : 'The share of your money that does not become house.'
-                    }
-                  />
-                </div>
-              </section>
+                        : 'The share of your money that does not become house.',
+                      tone: result.hasFloating ? 'unknown' : 'computed',
+                    },
+                  ]}
+                />
+                {!result.hasFloating && (
+                  <p className="text-caption text-muted">
+                    {id
+                      ? 'Isi bunga mengambang di langkah 3 untuk melihat angsuran setelah masa tetap.'
+                      : 'Enter a floating rate in step 3 to see the instalment after the fixed period.'}
+                  </p>
+                )}
+                <ShareBar locale={locale} />
+              </div>
+
+              <SectionIndex
+                label={id ? 'Bagian halaman ini' : 'Sections of this page'}
+                sections={[
+                  { id: 'ringkasan', label: id ? 'Ringkasan' : 'Summary' },
+                  ...(result.singleRate && result.hidden
+                    ? [{ id: 'dilewatkan', label: id ? 'Yang dilewatkan' : 'Left out', amber: true }]
+                    : []),
+                  { id: 'elevasi', label: id ? 'Elevasi' : 'Elevation' },
+                  { id: 'tabel', label: id ? 'Tabel' : 'Table' },
+                  { id: 'flat-efektif', label: id ? 'Flat vs efektif' : 'Flat vs effective' },
+                  { id: 'tuas', label: id ? 'Tuas' : 'Levers' },
+                  { id: 'tanya-bank', label: id ? 'Pertanyaan ke bank' : 'Questions for the bank' },
+                  { id: 'penurunan', label: t.common.derivation },
+                  { id: 'pelunasan', label: id ? 'Pelunasan dipercepat' : 'Early repayment' },
+                ]}
+              />
 
               {result.reviews > 0 && (
                 <UnknownNotice
@@ -664,6 +735,7 @@ export function HitungView({ locale }: { locale: Locale }) {
 
               {result.singleRate && result.hidden && (
                 <Panel
+                  id="dilewatkan"
                   title={id ? 'Yang dilewatkan kalkulator lain' : 'What other calculators leave out'}
                   note={
                     id
@@ -706,9 +778,8 @@ export function HitungView({ locale }: { locale: Locale }) {
                 <UnknownNotice title={t.floating.title}>{t.floating.body}</UnknownNotice>
               )}
 
-              <ShareBar locale={locale} />
-
               <Panel
+                id="elevasi"
                 title={id ? 'Elevasi jadwal' : 'Schedule elevation'}
                 note={
                   id
@@ -737,6 +808,19 @@ export function HitungView({ locale }: { locale: Locale }) {
               </Panel>
 
               <Panel
+                id="tabel"
+                title={id ? 'Tabel angsuran' : 'Amortisation table'}
+                note={
+                  id
+                    ? 'Klik satu baris untuk melihat penurunannya. Inilah lembar yang bisa Anda cetak dan bawa ke bank.'
+                    : 'Click a row to see how it was derived. This is the sheet to print and take to the bank.'
+                }
+              >
+                <AmortisationTable schedule={result.schedule} locale={locale} />
+              </Panel>
+
+              <Panel
+                id="flat-efektif"
                 title={id ? 'Flat dibanding efektif' : 'Flat versus effective'}
                 note={
                   id
@@ -827,28 +911,7 @@ export function HitungView({ locale }: { locale: Locale }) {
               </Panel>
 
               <Panel
-                title={id ? 'Tabel angsuran' : 'Amortisation table'}
-                note={
-                  id
-                    ? 'Klik satu baris untuk melihat penurunannya. Inilah lembar yang bisa Anda cetak dan bawa ke bank.'
-                    : 'Click a row to see how it was derived. This is the sheet to print and take to the bank.'
-                }
-              >
-                <AmortisationTable schedule={result.schedule} locale={locale} />
-              </Panel>
-
-              <Panel
-                title={t.common.derivation}
-                note={
-                  id
-                    ? 'Setiap langkah perhitungan, termasuk pembulatan dan konvensi yang dipakainya.'
-                    : 'Every step of the computation, rounding and the convention it followed included.'
-                }
-              >
-                <TraceView trace={result.schedule.trace} locale={locale} />
-              </Panel>
-
-              <Panel
+                id="tuas"
                 title={id ? 'Mana yang paling menggerakkan total' : 'Which lever moves the total most'}
                 note={
                   id
@@ -913,6 +976,7 @@ export function HitungView({ locale }: { locale: Locale }) {
               </Panel>
 
               <Panel
+                id="tanya-bank"
                 title={id ? 'Yang perlu Anda tanyakan ke bank' : 'What to ask the bank'}
                 note={
                   id
@@ -932,6 +996,18 @@ export function HitungView({ locale }: { locale: Locale }) {
               </Panel>
 
               <Panel
+                id="penurunan"
+                title={t.common.derivation}
+                note={
+                  id
+                    ? 'Setiap langkah perhitungan, termasuk pembulatan dan konvensi yang dipakainya.'
+                    : 'Every step of the computation, rounding and the convention it followed included.'
+                }
+              >
+                <TraceView trace={result.schedule.trace} locale={locale} />
+              </Panel>
+
+              <Panel
                 title={id ? 'Istilah di halaman ini' : 'Words on this page'}
                 note={
                   id
@@ -945,14 +1021,16 @@ export function HitungView({ locale }: { locale: Locale }) {
                 />
               </Panel>
 
-              <PrepayPanel
-                principal={plafon}
-                start={result.start}
-                termMonths={termMonths}
-                segments={result.segments}
-                rounding={state.rounding}
-                locale={locale}
-              />
+              <div id="pelunasan">
+                <PrepayPanel
+                  principal={plafon}
+                  start={result.start}
+                  termMonths={termMonths}
+                  segments={result.segments}
+                  rounding={state.rounding}
+                  locale={locale}
+                />
+              </div>
             </>
           )}
         </div>
@@ -991,25 +1069,4 @@ const LEVER_LABEL: Record<'floating' | 'fixed' | 'tenor' | 'dp', { id: string; e
   fixed: { id: 'Bunga tetap, +2 poin', en: 'Fixed rate, +2 points' },
   tenor: { id: 'Tenor, +5 tahun', en: 'Term, +5 years' },
   dp: { id: 'Uang muka, +Rp50 juta', en: 'Down payment, +Rp50 million' },
-}
-
-/** One line of the empty state: what is still needed, and what is already in. */
-function Need({ done, label, locale }: { done: boolean; label: string; locale: Locale }) {
-  return (
-    <li className={`flex items-baseline gap-3 ${done ? 'text-muted' : 'text-print'}`}>
-      <span aria-hidden className={`figure ${done ? 'text-annotation' : 'text-unknown'}`}>
-        {done ? '✓' : '·'}
-      </span>
-      <span>{label}</span>
-      <span className="sr-only">
-        {done
-          ? locale === 'id'
-            ? 'sudah diisi'
-            : 'entered'
-          : locale === 'id'
-            ? 'belum diisi'
-            : 'not yet entered'}
-      </span>
-    </li>
-  )
 }

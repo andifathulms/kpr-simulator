@@ -241,6 +241,45 @@ body {
   }
 }
 
+/* The floating-rate slider: a bare track (drawn by the component, so the
+   hatched band can sit on it) and an amber thumb, since what it sets is an
+   assumption. */
+.rate-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rate-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1.125rem;
+  width: 1.125rem;
+  border-radius: 9999px;
+  background: rgb(var(--c-unknown));
+  border: 3px solid rgb(var(--c-surface));
+  box-shadow: 0 0 0 1px rgb(var(--c-unknown));
+}
+
+.rate-slider::-moz-range-thumb {
+  height: 0.75rem;
+  width: 0.75rem;
+  border-radius: 9999px;
+  background: rgb(var(--c-unknown));
+  border: 3px solid rgb(var(--c-surface));
+  box-shadow: 0 0 0 1px rgb(var(--c-unknown));
+}
+
+/* Separate rules: a selector list with another engine's pseudo-element is
+   dropped whole. */
+.rate-slider::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+.rate-slider::-moz-range-track {
+  background: transparent;
+}
+
 /*
  * The draughtsman's mark for "not determined": a 45° hatch in the unknown
  * colour. It carries the amber meaning without relying on hue, so it survives

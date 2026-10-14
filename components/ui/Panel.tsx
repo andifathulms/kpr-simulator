@@ -7,18 +7,21 @@
  * Renders only. Nothing here computes anything.
  */
 export function Panel({
+  id,
   title,
   note,
   aside,
   children,
 }: {
+  /** An anchor for the section index. */
+  id?: string
   title: string
   note?: string
   aside?: React.ReactNode
   children: React.ReactNode
 }) {
   return (
-    <section className="space-y-4">
+    <section id={id} className="space-y-4">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <h2 className="sheet-title text-subhead text-print">{title}</h2>
         {aside}

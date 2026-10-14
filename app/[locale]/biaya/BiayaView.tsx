@@ -8,6 +8,7 @@ import { RULES, COVERAGE_GAPS } from '@/lib/rules/registry'
 import { computeOwnershipCost } from '@/lib/biaya/ownership'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { FieldGroup } from '@/components/ui/FieldGroup'
 import type { Locale } from '@/lib/i18n/locales'
 import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField } from '@/components/field/Field'
@@ -61,61 +62,86 @@ export function BiayaView({ locale }: { locale: Locale }) {
         lede={t.pages.biaya.lede}
       />
 
-      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)]">
         <form
-          className="print-hidden space-y-4 lg:sticky lg:top-36 lg:self-start"
+          className="print-hidden space-y-5 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:pb-4 lg:pr-2 lg:[scrollbar-width:thin]"
           onSubmit={(event) => event.preventDefault()}
         >
-          <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
-          <MoneyField
-            label="NPOPTKP"
-            value={npoptkp}
-            onChange={setNpoptkp}
-            hint={
+          <FieldGroup
+            step={1}
+            done={harga > 0}
+            title={id ? 'Rumah dan pajaknya' : 'The house and its taxes'}
+          >
+            <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
+            <MoneyField
+              label="NPOPTKP"
+              value={npoptkp}
+              onChange={setNpoptkp}
+              hint={
+                id
+                  ? 'Kosongkan untuk memakai batas bawah nasional Rp80 juta. Isi bila Anda tahu nilai perda daerah Anda.'
+                  : 'Leave empty to use the national floor of Rp80 million. Enter your kabupaten/kota figure if you know it.'
+              }
+            />
+          </FieldGroup>
+
+          <FieldGroup
+            step={2}
+            tone="unknown"
+            tag={t.common.assumption}
+            title={id ? 'Biaya bank — angka Anda' : 'Bank fees — your figures'}
+            note={
               id
-                ? 'Kosongkan untuk memakai batas bawah nasional Rp80 juta. Isi bila Anda tahu nilai perda daerah Anda.'
-                : 'Leave empty to use the national floor of Rp80 million. Enter your kabupaten/kota figure if you know it.'
+                ? 'Setiap bank menetapkan sendiri. Salin dari rincian biaya bank Anda.'
+                : 'Each bank sets its own. Copy them from your bank’s fee breakdown.'
             }
-          />
-
-          <p className="sheet-title pt-2 text-lead text-unknown">
-            {id ? 'Biaya bank — angka Anda' : 'Bank fees — your figures'}
-          </p>
-          <MoneyField label="Provisi" value={provisi} onChange={setProvisi} amber />
-          <MoneyField label="Administrasi" value={administrasi} onChange={setAdministrasi} amber />
-          <MoneyField label="Appraisal" value={appraisal} onChange={setAppraisal} amber />
-          <MoneyField
-            label={id ? 'Premi asuransi' : 'Insurance premiums'}
-            value={asuransi}
-            onChange={setAsuransi}
-            amber
-          />
-          <MoneyField
-            label={id ? 'Notaris dan AJB' : 'Notary and deed of sale'}
-            value={notaris}
-            onChange={setNotaris}
-            amber
-          />
-
-          <div className="grid grid-cols-2 gap-3">
-            <NumberField
-              label={id ? 'Tahun' : 'Year'}
-              value={tahun}
-              onChange={setTahun}
-              min={2000}
-              max={2100}
+          >
+            <MoneyField label="Provisi" value={provisi} onChange={setProvisi} amber />
+            <MoneyField label="Administrasi" value={administrasi} onChange={setAdministrasi} amber />
+            <MoneyField label="Appraisal" value={appraisal} onChange={setAppraisal} amber />
+            <MoneyField
+              label={id ? 'Premi asuransi' : 'Insurance premiums'}
+              value={asuransi}
+              onChange={setAsuransi}
+              amber
             />
-            <NumberField
-              label={id ? 'Bulan' : 'Month'}
-              value={bulan}
-              onChange={setBulan}
-              min={1}
-              max={12}
+            <MoneyField
+              label={id ? 'Notaris dan AJB' : 'Notary and deed of sale'}
+              value={notaris}
+              onChange={setNotaris}
+              amber
             />
-          </div>
+          </FieldGroup>
+
+          <FieldGroup
+            step={3}
+            title={id ? 'Periode aturan' : 'Rules in force at'}
+            note={
+              id
+                ? 'Aturan yang dipakai bergantung pada periode ini. Di luar periode yang dimuat, aplikasi menolak menghitung.'
+                : 'The rules applied depend on this period. Outside the periods it carries, the app refuses to compute.'
+            }
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <NumberField
+                label={id ? 'Tahun' : 'Year'}
+                value={tahun}
+                onChange={setTahun}
+                min={2000}
+                max={2100}
+              />
+              <NumberField
+                label={id ? 'Bulan' : 'Month'}
+                value={bulan}
+                onChange={setBulan}
+                min={1}
+                max={12}
+              />
+            </div>
+          </FieldGroup>
         </form>
 
-        <div className="space-y-8">
+        <div className="min-w-0 space-y-8">
           <ShareBar locale={locale} />
           {report.type === 'unsupported' ? (
             <RefusalNotice outcome={report} locale={locale} />

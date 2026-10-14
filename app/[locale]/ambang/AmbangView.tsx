@@ -20,6 +20,7 @@ import { FieldGroup } from '@/components/ui/FieldGroup'
 import { Glossary } from '@/components/ui/Glossary'
 import { BankQuestions } from '@/components/ui/BankQuestions'
 import { LiveRegion } from '@/components/ui/LiveRegion'
+import { EmptySheet } from '@/components/ui/EmptySheet'
 import { EXAMPLE_AMBANG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 
 /**
@@ -199,13 +200,14 @@ export function AmbangView({ locale }: { locale: Locale }) {
         lede={t.pages.ambang.lede}
       />
 
-      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)]">
         <form
-          className="print-hidden space-y-8 lg:sticky lg:top-36 lg:self-start"
+          className="print-hidden space-y-5 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:pb-4 lg:pr-2 lg:[scrollbar-width:thin]"
           onSubmit={(event) => event.preventDefault()}
         >
           <FieldGroup
             step={1}
+            done={state.plafon > 0 && state.bungaTetap > 0 && fixedMonths > 0 && fixedMonths < termMonths}
             title={id ? 'Pinjamannya' : 'The loan'}
             note={
               id
@@ -225,6 +227,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
               min={2}
               max={40}
               suffix={id ? 'thn' : 'yr'}
+              presets={[10, 15, 20, 25]}
             />
             <RateField
               label={t.form.bungaTetap}
@@ -238,11 +241,13 @@ export function AmbangView({ locale }: { locale: Locale }) {
               min={1}
               max={Math.max(state.tenorTahun - 1, 1)}
               suffix={id ? 'thn' : 'yr'}
+              presets={[1, 2, 3, 5]}
             />
           </FieldGroup>
 
           <FieldGroup
             step={2}
+            done={state.penghasilan > 0 && state.porsi > 0}
             title={id ? 'Batas yang Anda tetapkan' : 'The limit you set'}
             note={
               id
@@ -292,7 +297,7 @@ export function AmbangView({ locale }: { locale: Locale }) {
           </details>
         </form>
 
-        <div className="space-y-10">
+        <div className="min-w-0 space-y-10 [&>[role=status]+*]:!mt-0">
           <LiveRegion>
             {result?.kind === 'ok' && result.outcome.kind === 'found'
               ? id
@@ -309,27 +314,38 @@ export function AmbangView({ locale }: { locale: Locale }) {
           )}
 
           {!ready && (
-            <section className="rounded-lg border border-annotation/25 bg-surface px-6 py-6">
-              <p className="sheet-label text-caption text-annotation">
-                {id ? 'Belum ada yang dihitung' : 'Nothing computed yet'}
-              </p>
-              <p className="measure mt-2 text-muted">
-                {id
-                  ? 'Isi plafon, bunga tetap yang dikutip, masa tetapnya, dan penghasilan per bulan. Angka ambang muncul di sini.'
-                  : 'Enter the amount financed, the fixed rate you were quoted, its length, and your monthly income. The threshold figure appears here.'}
-              </p>
-              <p className="measure mt-4 text-caption text-muted">
-                {id
-                  ? 'Atau lihat contohnya lebih dulu — angkanya dibuat-buat dan ditandai kuning.'
-                  : 'Or see it worked through first — the figures are invented and marked amber.'}
-              </p>
-              <div className="mt-3">
+            <EmptySheet
+              title={id ? 'Angka ambang Anda akan muncul di sini' : 'Your threshold will appear here'}
+              note={
+                id
+                  ? 'Isi pinjaman yang dikutip bank dan penghasilan per bulan. Aplikasi mencari bunga mengambang yang membuat angsuran tepat menyentuh batas Anda.'
+                  : 'Enter the loan the bank quoted and your monthly income. The app finds the floating rate at which the instalment exactly meets your limit.'
+              }
+              outline={{
+                known: id ? 'masa tetap' : 'fixed period',
+                unknown: id ? 'sampai batas Anda' : 'up to your limit',
+              }}
+              progressLabel={
+                id ? `${[state.plafon > 0, state.bungaTetap > 0, state.penghasilan > 0].filter(Boolean).length} dari 3 sudah diisi` : `${[state.plafon > 0, state.bungaTetap > 0, state.penghasilan > 0].filter(Boolean).length} of 3 entered`
+              }
+              needs={[
+                { label: t.form.plafon, done: state.plafon > 0 },
+                { label: t.form.bungaTetap, done: state.bungaTetap > 0 },
+                { label: t.form.penghasilan, done: state.penghasilan > 0 },
+              ]}
+            >
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-annotation/20 pt-5">
                 <ExampleButton
                   locale={locale}
                   onLoad={() => setState({ ...state, ...EXAMPLE_AMBANG, contoh: true })}
                 />
+                <p className="min-w-0 flex-1 text-caption text-muted">
+                  {id
+                    ? 'Atau lihat contohnya lebih dulu — angkanya dibuat-buat dan ditandai kuning.'
+                    : 'Or see it worked through first — the figures are invented and marked amber.'}
+                </p>
               </div>
-            </section>
+            </EmptySheet>
           )}
 
           {result?.kind === 'error' && (
@@ -341,11 +357,11 @@ export function AmbangView({ locale }: { locale: Locale }) {
           {result?.kind === 'ok' && (
             <>
               {result.outcome.kind === 'found' && (
-                <section className="border-2 border-threshold bg-threshold/[0.08] px-6 py-6">
+                <section className="rounded-xl border-2 border-threshold bg-threshold/[0.08] px-6 py-6 shadow-[0_24px_48px_-32px_rgb(0_0_0/0.7)]">
                   <p className="sheet-label text-caption text-threshold">
                     {id ? 'Ambang — bunga mengambang' : 'Threshold — floating rate'}
                   </p>
-                  <p className="figure mt-2 text-headline text-threshold">
+                  <p className="figure-display mt-2 text-[clamp(3.25rem,2rem+4vw,5rem)] font-bold leading-none text-threshold">
                     {formatRate(result.outcome.annualRate, intl)}
                   </p>
                   <p className="measure mt-4 text-print">

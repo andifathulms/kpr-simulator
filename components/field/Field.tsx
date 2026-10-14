@@ -122,6 +122,7 @@ export function NumberField({
   max = 40,
   suffix,
   hint,
+  presets,
 }: {
   label: string
   value: number
@@ -130,6 +131,11 @@ export function NumberField({
   max?: number
   suffix?: string
   hint?: string
+  /**
+   * Common counts offered as one tap — tenor and fixed-period years, never a
+   * rate. The typed field stays underneath for anything else.
+   */
+  presets?: readonly number[]
 }) {
   const id = useId()
   const hintId = `${id}-hint`
@@ -138,6 +144,29 @@ export function NumberField({
       <label htmlFor={id} className="field-label block text-annotation">
         {label}
       </label>
+      {presets && (
+        <div role="group" aria-label={label} className="flex overflow-hidden rounded-md border border-annotation/40">
+          {presets
+            .filter((preset) => preset >= min && preset <= max)
+            .map((preset, index) => (
+              <button
+                key={preset}
+                type="button"
+                aria-pressed={value === preset}
+                onClick={() => onChange(preset)}
+                className={`figure flex-1 py-1.5 text-caption transition-colors ${
+                  index > 0 ? 'border-l border-annotation/25' : ''
+                } ${
+                  value === preset
+                    ? 'bg-raised text-print shadow-[inset_0_-2px_0_rgb(var(--c-annotation))]'
+                    : 'text-muted hover:bg-surface hover:text-print'
+                }`}
+              >
+                {preset}
+              </button>
+            ))}
+        </div>
+      )}
       <div className="flex items-center rounded-md border border-annotation/40 bg-recess transition-colors focus-within:border-annotation hover:border-annotation/70">
         <input
           id={id}
@@ -198,6 +227,71 @@ export function SelectField<T extends string>({
           {hint}
         </p>
       )}
+    </div>
+  )
+}
+
+/**
+ * A second handle on the assumed floating rate, for trying several figures
+ * quickly — which the step note asks the user to do. It edits the same value
+ * as the typed field and starts wherever that field is, including zero: it
+ * never proposes a position of its own.
+ *
+ * The hatched region is the band the user asked to see (rate minus the lower
+ * spread, rate plus the upper one), drawn to the same scale as the track.
+ * The positions are a straight percentage of the track — a layout scale, not
+ * a figure anyone reads.
+ */
+export function RateBandSlider({
+  label,
+  value,
+  lower,
+  upper,
+  onChange,
+  max = 0.2,
+}: {
+  label: string
+  value: number
+  /** How far below `value` the band reaches, as a decimal. */
+  lower: number
+  /** How far above `value` the band reaches, as a decimal. */
+  upper: number
+  onChange: (value: number) => void
+  max?: number
+}) {
+  const at = (rate: number) => `${(Math.min(Math.max(rate, 0), max) / max) * 100}%`
+  const bandFrom = Math.max(value - Math.abs(lower), 0)
+  const bandTo = value + Math.abs(upper)
+  const showBand = value > 0 && bandTo > bandFrom
+  const ticks = [0, 0.05, 0.1, 0.15, 0.2].filter((tick) => tick <= max)
+
+  return (
+    <div className="pt-1">
+      <div className="relative h-6">
+        <div className="absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full bg-annotation/30" />
+        {showBand && (
+          <div
+            aria-hidden
+            className="hatch-unknown absolute top-1/2 h-3 -translate-y-1/2 rounded-sm border border-unknown"
+            style={{ left: at(bandFrom), width: `calc(${at(bandTo)} - ${at(bandFrom)})` }}
+          />
+        )}
+        <input
+          type="range"
+          aria-label={label}
+          min={0}
+          max={max * 100}
+          step={0.25}
+          value={Math.min(value * 100, max * 100)}
+          onChange={(event) => onChange(Number(event.target.value) / 100)}
+          className="rate-slider absolute inset-0 w-full"
+        />
+      </div>
+      <div aria-hidden className="figure mt-1 flex justify-between text-micro text-muted">
+        {ticks.map((tick) => (
+          <span key={tick}>{Math.round(tick * 100)}%</span>
+        ))}
+      </div>
     </div>
   )
 }

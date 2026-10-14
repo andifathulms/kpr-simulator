@@ -10,6 +10,7 @@ import { resolveRate } from '@/lib/rules/resolver'
 import { checkEligibility, type HargaWilayah, type Status, type Zona } from '@/lib/rules/flpp'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { FieldGroup } from '@/components/ui/FieldGroup'
 import { StatCard } from '@/components/ui/StatCard'
 import type { Locale } from '@/lib/i18n/locales'
 import { ShareBar } from '@/components/share/ShareBar'
@@ -109,85 +110,110 @@ export function SubsidiView({ locale }: { locale: Locale }) {
         lede={t.pages.subsidi.lede}
       />
 
-      <div className="grid gap-10 lg:grid-cols-[21rem_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)]">
         <form
-          className="print-hidden space-y-4 lg:sticky lg:top-36 lg:self-start"
+          className="print-hidden space-y-5 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:pb-4 lg:pr-2 lg:[scrollbar-width:thin]"
           onSubmit={(event) => event.preventDefault()}
         >
-          <SelectField
-            label={id ? 'Zona penghasilan' : 'Income zone'}
-            value={zona}
-            options={ZONA}
-            onChange={setZona}
-          />
-          <SelectField
-            label={id ? 'Status' : 'Status'}
-            value={status}
-            options={[
-              { value: 'tidak.kawin' as Status, label: id ? 'Tidak kawin' : 'Unmarried' },
-              { value: 'kawin' as Status, label: id ? 'Kawin' : 'Married' },
-              { value: 'tapera' as Status, label: id ? 'Peserta Tapera' : 'Tapera participant' },
-            ]}
-            onChange={setStatus}
-          />
-          <SelectField
-            label={id ? 'Wilayah harga' : 'Price region'}
-            value={wilayah}
-            options={WILAYAH}
-            onChange={setWilayah}
-          />
-          <MoneyField label={t.form.penghasilan} value={penghasilan} onChange={setPenghasilan} />
-          <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
-          <MoneyField
-            label={t.form.uangMuka}
-            value={uangMuka}
-            onChange={setUangMuka}
-            hint={
-              id
-                ? 'Angka Anda. Uang muka minimum FLPP tidak dimuat sebagai parameter — lihat halaman Parameter.'
-                : 'Your figure. The minimum FLPP down payment is not carried as a parameter — see Parameters.'
-            }
-          />
-          <NumberField
-            label={id ? 'Luas lantai' : 'Floor area'}
-            value={luas}
-            onChange={setLuas}
-            min={1}
-            max={200}
-            suffix="m²"
-          />
-          <NumberField
-            label={t.form.tenorTahun}
-            value={tenorTahun}
-            onChange={setTenorTahun}
-            min={1}
-            max={40}
-            suffix={id ? 'thn' : 'yr'}
-            hint={
-              id
-                ? 'Tenor maksimum FLPP tidak dimuat sebagai parameter — lihat halaman Parameter.'
-                : 'The maximum FLPP tenor is not carried as a parameter — see Parameters.'
-            }
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <NumberField
-              label={id ? 'Tahun' : 'Year'}
-              value={tahun}
-              onChange={setTahun}
-              min={2000}
-              max={2100}
+          <FieldGroup
+            step={1}
+            done={penghasilan > 0}
+            title={id ? 'Profil Anda' : 'Your profile'}
+          >
+            <SelectField
+              label={id ? 'Zona penghasilan' : 'Income zone'}
+              value={zona}
+              options={ZONA}
+              onChange={setZona}
+            />
+            <SelectField
+              label={id ? 'Status' : 'Status'}
+              value={status}
+              options={[
+                { value: 'tidak.kawin' as Status, label: id ? 'Tidak kawin' : 'Unmarried' },
+                { value: 'kawin' as Status, label: id ? 'Kawin' : 'Married' },
+                { value: 'tapera' as Status, label: id ? 'Peserta Tapera' : 'Tapera participant' },
+              ]}
+              onChange={setStatus}
+            />
+            <SelectField
+              label={id ? 'Wilayah harga' : 'Price region'}
+              value={wilayah}
+              options={WILAYAH}
+              onChange={setWilayah}
+            />
+            <MoneyField label={t.form.penghasilan} value={penghasilan} onChange={setPenghasilan} />
+          </FieldGroup>
+
+          <FieldGroup
+            step={2}
+            done={harga > 0}
+            title={id ? 'Rumahnya' : 'The house'}
+          >
+            <MoneyField label={t.form.harga} value={harga} onChange={setHarga} />
+            <MoneyField
+              label={t.form.uangMuka}
+              value={uangMuka}
+              onChange={setUangMuka}
+              hint={
+                id
+                  ? 'Angka Anda. Uang muka minimum FLPP tidak dimuat sebagai parameter — lihat halaman Parameter.'
+                  : 'Your figure. The minimum FLPP down payment is not carried as a parameter — see Parameters.'
+              }
             />
             <NumberField
-              label={id ? 'Bulan' : 'Month'}
-              value={bulan}
-              onChange={setBulan}
+              label={id ? 'Luas lantai' : 'Floor area'}
+              value={luas}
+              onChange={setLuas}
               min={1}
-              max={12}
+              max={200}
+              suffix="m²"
             />
-          </div>
+            <NumberField
+              label={t.form.tenorTahun}
+              value={tenorTahun}
+              onChange={setTenorTahun}
+              min={1}
+              max={40}
+              suffix={id ? 'thn' : 'yr'}
+              presets={[10, 15, 20, 25]}
+              hint={
+                id
+                  ? 'Tenor maksimum FLPP tidak dimuat sebagai parameter — lihat halaman Parameter.'
+                  : 'The maximum FLPP tenor is not carried as a parameter — see Parameters.'
+              }
+            />
+          </FieldGroup>
+
+          <FieldGroup
+            step={3}
+            title={id ? 'Periode aturan' : 'Rules in force at'}
+            note={
+              id
+                ? 'Aturan yang dipakai bergantung pada periode ini. Di luar periode yang dimuat, aplikasi menolak menghitung.'
+                : 'The rules applied depend on this period. Outside the periods it carries, the app refuses to compute.'
+            }
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <NumberField
+                label={id ? 'Tahun' : 'Year'}
+                value={tahun}
+                onChange={setTahun}
+                min={2000}
+                max={2100}
+              />
+              <NumberField
+                label={id ? 'Bulan' : 'Month'}
+                value={bulan}
+                onChange={setBulan}
+                min={1}
+                max={12}
+              />
+            </div>
+          </FieldGroup>
         </form>
 
-        <div className="space-y-8">
+        <div className="min-w-0 space-y-8">
           <ShareBar locale={locale} />
           <section className="space-y-3">
             <h2 className="sheet-title text-subhead text-print">
