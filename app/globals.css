@@ -97,8 +97,21 @@ html {
     linear-gradient(90deg, rgb(var(--c-annotation) / 0.045) 1px, transparent 1px);
   background-size: 32px 32px;
   color: rgb(var(--c-print));
-  /* The header is sticky, so an in-page anchor must not land under it. */
-  scroll-padding-top: 8rem;
+  /* An in-page anchor must not land under whatever is sticky: nothing on a
+     phone, the header from md, the header and the section index from lg. */
+  scroll-padding-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 9rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 11.5rem;
+  }
 }
 
 body {

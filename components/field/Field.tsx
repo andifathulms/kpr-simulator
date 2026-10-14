@@ -172,6 +172,7 @@ export function NumberField({
           id={id}
           aria-describedby={hint ? hintId : undefined}
           type="number"
+          inputMode="numeric"
           min={min}
           max={max}
           value={value}

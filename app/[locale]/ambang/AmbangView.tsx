@@ -23,6 +23,7 @@ import { Glossary } from '@/components/ui/Glossary'
 import { BankQuestions } from '@/components/ui/BankQuestions'
 import { LiveRegion } from '@/components/ui/LiveRegion'
 import { EmptySheet } from '@/components/ui/EmptySheet'
+import { ReadoutDock } from '@/components/ui/ReadoutDock'
 import { EXAMPLE_AMBANG, ExampleBanner, ExampleButton } from '@/components/ui/ExampleBanner'
 
 /**
@@ -380,7 +381,10 @@ export function AmbangView({ locale }: { locale: Locale }) {
           {result?.kind === 'ok' && (
             <>
               {result.outcome.kind === 'found' && (
-                <section className="rounded-xl border-2 border-threshold bg-threshold/[0.08] px-6 py-6 shadow-[0_24px_48px_-32px_rgb(0_0_0/0.7)]">
+                <section
+                  id="ambang-hasil"
+                  className="rounded-xl border-2 border-threshold bg-threshold/[0.08] px-6 py-6 shadow-[0_24px_48px_-32px_rgb(0_0_0/0.7)]"
+                >
                   <p className="sheet-label text-caption text-threshold">
                     {id ? 'Ambang — bunga mengambang' : 'Threshold — floating rate'}
                   </p>
@@ -585,6 +589,23 @@ export function AmbangView({ locale }: { locale: Locale }) {
           )}
         </div>
       </div>
+
+      {result?.kind === 'ok' && result.outcome.kind === 'found' && (
+        <ReadoutDock
+          target="ambang-hasil"
+          linkLabel={id ? 'Lihat hasil lengkap ↓' : 'See the full result ↓'}
+          before={{
+            label: id ? 'Angsuran masa tetap' : 'Fixed-period instalment',
+            value: formatRupiah(result.outcome.fixedPayment, intl),
+            tag: t.common.computed,
+          }}
+          after={{
+            label: id ? 'Ambang' : 'Threshold',
+            value: formatRate(result.outcome.annualRate, intl),
+            tone: 'threshold',
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -45,9 +45,13 @@ export function Chrome({
 
   return (
     <div className="flex min-h-screen flex-col text-print">
-      <header className="print-hidden sticky top-0 z-40 border-b border-annotation/20 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
+      <header className="print-hidden z-40 border-b md:sticky md:top-0 border-annotation/20 bg-blueprint/95 backdrop-blur supports-[backdrop-filter]:bg-blueprint/80">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           {/*
+           * Sticky from md up. On a phone the header is two rows of links
+           * and would hold a fifth of the screen; there it scrolls away, and
+           * the readout dock keeps the answer in reach instead.
+           *
            * Wraps rather than overflows (WCAG 1.4.10 Reflow): the brand may
            * shrink and the row may wrap, so at 320px the utilities drop to
            * their own line instead of widening the page.
@@ -154,8 +158,8 @@ function NavLink({
     <Link
       href={`/${locale}/${route}`}
       aria-current={current ? 'page' : undefined}
-      className={`block whitespace-nowrap rounded-md px-3 py-1.5 text-caption font-medium transition-colors ${
-        block ? 'text-center' : ''
+      className={`block rounded-md py-1.5 text-caption font-medium leading-tight transition-colors ${
+        block ? 'flex min-h-[2.5rem] items-center justify-center px-1.5 text-center' : 'whitespace-nowrap px-3'
       } ${
         current
           ? 'bg-raised text-print shadow-[inset_0_-2px_0_rgb(var(--c-annotation))]'

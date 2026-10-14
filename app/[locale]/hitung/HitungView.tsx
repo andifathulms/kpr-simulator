@@ -37,6 +37,7 @@ import { NextStep } from '@/components/ui/Journey'
 import { EmptySheet } from '@/components/ui/EmptySheet'
 import { SectionIndex } from '@/components/ui/SectionIndex'
 import { SummaryStrip } from '@/components/ui/SummaryStrip'
+import { ReadoutDock } from '@/components/ui/ReadoutDock'
 import type { RateSegment } from '@/lib/amortise/types'
 import { decodeHash, encodeHash, readNumber, readString } from '@/lib/url/hash'
 import { labelReviews, reviewCount } from '@/lib/scenario/repricing'
@@ -1056,6 +1057,28 @@ export function HitungView({ locale }: { locale: Locale }) {
             : undefined
         }
       />
+
+      {result?.kind === 'ok' && (
+        <ReadoutDock
+          target="ringkasan"
+          linkLabel={id ? 'Lihat hasil lengkap ↓' : 'See the full result ↓'}
+          before={{
+            label: id ? `${state.masaTetapTahun} thn pertama` : `First ${state.masaTetapTahun} yr`,
+            value: formatRupiah(result.firstPayment, intl),
+            tag: t.common.computed,
+          }}
+          after={
+            result.hasFloating && result.floatingPayment
+              ? {
+                  label: id ? 'Sesudahnya' : 'After that',
+                  value: formatRupiah(result.floatingPayment, intl),
+                  tone: 'unknown',
+                  tag: t.common.assumption,
+                }
+              : undefined
+          }
+        />
+      )}
     </div>
   )
 }
