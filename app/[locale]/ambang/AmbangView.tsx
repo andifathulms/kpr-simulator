@@ -5,6 +5,7 @@ import { rupiah } from '@/lib/money/rupiah'
 import { formatRate, formatRupiah } from '@/lib/money/format'
 import { period } from '@/lib/period/period'
 import { buildSchedule } from '@/lib/amortise/schedule'
+import { floatingPaymentCurve } from '@/lib/rate/curve'
 import { solveThreshold } from '@/lib/rate/threshold'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
 import type { Locale } from '@/lib/i18n/locales'
@@ -12,6 +13,7 @@ import { ShareBar } from '@/components/share/ShareBar'
 import { MoneyField, NumberField, RateField } from '@/components/field/Field'
 import { ThresholdNotice, UnknownNotice } from '@/components/notice/Notice'
 import { ScheduleElevation } from '@/components/elevation/ScheduleElevation'
+import { ThresholdCurve } from '@/components/threshold/ThresholdCurve'
 import { decodeHash, encodeHash, readNumber } from '@/lib/url/hash'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Panel } from '@/components/ui/Panel'
@@ -183,7 +185,28 @@ export function AmbangView({ locale }: { locale: Locale }) {
               .filter((row): row is NonNullable<typeof row> => row !== undefined)
           : []
 
-      return { kind: 'ok' as const, outcome, schedule, gradient }
+      /*
+       * The whole relationship the answer sits on, for the crossing chart:
+       * every half point from 0% to comfortably past the threshold — at least
+       * 20%, at most 50%, ending on a round five. Each point is a full
+       * schedule from the engine, not an interpolation.
+       */
+      const curve =
+        outcome.kind === 'found'
+          ? floatingPaymentCurve(
+              {
+                principal: rupiah(state.plafon),
+                start: period(state.mulaiTahun, state.mulaiBulan),
+                termMonths,
+                fixedMonths,
+                fixedAnnualRate: state.bungaTetap,
+                rounding: 'pembulatan-terdekat',
+              },
+              curveRates(outcome.annualRate),
+            )
+          : []
+
+      return { kind: 'ok' as const, outcome, schedule, gradient, curve }
     } catch (error) {
       return {
         kind: 'error' as const,
@@ -381,6 +404,25 @@ export function AmbangView({ locale }: { locale: Locale }) {
                 </section>
               )}
 
+              {result.outcome.kind === 'found' && result.curve.length > 1 && (
+                <Panel
+                  title={id ? 'Di mana angsuran bertemu batas Anda' : 'Where the instalment meets your limit'}
+                  note={
+                    id
+                      ? 'Garis kuning adalah angsuran setelah masa tetap pada setiap bunga mengambang — dihitung, tetapi bunganya sendiri tidak diketahui. Garis merah adalah batas Anda. Ambang adalah titik keduanya bertemu.'
+                      : 'The amber line is the instalment after the fixed period at each floating rate — computed, though the rate itself is unknown. The red line is your limit. The threshold is where the two meet.'
+                  }
+                >
+                  <ThresholdCurve
+                    points={result.curve}
+                    limit={result.outcome.limit}
+                    thresholdRate={result.outcome.annualRate}
+                    fixedRate={state.bungaTetap}
+                    locale={locale}
+                  />
+                </Panel>
+              )}
+
               {result.outcome.kind === 'breached-at-zero' && (
                 <ThresholdNotice
                   title={id ? 'Tidak ada ambang untuk dicari' : 'There is no threshold to find'}
@@ -545,4 +587,11 @@ export function AmbangView({ locale }: { locale: Locale }) {
       </div>
     </div>
   )
+}
+
+/** The sampled rates: 0 to a round five past 1.5× the threshold, every 0.5 point. */
+function curveRates(threshold: number): number[] {
+  const top = Math.min(Math.max(Math.ceil((threshold * 1.5) / 0.05) * 0.05, 0.2), 0.5)
+  const count = Math.round(top / 0.005) + 1
+  return Array.from({ length: count }, (_, index) => Number((index * 0.005).toFixed(4)))
 }

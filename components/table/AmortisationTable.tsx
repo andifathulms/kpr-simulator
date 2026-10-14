@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { formatAmount, formatRate } from '@/lib/money/format'
 import { formatPeriod } from '@/lib/period/period'
 import { dictionary, intlLocale } from '@/lib/i18n/dict'
@@ -11,6 +11,10 @@ import { LiveRegion } from '@/components/ui/LiveRegion'
 /**
  * The full amortisation table, to the rupiah — the artefact someone takes to
  * a bank meeting. Every row expands to its derivation.
+ *
+ * Rows are grouped by loan year, and the month the rate changes phase gets a
+ * marked row of its own, so the step is visible on a printed sheet where
+ * there is no chart beside it.
  *
  * Tabular numerals, right-aligned, on every rupiah column. Without exception.
  */
@@ -24,7 +28,7 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
 
   return (
     <div className="space-y-4">
-      <div className="overflow-x-auto border border-annotation/25">
+      <div className="overflow-x-auto rounded-xl border border-annotation/25">
         <table className="w-full min-w-[52rem] border-collapse text-caption">
           <caption className="sr-only">
             {locale === 'id'
@@ -44,18 +48,60 @@ export function AmortisationTable({ schedule, locale }: { schedule: Schedule; lo
             </tr>
           </thead>
           <tbody>
-            {rows.map((instalment) => (
-              <Row
-                key={instalment.index}
-                instalment={instalment}
-                locale={locale}
-                intl={intl}
-                expanded={expanded === instalment.index}
-                onToggle={() =>
-                  setExpanded(expanded === instalment.index ? null : instalment.index)
-                }
-              />
-            ))}
+            {rows.map((instalment, position) => {
+              const previous = position > 0 ? rows[position - 1] : undefined
+              const yearStarts = (instalment.index - 1) % 12 === 0
+              const phaseChanges = previous !== undefined && previous.phase !== instalment.phase
+              return (
+                <Fragment key={instalment.index}>
+                  {phaseChanges && (
+                    <tr>
+                      <th
+                        scope="rowgroup"
+                        colSpan={8}
+                        className={`border-y border-dashed px-3 py-2 text-left font-normal ${
+                          instalment.assumed
+                            ? 'border-unknown bg-unknown/[0.08] text-unknown'
+                            : 'border-annotation/50 bg-surface text-annotation'
+                        }`}
+                      >
+                        <span className="sheet-label text-micro">
+                          {locale === 'id'
+                            ? `Masa ${previous.phase === 'tetap' ? t.table.tetap.toLowerCase() : t.table.mengambang.toLowerCase()} berakhir · mulai bulan ${instalment.index}, bunga ${formatRate(instalment.annualRate, intl)}`
+                            : `${previous.phase === 'tetap' ? t.table.tetap : t.table.mengambang} period ends · from month ${instalment.index}, rate ${formatRate(instalment.annualRate, intl)}`}
+                          {instalment.assumed &&
+                            (locale === 'id' ? ' — asumsi Anda' : ' — your assumption')}
+                        </span>
+                      </th>
+                    </tr>
+                  )}
+                  {yearStarts && (
+                    <tr>
+                      <th
+                        scope="rowgroup"
+                        colSpan={8}
+                        className="bg-annotation/[0.05] px-3 py-1.5 text-left font-normal"
+                      >
+                        <span className="sheet-label text-micro text-annotation">
+                          {locale === 'id'
+                            ? `Tahun ke-${Math.ceil(instalment.index / 12)}`
+                            : `Year ${Math.ceil(instalment.index / 12)}`}
+                        </span>
+                      </th>
+                    </tr>
+                  )}
+                  <Row
+                    instalment={instalment}
+                    locale={locale}
+                    intl={intl}
+                    expanded={expanded === instalment.index}
+                    onToggle={() =>
+                      setExpanded(expanded === instalment.index ? null : instalment.index)
+                    }
+                  />
+                </Fragment>
+              )
+            })}
           </tbody>
           <tfoot>
             <tr className="border-t border-annotation/40 bg-surface">

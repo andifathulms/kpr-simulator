@@ -11,7 +11,7 @@ import {
   subtract,
   sum,
 } from '@/lib/money/rupiah'
-import { formatAmount, formatRate, formatRupiah } from '@/lib/money/format'
+import { formatAmount, formatAxisTick, formatRate, formatRupiah } from '@/lib/money/format'
 
 describe('rupiah', () => {
   it('refuses a fractional amount rather than silently rounding it', () => {
@@ -69,5 +69,17 @@ describe('display', () => {
     expect(formatRupiah(rupiah(0))).toBe('Rp0')
     expect(formatAmount(rupiah(1_234_567))).toBe('1.234.567')
     expect(formatRate(0.115)).toBe('11,50%')
+  })
+})
+
+describe('axis ticks', () => {
+  // ICU joins number and unit with a no-break space, which keeps a tick
+  // label on one line; the assertion states it rather than normalising it.
+  it('abbreviates round tick values in the reader’s locale', () => {
+    expect(formatAxisTick(rupiah(0))).toBe('0')
+    expect(formatAxisTick(rupiah(2_000_000))).toBe('2\u00a0jt')
+    expect(formatAxisTick(rupiah(2_500_000))).toBe('2,5\u00a0jt')
+    expect(formatAxisTick(rupiah(500_000))).toBe('500\u00a0rb')
+    expect(formatAxisTick(rupiah(2_500_000), 'en-GB')).toBe('2.5m')
   })
 })

@@ -1,56 +1,69 @@
 /**
- * The fixed-period boundary, drawn as a proper dimension line: extension
- * lines, arrowheads, and the measurement labelled. A mortgage schedule is a
- * structure built over time, and the moment its terms change deserves to be
- * drawn the way a drawing sheet marks a change in section.
+ * A horizontal dimension, drawn the way a drawing sheet measures a span:
+ * short extension ticks at both ends, arrowheads, and the measurement written
+ * on the line with the ground knocked out behind it.
+ *
+ * A mortgage schedule is a structure built over time, and its two periods are
+ * its two spans. The known one is drawn solid in annotation cyan; the assumed
+ * one dashed in amber, because its length is known but nothing inside it is.
  */
 export function DimensionLine({
-  x,
-  top,
-  bottom,
+  from,
+  to,
+  y,
   label,
-  extendTo,
+  tone = 'computed',
 }: {
-  x: number
-  top: number
-  bottom: number
+  from: number
+  to: number
+  y: number
   label: string
-  /** Right-hand extent of the horizontal measure, if one is drawn. */
-  extendTo?: number
+  tone?: 'computed' | 'unknown'
 }) {
   const arrow = 5
+  const amber = tone === 'unknown'
+  const stroke = amber ? 'stroke-unknown' : 'stroke-annotation'
+  const fill = amber ? 'fill-unknown' : 'fill-annotation'
+  // Too short to carry arrowheads and a label: draw the ticks only, and let
+  // the label sit beside the span instead of on it.
+  const roomy = to - from > 120
+
   return (
     <g>
-      {/* Extension line through the full height of the elevation. */}
+      <line x1={from} x2={from} y1={y - 7} y2={y + 7} className={stroke} strokeWidth={1} />
+      <line x1={to} x2={to} y1={y - 7} y2={y + 7} className={stroke} strokeWidth={1} />
       <line
-        x1={x}
-        x2={x}
-        y1={top}
-        y2={bottom}
-        className="stroke-unknown"
+        x1={from + 1}
+        x2={to - 1}
+        y1={y}
+        y2={y}
+        className={stroke}
         strokeWidth={1}
-        strokeDasharray="4 3"
+        strokeDasharray={amber ? '6 4' : undefined}
       />
-
-      {extendTo !== undefined && (
+      {roomy && (
         <>
-          <line x1={x} x2={extendTo} y1={top} y2={top} className="stroke-unknown" strokeWidth={1} />
           <polygon
-            points={`${x},${top} ${x + arrow * 2},${top - arrow} ${x + arrow * 2},${top + arrow}`}
-            className="fill-unknown"
+            points={`${from + 1},${y} ${from + 1 + arrow * 2},${y - arrow} ${from + 1 + arrow * 2},${y + arrow}`}
+            className={fill}
           />
           <polygon
-            points={`${extendTo},${top} ${extendTo - arrow * 2},${top - arrow} ${extendTo - arrow * 2},${top + arrow}`}
-            className="fill-unknown"
+            points={`${to - 1},${y} ${to - 1 - arrow * 2},${y - arrow} ${to - 1 - arrow * 2},${y + arrow}`}
+            className={fill}
           />
         </>
       )}
-
+      {/* The stroke in the card's own colour knocks the line out behind the
+          lettering, so the measurement reads on the line itself. */}
       <text
-        x={x + 8}
-        y={top + 16}
-        className="fill-unknown"
-        style={{ fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase' }}
+        x={roomy ? (from + to) / 2 : to + 8}
+        y={y + 5}
+        textAnchor={roomy ? 'middle' : 'start'}
+        paintOrder="stroke"
+        strokeWidth={8}
+        strokeLinejoin="round"
+        className={`${fill} stroke-surface font-sheet font-medium`}
+        style={{ fontSize: 15, letterSpacing: '0.1em', textTransform: 'uppercase' }}
       >
         {label}
       </text>
