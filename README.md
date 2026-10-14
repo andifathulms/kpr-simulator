@@ -11,7 +11,7 @@
 [**Buka aplikasinya →**](https://andifathulms.github.io/kpr-simulator/id/) &nbsp;·&nbsp; [Open in English](https://andifathulms.github.io/kpr-simulator/en/) &nbsp;·&nbsp; [How it decides what it knows](PRD.md)
 
 [![build and verify](https://github.com/andifathulms/kpr-simulator/actions/workflows/deploy.yml/badge.svg)](https://github.com/andifathulms/kpr-simulator/actions/workflows/deploy.yml)
-![tests](https://img.shields.io/badge/tests-1614%20passing-0E2540)
+![tests](https://img.shields.io/badge/tests-1628%20passing-0E2540)
 ![rule packs](https://img.shields.io/badge/parameters-27%20cited-8FC6E0)
 ![no tracking](https://img.shields.io/badge/network%20requests-none-E8B04B)
 

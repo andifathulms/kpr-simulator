@@ -164,9 +164,13 @@ The site states plainly that it is a personal project, not financial advice, tha
 
 ## Current state
 
-M0–M6 built and green. `pnpm test:run` covers 1614 assertions; `pnpm rules:validate`, `pnpm typecheck`, and `pnpm lint` are clean; the export serves under the production `basePath` via `pnpm preview`.
+M0–M6 built and green. `pnpm test:run` covers 1628 assertions; `pnpm rules:validate`, `pnpm typecheck`, and `pnpm lint` are clean; the export serves under the production `basePath` via `pnpm preview`.
 
-Routes: `hitung`, `ambang`, `subsidi`, `banding`, `biaya`, `parameter`, in `id` and `en`. The locale is a root-level segment so each page carries the right `lang`; `/` is a static redirect written by `scripts/finalise-export.mjs`, which also writes `.nojekyll`.
+Routes: `hitung`, `ambang`, `subsidi`, `banding`, `biaya`, `parameter`, in `id` and `en`.
+
+The 2026-10 design refresh (PRD §8 amended to match) added four surface levels, the amber hatch (`.hatch-unknown`), IBM Plex Mono for columns, and Barlow Condensed headline figures (`.figure-display`). The nav groups pages into three jobs (`GROUPS` in `components/chrome/Chrome.tsx`). The calculators share `FieldGroup` step cards, `SummaryStrip`, `SectionIndex`, `EmptySheet`, `ReadoutDock` (phones only), and `NextStep`, which carries hitung's figures to ambang in the hash. `ambang`'s crossing chart is sampled by `lib/rate/curve.ts`. The only animation is the band's edges and the threshold marker (PRD §8).
+
+`pnpm preview` now decodes request paths. Before that, the `[locale]` page chunks returned 404 locally and no page hydrated, so any preview check before 2026-10-15 was of static HTML only. The locale is a root-level segment so each page carries the right `lang`; `/` is a static redirect written by `scripts/finalise-export.mjs`, which also writes `.nojekyll`.
 
 Pushed to `github.com/andifathulms/kpr-simulator`. CI (`verify`) is green on every push: rule validation, types, lint, tests, build, `check:offline`, and an export sanity check.
 
