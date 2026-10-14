@@ -46,7 +46,17 @@ createServer(async (req, res) => {
     res.writeHead(404, { 'content-type': 'text/plain' })
     return res.end(`Not under basePath ${BASE_PATH}`)
   }
-  const file = await resolve(url.pathname.slice(BASE_PATH.length) || '/')
+  // Decoded, as GitHub Pages does: the page chunks live under app/[locale]/
+  // and the browser requests them as %5Blocale%5D. Undecoded, every chunk 404s
+  // and no page hydrates. resolve() still refuses anything outside ROOT.
+  let pathname
+  try {
+    pathname = decodeURIComponent(url.pathname)
+  } catch {
+    res.writeHead(400, { 'content-type': 'text/plain' })
+    return res.end('Malformed path')
+  }
+  const file = await resolve(pathname.slice(BASE_PATH.length) || '/')
   if (!file) {
     res.writeHead(404, { 'content-type': 'text/plain' })
     return res.end('404')
